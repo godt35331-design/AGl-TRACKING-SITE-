@@ -2863,6 +2863,86 @@ export default function App() {
                 </div>
             </div>
 
+              {/* Customer Active Shipments Section */}
+              <div className="customer-shipments-section" style={{ marginTop: '25px', marginBottom: '35px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+                  <div>
+                    <h3 style={{ margin: '0 0 2px 0', fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-dark)' }}>
+                      My Active Shipments
+                    </h3>
+                    <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                      Real-time live status and GPS route telemetry for your parcels.
+                    </p>
+                  </div>
+                  {displayedShipments.length > 0 && (
+                    <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-color)', background: 'var(--primary-light)', padding: '4px 10px', borderRadius: '12px' }}>
+                      {displayedShipments.length} Parcel{displayedShipments.length === 1 ? '' : 's'}
+                    </span>
+                  )}
+                </div>
+
+                {displayedShipments.length === 0 ? (
+                  <div style={{ background: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '14px', padding: '36px 20px', textAlign: 'center', boxShadow: 'var(--shadow-sm)' }}>
+                    <Package style={{ width: '40px', height: '40px', color: 'var(--primary-color)', margin: '0 auto 12px auto', display: 'block', opacity: 0.8 }} />
+                    <h4 style={{ margin: '0 0 6px 0', fontSize: '1rem', fontWeight: 700, color: 'var(--text-dark)' }}>No packages registered yet</h4>
+                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                      When dispatch registers a shipment for {user.email}, it will appear here with live tracking telemetry.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="customer-shipment-cards-grid">
+                    {displayedShipments.map(s => {
+                      const prog = s.simulation?.currentProgress || 0;
+                      return (
+                        <div key={s.id} className="customer-shipment-card" onClick={() => window.location.hash = `#details?id=${s.id}`}>
+                          <div className="cust-card-top">
+                            <span className="cust-tracking-id">
+                              <Package style={{ width: '15px', height: '15px', color: 'var(--primary-color)' }} />
+                              {s.id}
+                            </span>
+                            <span className={`status-pill ${s.status.toLowerCase().replace(/ /g, '-')}`}>
+                              <span className="pill-dot"></span>
+                              {s.status.toUpperCase()}
+                            </span>
+                          </div>
+
+                          <div className="cust-card-route">
+                            <div className="route-node">
+                              <span className="route-node-label">ORIGIN</span>
+                              <span className="route-node-city">{s.origin}</span>
+                            </div>
+                            <div className="route-arrow-icon">→</div>
+                            <div className="route-node text-right">
+                              <span className="route-node-label">DESTINATION</span>
+                              <span className="route-node-city">{s.destination}</span>
+                            </div>
+                          </div>
+
+                          <div className="cust-card-progress-wrap">
+                            <div className="progress-info-row">
+                              <span>Transit Progress</span>
+                              <span className="progress-pct">{Math.round(prog)}%</span>
+                            </div>
+                            <div className="cust-prog-bar">
+                              <div className="cust-prog-fill" style={{ width: `${Math.round(prog)}%` }}></div>
+                            </div>
+                          </div>
+
+                          <div className="cust-card-footer">
+                            <div className="cust-eta-block">
+                              <span className="eta-small-label">EST. ARRIVAL:</span>
+                              <span className="eta-date-val">{s.eta || 'In Transit'}</span>
+                            </div>
+                            <button type="button" className="btn-track-parcel-card">
+                              Track Live Map →
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
 
               {/* Footer attribution */}
               <footer className="portal-footer-note select-none">
