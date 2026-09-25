@@ -26,7 +26,7 @@ const DEFAULT_SHIPMENTS = [
   {
     id: "APX-78361092",
     customerName: "John Doe",
-    customerEmail: "customer@apex-logistics.com",
+    customerEmail: "customer@aglgloballogistics.com",
     customerPhone: "+1 555 0199",
     address: "1024 Airport Way, Seattle, WA",
     weight: 820,
@@ -51,7 +51,7 @@ const DEFAULT_SHIPMENTS = [
   {
     id: "APX-10492837",
     customerName: "John Doe",
-    customerEmail: "customer@apex-logistics.com",
+    customerEmail: "customer@aglgloballogistics.com",
     customerPhone: "+1 555 0199",
     address: "300 Tech Center Blvd, Los Angeles, CA",
     weight: 12450,
@@ -101,7 +101,7 @@ const DEFAULT_SHIPMENTS = [
 ];
 
 const DEFAULT_CUSTOMERS = [
-  { name: "John Doe", email: "customer@apex-logistics.com", volume: 2 },
+  { name: "John Doe", email: "customer@aglgloballogistics.com", volume: 2 },
   { name: "Jane Smith", email: "jane.smith@corporation.com", volume: 1 }
 ];
 
@@ -142,8 +142,8 @@ class AppState {
 
   static getActiveUserEmail() {
     const role = this.getActiveRole();
-    if (role === "admin") return "admin@apex-logistics.com";
-    if (role === "customer") return "customer@apex-logistics.com";
+    if (role === "admin") return "admin@aglgloballogistics.com";
+    if (role === "customer") return "customer@aglgloballogistics.com";
     return "";
   }
 

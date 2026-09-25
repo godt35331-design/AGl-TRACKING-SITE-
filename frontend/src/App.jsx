@@ -531,7 +531,7 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
           </p>
         </div>
         <div style={{ background: 'rgba(255, 185, 0, 0.1)', border: '1px solid #ffb900', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem', color: '#ffb900', fontWeight: '700' }}>
-          ✓ Resend Active: support@apex-logistics.com
+          ✓ Resend Active: support@aglgloballogistics.com
         </div>
       </div>
 
@@ -738,8 +738,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
             {/* Footer White Card 2 */}
             <div style={{ background: '#ffffff', borderRadius: '4px', padding: '16px', border: '1px solid #e2e8f0', fontSize: '12px', color: '#4a5568' }}>
               <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: '#2d3748' }}>Apex Global Logistics Services</p>
-              <p style={{ margin: '0 0 4px 0' }}>Website: apex-logistics.com</p>
-              <p style={{ margin: '0', color: '#718096' }}>Email: support@apex-logistics.com</p>
+              <p style={{ margin: '0 0 4px 0' }}>Website: aglgloballogistics.com</p>
+              <p style={{ margin: '0', color: '#718096' }}>Email: support@aglgloballogistics.com</p>
             </div>
 
           </div>
@@ -762,7 +762,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
   const conversations = React.useMemo(() => {
     const groups = {};
     (messages || []).forEach(m => {
-      const email = m.customerEmail ? m.customerEmail.toLowerCase().trim() : 'unknown@apex-logistics.com';
+      const email = m.customerEmail ? m.customerEmail.toLowerCase().trim() : 'unknown@aglgloballogistics.com';
       if (!groups[email]) {
         groups[email] = {
           email,
@@ -856,7 +856,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
   };
 
   const handleSimulateInbound = async () => {
-    const targetEmail = selectedEmail || 'customer@apex-logistics.com';
+    const targetEmail = selectedEmail || 'customer@aglgloballogistics.com';
     const sampleText = prompt(`Enter test email reply message from customer (${targetEmail}):`, "Hello Support, thank you! Could you also check if signature release is available for my shipment?");
     if (!sampleText) return;
 
@@ -1453,7 +1453,7 @@ export default function App() {
       return;
     }
 
-    const testEmail = role === 'admin' ? 'admin@apex-logistics.com' : 'customer@apex-logistics.com';
+    const testEmail = role === 'admin' ? 'admin@aglgloballogistics.com' : 'customer@aglgloballogistics.com';
     try {
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',

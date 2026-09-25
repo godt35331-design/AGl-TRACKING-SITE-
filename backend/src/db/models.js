@@ -72,14 +72,14 @@ function loadDb() {
       // Initialize with seed data defaults matching seed.js
       dbState = {
         customers: [
-          { name: "John Doe", email: "customer@apex-logistics.com", volume: 2, createdAt: new Date().toISOString() },
+          { name: "John Doe", email: "customer@aglgloballogistics.com", volume: 2, createdAt: new Date().toISOString() },
           { name: "Jane Smith", email: "jane.smith@corporation.com", volume: 1, createdAt: new Date().toISOString() }
         ],
         shipments: [
           {
             id: "APX-78361092",
             customerName: "John Doe",
-            customerEmail: "customer@apex-logistics.com",
+            customerEmail: "customer@aglgloballogistics.com",
             customerPhone: "+1 555 0199",
             address: "1024 Airport Way, Seattle, WA",
             weight: 820,
@@ -104,7 +104,7 @@ function loadDb() {
           {
             id: "APX-10492837",
             customerName: "John Doe",
-            customerEmail: "customer@apex-logistics.com",
+            customerEmail: "customer@aglgloballogistics.com",
             customerPhone: "+1 555 0199",
             address: "300 Tech Center Blvd, Los Angeles, CA",
             weight: 12450,
@@ -155,13 +155,13 @@ function loadDb() {
         messages: [
           {
             _id: "msg_seed_1",
-            customerEmail: "customer@apex-logistics.com",
+            customerEmail: "customer@aglgloballogistics.com",
             customerName: "John Doe",
             subject: "Inquiry regarding Package #APX-78361092",
             body: "Hello Support Team,\n\nCan you confirm when package #APX-78361092 will arrive in Seattle?\n\nThank you,\nJohn Doe",
             sender: "customer",
             read: false,
-            messageId: "<msg-customer-01@apex-logistics.com>",
+            messageId: "<msg-customer-01@aglgloballogistics.com>",
             createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
             updatedAt: new Date(Date.now() - 3600000 * 2).toISOString()
           }

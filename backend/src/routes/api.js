@@ -35,13 +35,13 @@ router.post('/auth/login', async (req, res) => {
   const cleanEmail = email.trim().toLowerCase();
 
   try {
-    if ((cleanEmail === 'admin@apex-logistics.com' || cleanEmail === 'admin@ups.com')) {
+    if ((cleanEmail === 'admin@aglgloballogistics.com' || cleanEmail === 'admin@ups.com')) {
       const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
       if (password !== adminPass) {
         return res.status(401).json({ error: 'Invalid password credentials for Administrator.' });
       }
       return res.json({
-        email: 'admin@apex-logistics.com',
+        email: 'admin@aglgloballogistics.com',
         name: 'Admin User',
         role: 'admin'
       });
@@ -74,7 +74,7 @@ router.get('/shipments', async (req, res) => {
 
   try {
     let query = {};
-    if (email && email.trim().toLowerCase() !== 'admin@apex-logistics.com' && email.trim().toLowerCase() !== 'admin@ups.com') {
+    if (email && email.trim().toLowerCase() !== 'admin@aglgloballogistics.com' && email.trim().toLowerCase() !== 'admin@ups.com') {
       query.customerEmail = email.trim().toLowerCase();
     }
     
@@ -430,7 +430,7 @@ router.post('/inbound-email', async (req, res) => {
     const cleanBody = stripQuotedReplyText(rawBody) || 'Empty message body.';
 
     // Extract Message-ID & In-Reply-To
-    const messageId = payload['message-id'] || payload.messageId || payload.headers?.['message-id'] || payload.id || `<msg-inbound-${Date.now()}@apex-logistics.com>`;
+    const messageId = payload['message-id'] || payload.messageId || payload.headers?.['message-id'] || payload.id || `<msg-inbound-${Date.now()}@aglgloballogistics.com>`;
     const inReplyTo = payload['in-reply-to'] || payload.inReplyTo || payload.headers?.['in-reply-to'] || '';
 
     // Customer Lookup
@@ -510,7 +510,7 @@ router.post('/admin/messages/reply', async (req, res) => {
       body: body.trim(),
       sender: 'admin',
       read: true,
-      messageId: `<msg-admin-${Date.now()}@apex-logistics.com>`,
+      messageId: `<msg-admin-${Date.now()}@aglgloballogistics.com>`,
       inReplyTo: inReplyTo || ''
     });
 

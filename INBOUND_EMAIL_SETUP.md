@@ -1,6 +1,6 @@
 # Inbound Email & Support Inbox Setup Guide
 
-This guide explains how customer email replies to `support@apex-logistics.com` are received, parsed, threaded, and displayed live in the Admin Panel inbox.
+This guide explains how customer email replies to `support@aglgloballogistics.com` are received, parsed, threaded, and displayed live in the Admin Panel inbox.
 
 ---
 
@@ -13,7 +13,7 @@ This guide explains how customer email replies to `support@apex-logistics.com` a
 [MX Record / Inbound Mail Server] (Cloudflare Email Routing or Resend Inbound)
          │
          ▼
-[POST Webhook Endpoint] -> https://www.apex-logistics.com/api/inbound-email
+[POST Webhook Endpoint] -> https://www.aglgloballogistics.com/api/inbound-email
          │
          ├── 1. Verifies secret header (x-webhook-secret)
          ├── 2. Parses sender email, subject, clean body (strips quoted history)
@@ -30,17 +30,17 @@ This guide explains how customer email replies to `support@apex-logistics.com` a
 ### Option A: Using Resend Inbound Webhook
 1. Log into your [Resend Dashboard](https://resend.com).
 2. Go to **Webhooks** -> **Create Webhook**.
-3. Set **Endpoint URL**: `https://tracking-website-service.onrender.com/api/inbound-email` (or your custom domain URL `https://www.apex-logistics.com/api/inbound-email`).
+3. Set **Endpoint URL**: `https://tracking-website-service.onrender.com/api/inbound-email` (or your custom domain URL `https://www.aglgloballogistics.com/api/inbound-email`).
 4. Select Event: `email.received` or `inbound.email`.
 5. Copy the Signing Secret / Webhook Secret.
 6. In **Render Dashboard** -> **Environment**, add:
    - `INBOUND_WEBHOOK_SECRET`: `<your-secret-here>`
 
 ### Option B: Cloudflare Email Routing + Worker Forwarder
-1. In [Cloudflare Dashboard](https://dash.cloudflare.com) for `apex-logistics.com`, go to **Email Routing**.
-2. Create a catch-all or specific rule for `support@apex-logistics.com`.
+1. In [Cloudflare Dashboard](https://dash.cloudflare.com) for `aglgloballogistics.com`, go to **Email Routing**.
+2. Create a catch-all or specific rule for `support@aglgloballogistics.com`.
 3. Set action to **Send to Worker**.
-4. Use a Cloudflare Worker script to POST the JSON payload to `https://www.apex-logistics.com/api/inbound-email` with header:
+4. Use a Cloudflare Worker script to POST the JSON payload to `https://www.aglgloballogistics.com/api/inbound-email` with header:
    ```http
    x-webhook-secret: <INBOUND_WEBHOOK_SECRET>
    ```

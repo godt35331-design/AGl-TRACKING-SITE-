@@ -56,7 +56,7 @@ function buildHtmlEmail({ recipientName, title, message, trackingNumber, status,
 
         <!-- Track Shipment Button -->
         <div style="margin-top: 24px; text-align: center;">
-          <a href="https://apex-logistics.com/#login" style="display: inline-block; background-color: #351C15; color: #ffffff; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 4px; text-decoration: none; letter-spacing: 0.5px;">
+          <a href="https://aglgloballogistics.com/#login" style="display: inline-block; background-color: #351C15; color: #ffffff; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 4px; text-decoration: none; letter-spacing: 0.5px;">
             Track Shipment &rarr;
           </a>
         </div>
@@ -67,8 +67,8 @@ function buildHtmlEmail({ recipientName, title, message, trackingNumber, status,
       <div style="background-color: #ffffff; border-radius: 4px; padding: 24px; border: 1px solid #e2e8f0; font-size: 13px; color: #4a5568; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
         <p style="margin: 0 0 6px 0; font-weight: 700; color: #2d3748; font-size: 14px;">Apex Global Logistics Services</p>
         <p style="margin: 0 0 4px 0;">Official Transactional Notification</p>
-        <p style="margin: 0 0 4px 0;">Website: <a href="https://apex-logistics.com/#login" style="color: #3182ce; text-decoration: underline;">apex-logistics.com</a></p>
-        <p style="margin: 0; color: #718096;">Email: support@apex-logistics.com</p>
+        <p style="margin: 0 0 4px 0;">Website: <a href="https://aglgloballogistics.com/#login" style="color: #3182ce; text-decoration: underline;">aglgloballogistics.com</a></p>
+        <p style="margin: 0; color: #718096;">Email: support@aglgloballogistics.com</p>
       </div>
 
     </div>
@@ -82,7 +82,7 @@ function buildHtmlEmail({ recipientName, title, message, trackingNumber, status,
  */
 export async function sendEmail({ to, recipientName, subject, messageBody, templateType, shipment, credentials, inReplyTo }) {
   const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.FROM_EMAIL || 'Apex Support <support@apex-logistics.com>';
+  const fromEmail = process.env.FROM_EMAIL || 'Apex Support <support@aglgloballogistics.com>';
 
   let emailSubject = subject || 'Update regarding your Apex Shipment';
   let trackingCode = shipment?.id || '';
@@ -111,7 +111,7 @@ export async function sendEmail({ to, recipientName, subject, messageBody, templ
     credentials: credentials
   });
 
-  const textContent = `Dear ${recipientName || 'Sir/Madam'},\n\n${messageBody}\n\n${credentials ? `CUSTOMER PORTAL CREDENTIALS:\nUsername: ${credentials.email}\nPassword: ${credentials.password}\n\n` : ''}${trackingCode ? `SHIPMENT DETAILS:\nTracking Code: ${trackingCode}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n` : ''}\nTrack Shipment: https://apex-logistics.com/#login\n\nApex Global Logistics Services\nWebsite: https://apex-logistics.com/#login\nEmail: support@apex-logistics.com`;
+  const textContent = `Dear ${recipientName || 'Sir/Madam'},\n\n${messageBody}\n\n${credentials ? `CUSTOMER PORTAL CREDENTIALS:\nUsername: ${credentials.email}\nPassword: ${credentials.password}\n\n` : ''}${trackingCode ? `SHIPMENT DETAILS:\nTracking Code: ${trackingCode}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n` : ''}\nTrack Shipment: https://aglgloballogistics.com/#login\n\nApex Global Logistics Services\nWebsite: https://aglgloballogistics.com/#login\nEmail: support@aglgloballogistics.com`;
 
   try {
     const resend = new Resend(apiKey);
@@ -126,7 +126,7 @@ export async function sendEmail({ to, recipientName, subject, messageBody, templ
     const response = await resend.emails.send({
       from: fromEmail,
       to: [to],
-      replyTo: 'support@apex-logistics.com',
+      replyTo: 'support@aglgloballogistics.com',
       subject: emailSubject,
       html: html,
       text: textContent,
