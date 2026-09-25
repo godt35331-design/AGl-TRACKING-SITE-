@@ -5155,10 +5155,53 @@ body {
   background: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  max-height: 240px;
-  overflow-y: auto;
+  max-height: 280px;
+  overflow: hidden;
   z-index: 1050;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.city-region-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  overflow-x: auto;
+}
+
+.city-region-pill {
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.city-region-pill:hover {
+  background-color: #f1f5f9;
+}
+
+.city-region-pill.active {
+  background-color: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+}
+
+.city-dropdown-list {
+  max-height: 230px;
+  overflow-y: auto;
 }
 
 .city-dropdown-item {

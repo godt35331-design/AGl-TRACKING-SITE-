@@ -19,51 +19,13 @@ const WS_BASE = import.meta.env.VITE_WS_BASE ||
 
 // 🌍 Comprehensive Shipping Cities & Logistics Hubs (USA, UK, Europe, & Gateways)
 export const CITIES_DATA = [
-  // --- UNITED STATES ---
-  { code: 'NYC', name: 'New York City, NY', country: 'USA', flag: '🇺🇸', coords: [40.7128, -74.0060] },
-  { code: 'JFK', name: 'New York JFK Cargo, NY', country: 'USA', flag: '🇺🇸', coords: [40.6413, -73.7781] },
-  { code: 'LAX', name: 'Los Angeles, CA', country: 'USA', flag: '🇺🇸', coords: [34.0522, -118.2437] },
-  { code: 'CHI', name: 'Chicago, IL', country: 'USA', flag: '🇺🇸', coords: [41.8781, -87.6298] },
-  { code: 'ORD', name: 'Chicago O\'Hare, IL', country: 'USA', flag: '🇺🇸', coords: [41.9742, -87.9073] },
-  { code: 'HOU', name: 'Houston, TX', country: 'USA', flag: '🇺🇸', coords: [29.7604, -95.3698] },
-  { code: 'PHX', name: 'Phoenix, AZ', country: 'USA', flag: '🇺🇸', coords: [33.4484, -112.0740] },
-  { code: 'PHL', name: 'Philadelphia, PA', country: 'USA', flag: '🇺🇸', coords: [39.9526, -75.1652] },
-  { code: 'DFW', name: 'Dallas / Fort Worth, TX', country: 'USA', flag: '🇺🇸', coords: [32.7767, -96.7970] },
-  { code: 'SFO', name: 'San Francisco, CA', country: 'USA', flag: '🇺🇸', coords: [37.7749, -122.4194] },
-  { code: 'SEA', name: 'Seattle, WA', country: 'USA', flag: '🇺🇸', coords: [47.6062, -122.3321] },
-  { code: 'DEN', name: 'Denver, CO', country: 'USA', flag: '🇺🇸', coords: [39.7392, -104.9903] },
-  { code: 'BOS', name: 'Boston, MA', country: 'USA', flag: '🇺🇸', coords: [42.3601, -71.0589] },
-  { code: 'MIA', name: 'Miami, FL', country: 'USA', flag: '🇺🇸', coords: [25.7617, -80.1918] },
-  { code: 'ATL', name: 'Atlanta, GA', country: 'USA', flag: '🇺🇸', coords: [33.7490, -84.3880] },
-  { code: 'KC',  name: 'Kansas City, MO', country: 'USA', flag: '🇺🇸', coords: [39.0997, -94.5786] },
-  { code: 'MEM', name: 'Memphis Air Cargo, TN', country: 'USA', flag: '🇺🇸', coords: [35.1495, -90.0490] },
-  { code: 'SDF', name: 'Louisville Worldport, KY', country: 'USA', flag: '🇺🇸', coords: [38.2527, -85.7585] },
-  { code: 'CLE', name: 'Cleveland, OH', country: 'USA', flag: '🇺🇸', coords: [41.4993, -81.6944] },
-  { code: 'DET', name: 'Detroit, MI', country: 'USA', flag: '🇺🇸', coords: [42.3314, -83.0458] },
-  { code: 'MSP', name: 'Minneapolis, MN', country: 'USA', flag: '🇺🇸', coords: [44.9778, -93.2650] },
-  { code: 'SLC', name: 'Salt Lake City, UT', country: 'USA', flag: '🇺🇸', coords: [40.7608, -111.8910] },
-  { code: 'LAS', name: 'Las Vegas, NV', country: 'USA', flag: '🇺🇸', coords: [36.1699, -115.1398] },
-  { code: 'PDX', name: 'Portland, OR', country: 'USA', flag: '🇺🇸', coords: [45.5152, -122.6784] },
-  { code: 'SAN', name: 'San Diego, CA', country: 'USA', flag: '🇺🇸', coords: [32.7157, -117.1611] },
-  { code: 'BNA', name: 'Nashville, TN', country: 'USA', flag: '🇺🇸', coords: [36.1627, -86.7816] },
-  { code: 'IND', name: 'Indianapolis Hub, IN', country: 'USA', flag: '🇺🇸', coords: [39.7684, -86.1581] },
-  { code: 'CLT', name: 'Charlotte, NC', country: 'USA', flag: '🇺🇸', coords: [35.2271, -80.8431] },
-  { code: 'ORL', name: 'Orlando, FL', country: 'USA', flag: '🇺🇸', coords: [28.5383, -81.3792] },
-  { code: 'TPA', name: 'Tampa, FL', country: 'USA', flag: '🇺🇸', coords: [27.9506, -82.4572] },
-  { code: 'PIT', name: 'Pittsburgh, PA', country: 'USA', flag: '🇺🇸', coords: [40.4406, -79.9959] },
-  { code: 'MSY', name: 'New Orleans, LA', country: 'USA', flag: '🇺🇸', coords: [29.9511, -90.0715] },
-  { code: 'STL', name: 'St. Louis, MO', country: 'USA', flag: '🇺🇸', coords: [38.6270, -90.1994] },
-  { code: 'BAL', name: 'Baltimore, MD', country: 'USA', flag: '🇺🇸', coords: [39.2904, -76.6122] },
-  { code: 'WAS', name: 'Washington, DC', country: 'USA', flag: '🇺🇸', coords: [38.9072, -77.0369] },
-  { code: 'AUS', name: 'Austin, TX', country: 'USA', flag: '🇺🇸', coords: [30.2672, -97.7431] },
-  { code: 'SAT', name: 'San Antonio, TX', country: 'USA', flag: '🇺🇸', coords: [29.4241, -98.4936] },
-
   // --- UNITED KINGDOM ---
   { code: 'LON', name: 'London, England', country: 'UK', flag: '🇬🇧', coords: [51.5074, -0.1278] },
   { code: 'LHR', name: 'London Heathrow Cargo, England', country: 'UK', flag: '🇬🇧', coords: [51.4700, -0.4543] },
+  { code: 'LGW', name: 'London Gatwick, England', country: 'UK', flag: '🇬🇧', coords: [51.1537, -0.1821] },
   { code: 'BHX', name: 'Birmingham, England', country: 'UK', flag: '🇬🇧', coords: [52.4862, -1.8904] },
   { code: 'MAN', name: 'Manchester, England', country: 'UK', flag: '🇬🇧', coords: [53.4808, -2.2426] },
-  { code: 'LPL', name: 'Liverpool, England', country: 'UK', flag: '🇬🇧', coords: [53.4084, -2.9916] },
+  { code: 'LPL', name: 'Liverpool Port, England', country: 'UK', flag: '🇬🇧', coords: [53.4084, -2.9916] },
   { code: 'GLA', name: 'Glasgow, Scotland', country: 'UK', flag: '🇬🇧', coords: [55.8642, -4.2518] },
   { code: 'EDI', name: 'Edinburgh, Scotland', country: 'UK', flag: '🇬🇧', coords: [55.9533, -3.1883] },
   { code: 'BRS', name: 'Bristol, England', country: 'UK', flag: '🇬🇧', coords: [51.4545, -2.5879] },
@@ -72,64 +34,189 @@ export const CITIES_DATA = [
   { code: 'NCL', name: 'Newcastle, England', country: 'UK', flag: '🇬🇧', coords: [54.9783, -1.6178] },
   { code: 'BFS', name: 'Belfast, Northern Ireland', country: 'UK', flag: '🇬🇧', coords: [54.5973, -5.9301] },
   { code: 'NTG', name: 'Nottingham, England', country: 'UK', flag: '🇬🇧', coords: [52.9548, -1.1581] },
+  { code: 'EMA', name: 'East Midlands Air Cargo, England', country: 'UK', flag: '🇬🇧', coords: [52.8311, -1.3281] },
   { code: 'SOU', name: 'Southampton Port, England', country: 'UK', flag: '🇬🇧', coords: [50.9097, -1.4044] },
   { code: 'CDF', name: 'Cardiff, Wales', country: 'UK', flag: '🇬🇧', coords: [51.4816, -3.1791] },
+  { code: 'SWA', name: 'Swansea, Wales', country: 'UK', flag: '🇬🇧', coords: [51.6214, -3.9436] },
   { code: 'CVT', name: 'Coventry, England', country: 'UK', flag: '🇬🇧', coords: [52.4068, -1.5197] },
   { code: 'LCS', name: 'Leicester, England', country: 'UK', flag: '🇬🇧', coords: [52.6369, -1.1398] },
   { code: 'ABZ', name: 'Aberdeen, Scotland', country: 'UK', flag: '🇬🇧', coords: [57.1497, -2.0943] },
+  { code: 'DND', name: 'Dundee, Scotland', country: 'UK', flag: '🇬🇧', coords: [56.4620, -2.9707] },
+  { code: 'INV', name: 'Inverness, Scotland', country: 'UK', flag: '🇬🇧', coords: [57.4778, -4.2247] },
   { code: 'CAM', name: 'Cambridge, England', country: 'UK', flag: '🇬🇧', coords: [52.2053, 0.1218] },
   { code: 'OXF', name: 'Oxford, England', country: 'UK', flag: '🇬🇧', coords: [51.7520, -1.2577] },
   { code: 'DOV', name: 'Dover Freight Port, England', country: 'UK', flag: '🇬🇧', coords: [51.1279, 1.3134] },
+  { code: 'FXT', name: 'Felixstowe Container Port, England', country: 'UK', flag: '🇬🇧', coords: [51.9638, 1.3511] },
+  { code: 'EXT', name: 'Exeter, England', country: 'UK', flag: '🇬🇧', coords: [50.7184, -3.5339] },
+  { code: 'PLY', name: 'Plymouth, England', country: 'UK', flag: '🇬🇧', coords: [50.3755, -4.1427] },
+  { code: 'NRW', name: 'Norwich, England', country: 'UK', flag: '🇬🇧', coords: [52.6309, 1.2974] },
+  { code: 'HUL', name: 'Hull Port, England', country: 'UK', flag: '🇬🇧', coords: [53.7676, -0.3274] },
+  { code: 'DRB', name: 'Derby, England', country: 'UK', flag: '🇬🇧', coords: [52.9225, -1.4746] },
+  { code: 'STK', name: 'Stoke-on-Trent, England', country: 'UK', flag: '🇬🇧', coords: [53.0027, -2.1794] },
+  { code: 'WLV', name: 'Wolverhampton, England', country: 'UK', flag: '🇬🇧', coords: [52.5862, -2.1288] },
+  { code: 'RDG', name: 'Reading, England', country: 'UK', flag: '🇬🇧', coords: [51.4543, -0.9781] },
+  { code: 'PME', name: 'Portsmouth, England', country: 'UK', flag: '🇬🇧', coords: [50.8198, -1.0880] },
+  { code: 'YRK', name: 'York, England', country: 'UK', flag: '🇬🇧', coords: [53.9599, -1.0873] },
+  { code: 'LTN', name: 'Luton Freight, England', country: 'UK', flag: '🇬🇧', coords: [51.8787, -0.4200] },
 
-  // --- EUROPE ---
-  { code: 'PAR', name: 'Paris, France', country: 'Europe', flag: '🇫🇷', coords: [48.8566, 2.3522] },
-  { code: 'CDG', name: 'Paris CDG, France', country: 'Europe', flag: '🇫🇷', coords: [49.0097, 2.5479] },
-  { code: 'MRS', name: 'Marseille, France', country: 'Europe', flag: '🇫🇷', coords: [43.2965, 5.3698] },
-  { code: 'LYS', name: 'Lyon, France', country: 'Europe', flag: '🇫🇷', coords: [45.7640, 4.8357] },
-  { code: 'FRA', name: 'Frankfurt Cargo Hub, Germany', country: 'Europe', flag: '🇩🇪', coords: [50.1109, 8.6821] },
+  // --- EUROPE (GERMANY, FRANCE, NETHERLANDS, SPAIN, ITALY & MORE) ---
+  { code: 'FRA', name: 'Frankfurt Cargo City, Germany', country: 'Europe', flag: '🇩🇪', coords: [50.1109, 8.6821] },
   { code: 'BER', name: 'Berlin, Germany', country: 'Europe', flag: '🇩🇪', coords: [52.5200, 13.4050] },
   { code: 'MUC', name: 'Munich, Germany', country: 'Europe', flag: '🇩🇪', coords: [48.1351, 11.5820] },
-  { code: 'HAM', name: 'Hamburg Port, Germany', country: 'Europe', flag: '🇩🇪', coords: [53.5511, 9.9937] },
-  { code: 'CGN', name: 'Cologne / Bonn, Germany', country: 'Europe', flag: '🇩🇪', coords: [50.9375, 6.9603] },
-  { code: 'LEJ', name: 'Leipzig European Hub, Germany', country: 'Europe', flag: '🇩🇪', coords: [51.3397, 12.3731] },
+  { code: 'HAM', name: 'Hamburg Container Port, Germany', country: 'Europe', flag: '🇩🇪', coords: [53.5511, 9.9937] },
+  { code: 'CGN', name: 'Cologne / Bonn Hub, Germany', country: 'Europe', flag: '🇩🇪', coords: [50.9375, 6.9603] },
+  { code: 'LEJ', name: 'Leipzig European Cargo Hub, Germany', country: 'Europe', flag: '🇩🇪', coords: [51.3397, 12.3731] },
+  { code: 'STR', name: 'Stuttgart Logistics, Germany', country: 'Europe', flag: '🇩🇪', coords: [48.7758, 9.1829] },
+  { code: 'DUS', name: 'Dusseldorf, Germany', country: 'Europe', flag: '🇩🇪', coords: [51.2277, 6.7735] },
+  { code: 'DTM', name: 'Dortmund, Germany', country: 'Europe', flag: '🇩🇪', coords: [51.5136, 7.4653] },
+  { code: 'BRE', name: 'Bremen Logistics, Germany', country: 'Europe', flag: '🇩🇪', coords: [53.0793, 8.8017] },
+  { code: 'HAJ', name: 'Hanover, Germany', country: 'Europe', flag: '🇩🇪', coords: [52.3759, 9.7320] },
+  { code: 'NUE', name: 'Nuremberg, Germany', country: 'Europe', flag: '🇩🇪', coords: [49.4521, 11.0767] },
+  { code: 'DRS', name: 'Dresden, Germany', country: 'Europe', flag: '🇩🇪', coords: [51.0504, 13.7373] },
+  { code: 'PAR', name: 'Paris, France', country: 'Europe', flag: '🇫🇷', coords: [48.8566, 2.3522] },
+  { code: 'CDG', name: 'Paris Charles de Gaulle, France', country: 'Europe', flag: '🇫🇷', coords: [49.0097, 2.5479] },
+  { code: 'ORY', name: 'Paris Orly, France', country: 'Europe', flag: '🇫🇷', coords: [48.7262, 2.3652] },
+  { code: 'MRS', name: 'Marseille Port, France', country: 'Europe', flag: '🇫🇷', coords: [43.2965, 5.3698] },
+  { code: 'LYS', name: 'Lyon Saint-Exupery, France', country: 'Europe', flag: '🇫🇷', coords: [45.7640, 4.8357] },
+  { code: 'TLS', name: 'Toulouse Aerospace Hub, France', country: 'Europe', flag: '🇫🇷', coords: [43.6047, 1.4442] },
+  { code: 'NCE', name: 'Nice Cote d\'Azur, France', country: 'Europe', flag: '🇫🇷', coords: [43.7102, 7.2620] },
+  { code: 'NTE', name: 'Nantes, France', country: 'Europe', flag: '🇫🇷', coords: [47.2184, -1.5536] },
+  { code: 'SXB', name: 'Strasbourg, France', country: 'Europe', flag: '🇫🇷', coords: [48.5734, 7.7521] },
+  { code: 'BOD', name: 'Bordeaux, France', country: 'Europe', flag: '🇫🇷', coords: [44.8378, -0.5792] },
+  { code: 'LIL', name: 'Lille Eurozone, France', country: 'Europe', flag: '🇫🇷', coords: [50.6292, 3.0573] },
+  { code: 'LEH', name: 'Le Havre Port, France', country: 'Europe', flag: '🇫🇷', coords: [49.4944, 0.1079] },
   { code: 'AMS', name: 'Amsterdam Schiphol, Netherlands', country: 'Europe', flag: '🇳🇱', coords: [52.3676, 4.9041] },
-  { code: 'RTM', name: 'Rotterdam Port, Netherlands', country: 'Europe', flag: '🇳🇱', coords: [51.9244, 4.4777] },
-  { code: 'BRU', name: 'Brussels, Belgium', country: 'Europe', flag: '🇧🇪', coords: [50.8503, 4.3517] },
-  { code: 'ANR', name: 'Antwerp Logistics, Belgium', country: 'Europe', flag: '🇧🇪', coords: [51.2194, 4.4025] },
-  { code: 'LGG', name: 'Liege Air Freight, Belgium', country: 'Europe', flag: '🇧🇪', coords: [50.6326, 5.5797] },
-  { code: 'MAD', name: 'Madrid, Spain', country: 'Europe', flag: '🇪🇸', coords: [40.4168, -3.7038] },
-  { code: 'BCN', name: 'Barcelona, Spain', country: 'Europe', flag: '🇪🇸', coords: [41.3879, 2.1699] },
-  { code: 'VLC', name: 'Valencia Port, Spain', country: 'Europe', flag: '🇪🇸', coords: [39.4699, -0.3763] },
-  { code: 'FCO', name: 'Rome, Italy', country: 'Europe', flag: '🇮🇹', coords: [41.9028, 12.4964] },
-  { code: 'MXP', name: 'Milan Malpensa, Italy', country: 'Europe', flag: '🇮🇹', coords: [45.4642, 9.1900] },
-  { code: 'NAP', name: 'Naples, Italy', country: 'Europe', flag: '🇮🇹', coords: [40.8518, 14.2681] },
-  { code: 'DUB', name: 'Dublin, Ireland', country: 'Europe', flag: '🇮🇪', coords: [53.3498, -6.2603] },
-  { code: 'VIE', name: 'Vienna, Austria', country: 'Europe', flag: '🇦🇹', coords: [48.2082, 16.3738] },
-  { code: 'ZRH', name: 'Zurich, Switzerland', country: 'Europe', flag: '🇨🇭', coords: [47.3769, 8.5417] },
-  { code: 'GVA', name: 'Geneva, Switzerland', country: 'Europe', flag: '🇨🇭', coords: [46.2044, 6.1432] },
-  { code: 'WAW', name: 'Warsaw, Poland', country: 'Europe', flag: '🇵🇱', coords: [52.2297, 21.0122] },
-  { code: 'LIS', name: 'Lisbon, Portugal', country: 'Europe', flag: '🇵🇹', coords: [38.7223, -9.1393] },
-  { code: 'OPO', name: 'Porto, Portugal', country: 'Europe', flag: '🇵🇹', coords: [41.1579, -8.6291] },
-  { code: 'CPH', name: 'Copenhagen, Denmark', country: 'Europe', flag: '🇩🇰', coords: [55.6761, 12.5683] },
-  { code: 'ARN', name: 'Stockholm, Sweden', country: 'Europe', flag: '🇸🇪', coords: [59.3293, 18.0686] },
-  { code: 'OSL', name: 'Oslo, Norway', country: 'Europe', flag: '🇳🇴', coords: [59.9139, 10.7522] },
-  { code: 'HEL', name: 'Helsinki, Finland', country: 'Europe', flag: '🇫🇮', coords: [60.1699, 24.9384] },
-  { code: 'ATH', name: 'Athens, Greece', country: 'Europe', flag: '🇬🇷', coords: [37.9838, 23.7275] },
-  { code: 'PRG', name: 'Prague, Czechia', country: 'Europe', flag: '🇨🇿', coords: [50.0755, 14.4378] },
-  { code: 'BUD', name: 'Budapest, Hungary', country: 'Europe', flag: '🇭🇺', coords: [47.4979, 19.0402] },
-  { code: 'IST', name: 'Istanbul Gateway, Turkey', country: 'Europe', flag: '🇹🇷', coords: [41.0082, 28.9784] },
+  { code: 'RTM', name: 'Rotterdam Europort, Netherlands', country: 'Europe', flag: '🇳🇱', coords: [51.9244, 4.4777] },
+  { code: 'EIN', name: 'Eindhoven Tech Hub, Netherlands', country: 'Europe', flag: '🇳🇱', coords: [51.4416, 5.4697] },
+  { code: 'UTC', name: 'Utrecht Central, Netherlands', country: 'Europe', flag: '🇳🇱', coords: [52.0907, 5.1214] },
+  { code: 'MST', name: 'Maastricht Aachen Airport, Netherlands', country: 'Europe', flag: '🇳🇱', coords: [50.8514, 5.6909] },
+  { code: 'BRU', name: 'Brussels International, Belgium', country: 'Europe', flag: '🇧🇪', coords: [50.8503, 4.3517] },
+  { code: 'ANR', name: 'Antwerp Port Terminal, Belgium', country: 'Europe', flag: '🇧🇪', coords: [51.2194, 4.4025] },
+  { code: 'LGG', name: 'Liege Air Cargo Gateway, Belgium', country: 'Europe', flag: '🇧🇪', coords: [50.6326, 5.5797] },
+  { code: 'GNT', name: 'Ghent Logistics, Belgium', country: 'Europe', flag: '🇧🇪', coords: [51.0543, 3.7174] },
+  { code: 'BGE', name: 'Bruges / Zeebrugge, Belgium', country: 'Europe', flag: '🇧🇪', coords: [51.2093, 3.2247] },
+  { code: 'MAD', name: 'Madrid Barajas, Spain', country: 'Europe', flag: '🇪🇸', coords: [40.4168, -3.7038] },
+  { code: 'BCN', name: 'Barcelona Port, Spain', country: 'Europe', flag: '🇪🇸', coords: [41.3879, 2.1699] },
+  { code: 'VLC', name: 'Valencia Container Port, Spain', country: 'Europe', flag: '🇪🇸', coords: [39.4699, -0.3763] },
+  { code: 'SVQ', name: 'Seville, Spain', country: 'Europe', flag: '🇪🇸', coords: [37.3891, -5.9845] },
+  { code: 'ZAZ', name: 'Zaragoza Air Cargo, Spain', country: 'Europe', flag: '🇪🇸', coords: [41.6488, -0.8891] },
+  { code: 'BIO', name: 'Bilbao Port, Spain', country: 'Europe', flag: '🇪🇸', coords: [43.2630, -2.9350] },
+  { code: 'AGP', name: 'Malaga, Spain', country: 'Europe', flag: '🇪🇸', coords: [36.7213, -4.4214] },
+  { code: 'ALC', name: 'Alicante, Spain', country: 'Europe', flag: '🇪🇸', coords: [38.3452, -0.4810] },
+  { code: 'FCO', name: 'Rome Fiumicino, Italy', country: 'Europe', flag: '🇮🇹', coords: [41.9028, 12.4964] },
+  { code: 'MXP', name: 'Milan Malpensa Cargo, Italy', country: 'Europe', flag: '🇮🇹', coords: [45.4642, 9.1900] },
+  { code: 'BGY', name: 'Milan Bergamo Express, Italy', country: 'Europe', flag: '🇮🇹', coords: [45.6983, 9.6773] },
+  { code: 'NAP', name: 'Naples Port, Italy', country: 'Europe', flag: '🇮🇹', coords: [40.8518, 14.2681] },
+  { code: 'TRN', name: 'Turin, Italy', country: 'Europe', flag: '🇮🇹', coords: [45.0703, 7.6869] },
+  { code: 'BLQ', name: 'Bologna Freight, Italy', country: 'Europe', flag: '🇮🇹', coords: [44.4949, 11.3426] },
+  { code: 'GOA', name: 'Genoa Sea Port, Italy', country: 'Europe', flag: '🇮🇹', coords: [44.4056, 8.9463] },
+  { code: 'VCE', name: 'Venice Marco Polo, Italy', country: 'Europe', flag: '🇮🇹', coords: [45.4408, 12.3155] },
+  { code: 'FLR', name: 'Florence, Italy', country: 'Europe', flag: '🇮🇹', coords: [43.7696, 11.2558] },
+  { code: 'VRN', name: 'Verona Quadrante Europa, Italy', country: 'Europe', flag: '🇮🇹', coords: [45.4384, 10.9916] },
+  { code: 'ZRH', name: 'Zurich Airport, Switzerland', country: 'Europe', flag: '🇨🇭', coords: [47.3769, 8.5417] },
+  { code: 'GVA', name: 'Geneva Freight, Switzerland', country: 'Europe', flag: '🇨🇭', coords: [46.2044, 6.1432] },
+  { code: 'BSL', name: 'Basel-Mulhouse EuroAirport, Switzerland', country: 'Europe', flag: '🇨🇭', coords: [47.5596, 7.5886] },
+  { code: 'BRN', name: 'Bern, Switzerland', country: 'Europe', flag: '🇨🇭', coords: [46.9480, 7.4474] },
+  { code: 'VIE', name: 'Vienna Cargo City, Austria', country: 'Europe', flag: '🇦🇹', coords: [48.2082, 16.3738] },
+  { code: 'SZG', name: 'Salzburg, Austria', country: 'Europe', flag: '🇦🇹', coords: [47.8095, 13.0550] },
+  { code: 'INN', name: 'Innsbruck, Austria', country: 'Europe', flag: '🇦🇹', coords: [47.2692, 11.4041] },
+  { code: 'DUB', name: 'Dublin Gateway, Ireland', country: 'Europe', flag: '🇮🇪', coords: [53.3498, -6.2603] },
+  { code: 'ORK', name: 'Cork Port, Ireland', country: 'Europe', flag: '🇮🇪', coords: [51.8985, -8.4756] },
+  { code: 'SNN', name: 'Shannon Cargo, Ireland', country: 'Europe', flag: '🇮🇪', coords: [52.7122, -8.9248] },
+  { code: 'WAW', name: 'Warsaw Chopin, Poland', country: 'Europe', flag: '🇵🇱', coords: [52.2297, 21.0122] },
+  { code: 'KRK', name: 'Krakow Balice, Poland', country: 'Europe', flag: '🇵🇱', coords: [50.0647, 19.9450] },
+  { code: 'GDN', name: 'Gdansk Baltic Port, Poland', country: 'Europe', flag: '🇵🇱', coords: [54.3520, 18.6466] },
+  { code: 'WRO', name: 'Wroclaw Logistics, Poland', country: 'Europe', flag: '🇵🇱', coords: [51.1079, 17.0385] },
+  { code: 'POZ', name: 'Poznan, Poland', country: 'Europe', flag: '🇵🇱', coords: [52.4064, 16.9252] },
+  { code: 'KTW', name: 'Katowice Pyrzowice, Poland', country: 'Europe', flag: '🇵🇱', coords: [50.2649, 19.0238] },
+  { code: 'LIS', name: 'Lisbon Port, Portugal', country: 'Europe', flag: '🇵🇹', coords: [38.7223, -9.1393] },
+  { code: 'OPO', name: 'Porto Leixoes Port, Portugal', country: 'Europe', flag: '🇵🇹', coords: [41.1579, -8.6291] },
+  { code: 'FAO', name: 'Faro, Portugal', country: 'Europe', flag: '🇵🇹', coords: [37.0194, -7.9304] },
+  { code: 'CPH', name: 'Copenhagen Kastrup, Denmark', country: 'Europe', flag: '🇩🇰', coords: [55.6761, 12.5683] },
+  { code: 'AAR', name: 'Aarhus Port, Denmark', country: 'Europe', flag: '🇩🇰', coords: [56.1629, 10.2039] },
+  { code: 'ARN', name: 'Stockholm Arlanda, Sweden', country: 'Europe', flag: '🇸🇪', coords: [59.3293, 18.0686] },
+  { code: 'GOT', name: 'Gothenburg Port, Sweden', country: 'Europe', flag: '🇸🇪', coords: [57.7089, 11.9746] },
+  { code: 'MMX', name: 'Malmo Express, Sweden', country: 'Europe', flag: '🇸🇪', coords: [55.6050, 13.0038] },
+  { code: 'OSL', name: 'Oslo Gardermoen, Norway', country: 'Europe', flag: '🇳🇴', coords: [59.9139, 10.7522] },
+  { code: 'BGO', name: 'Bergen Port, Norway', country: 'Europe', flag: '🇳🇴', coords: [60.3913, 5.3221] },
+  { code: 'SVG', name: 'Stavanger, Norway', country: 'Europe', flag: '🇳🇴', coords: [58.9700, 5.7331] },
+  { code: 'TRD', name: 'Trondheim, Norway', country: 'Europe', flag: '🇳🇴', coords: [63.4305, 10.3951] },
+  { code: 'HEL', name: 'Helsinki Vantaa, Finland', country: 'Europe', flag: '🇫🇮', coords: [60.1699, 24.9384] },
+  { code: 'TMP', name: 'Tampere, Finland', country: 'Europe', flag: '🇫🇮', coords: [61.4978, 23.7610] },
+  { code: 'TKU', name: 'Turku Port, Finland', country: 'Europe', flag: '🇫🇮', coords: [60.4518, 22.2666] },
+  { code: 'ATH', name: 'Athens Piraeus Port, Greece', country: 'Europe', flag: '🇬🇷', coords: [37.9838, 23.7275] },
+  { code: 'SKG', name: 'Thessaloniki, Greece', country: 'Europe', flag: '🇬🇷', coords: [40.6401, 22.9444] },
+  { code: 'PRG', name: 'Prague Ruzyne, Czechia', country: 'Europe', flag: '🇨🇿', coords: [50.0755, 14.4378] },
+  { code: 'BRQ', name: 'Brno, Czechia', country: 'Europe', flag: '🇨🇿', coords: [49.1951, 16.6068] },
+  { code: 'BUD', name: 'Budapest Cargo City, Hungary', country: 'Europe', flag: '🇭🇺', coords: [47.4979, 19.0402] },
+  { code: 'BTS', name: 'Bratislava, Slovakia', country: 'Europe', flag: '🇭🇺', coords: [48.1486, 17.1077] },
+  { code: 'OTP', name: 'Bucharest Otopeni, Romania', country: 'Europe', flag: '🇷🇴', coords: [44.4268, 26.1025] },
+  { code: 'SOF', name: 'Sofia Gateway, Bulgaria', country: 'Europe', flag: '🇧🇬', coords: [42.6977, 23.3219] },
+  { code: 'ZAG', name: 'Zagreb, Croatia', country: 'Europe', flag: '🇭🇷', coords: [45.8150, 15.9819] },
+  { code: 'LJU', name: 'Ljubljana, Slovenia', country: 'Europe', flag: '🇸🇮', coords: [46.0569, 14.5058] },
+  { code: 'IST', name: 'Istanbul New Airport Cargo, Turkey', country: 'Europe', flag: '🇹🇷', coords: [41.0082, 28.9784] },
+  { code: 'SAW', name: 'Istanbul Sabiha Gokcen, Turkey', country: 'Europe', flag: '🇹🇷', coords: [40.8986, 29.3092] },
+  { code: 'ESB', name: 'Ankara, Turkey', country: 'Europe', flag: '🇹🇷', coords: [39.9334, 32.8597] },
+  { code: 'ADB', name: 'Izmir Port, Turkey', country: 'Europe', flag: '🇹🇷', coords: [38.4237, 27.1428] },
 
-  // --- GLOBAL GATEWAYS ---
+  // --- UNITED STATES ---
+  { code: 'NYC', name: 'New York City, NY', country: 'USA', flag: '🇺🇸', coords: [40.7128, -74.0060] },
+  { code: 'JFK', name: 'New York JFK Cargo, NY', country: 'USA', flag: '🇺🇸', coords: [40.6413, -73.7781] },
+  { code: 'EWR', name: 'Newark Liberty Cargo, NJ', country: 'USA', flag: '🇺🇸', coords: [40.6895, -74.1745] },
+  { code: 'LAX', name: 'Los Angeles, CA', country: 'USA', flag: '🇺🇸', coords: [34.0522, -118.2437] },
+  { code: 'LGB', name: 'Long Beach Container Port, CA', country: 'USA', flag: '🇺🇸', coords: [33.7701, -118.1937] },
+  { code: 'CHI', name: 'Chicago, IL', country: 'USA', flag: '🇺🇸', coords: [41.8781, -87.6298] },
+  { code: 'ORD', name: 'Chicago O\'Hare Cargo, IL', country: 'USA', flag: '🇺🇸', coords: [41.9742, -87.9073] },
+  { code: 'HOU', name: 'Houston Intercontinental, TX', country: 'USA', flag: '🇺🇸', coords: [29.7604, -95.3698] },
+  { code: 'PHX', name: 'Phoenix Sky Harbor, AZ', country: 'USA', flag: '🇺🇸', coords: [33.4484, -112.0740] },
+  { code: 'PHL', name: 'Philadelphia, PA', country: 'USA', flag: '🇺🇸', coords: [39.9526, -75.1652] },
+  { code: 'DFW', name: 'Dallas / Fort Worth Logistics, TX', country: 'USA', flag: '🇺🇸', coords: [32.7767, -96.7970] },
+  { code: 'SFO', name: 'San Francisco, CA', country: 'USA', flag: '🇺🇸', coords: [37.7749, -122.4194] },
+  { code: 'OAK', name: 'Oakland Port, CA', country: 'USA', flag: '🇺🇸', coords: [37.8044, -122.2712] },
+  { code: 'SEA', name: 'Seattle Tacoma, WA', country: 'USA', flag: '🇺🇸', coords: [47.6062, -122.3321] },
+  { code: 'DEN', name: 'Denver Mile High Hub, CO', country: 'USA', flag: '🇺🇸', coords: [39.7392, -104.9903] },
+  { code: 'BOS', name: 'Boston Logan, MA', country: 'USA', flag: '🇺🇸', coords: [42.3601, -71.0589] },
+  { code: 'MIA', name: 'Miami International Cargo, FL', country: 'USA', flag: '🇺🇸', coords: [25.7617, -80.1918] },
+  { code: 'ATL', name: 'Atlanta Hartsfield, GA', country: 'USA', flag: '🇺🇸', coords: [33.7490, -84.3880] },
+  { code: 'KC',  name: 'Kansas City Central, MO', country: 'USA', flag: '🇺🇸', coords: [39.0997, -94.5786] },
+  { code: 'MEM', name: 'Memphis SuperHub, TN', country: 'USA', flag: '🇺🇸', coords: [35.1495, -90.0490] },
+  { code: 'SDF', name: 'Louisville Worldport, KY', country: 'USA', flag: '🇺🇸', coords: [38.2527, -85.7585] },
+  { code: 'IND', name: 'Indianapolis Cargo Hub, IN', country: 'USA', flag: '🇺🇸', coords: [39.7684, -86.1581] },
+  { code: 'CVG', name: 'Cincinnati Global Hub, OH', country: 'USA', flag: '🇺🇸', coords: [39.1031, -84.5120] },
+  { code: 'CLE', name: 'Cleveland, OH', country: 'USA', flag: '🇺🇸', coords: [41.4993, -81.6944] },
+  { code: 'DET', name: 'Detroit Metro, MI', country: 'USA', flag: '🇺🇸', coords: [42.3314, -83.0458] },
+  { code: 'MSP', name: 'Minneapolis St Paul, MN', country: 'USA', flag: '🇺🇸', coords: [44.9778, -93.2650] },
+  { code: 'SLC', name: 'Salt Lake City, UT', country: 'USA', flag: '🇺🇸', coords: [40.7608, -111.8910] },
+  { code: 'LAS', name: 'Las Vegas McCarran, NV', country: 'USA', flag: '🇺🇸', coords: [36.1699, -115.1398] },
+  { code: 'PDX', name: 'Portland Freight, OR', country: 'USA', flag: '🇺🇸', coords: [45.5152, -122.6784] },
+  { code: 'SAN', name: 'San Diego Lindbergh, CA', country: 'USA', flag: '🇺🇸', coords: [32.7157, -117.1611] },
+  { code: 'BNA', name: 'Nashville, TN', country: 'USA', flag: '🇺🇸', coords: [36.1627, -86.7816] },
+  { code: 'CLT', name: 'Charlotte Douglas, NC', country: 'USA', flag: '🇺🇸', coords: [35.2271, -80.8431] },
+  { code: 'ORL', name: 'Orlando, FL', country: 'USA', flag: '🇺🇸', coords: [28.5383, -81.3792] },
+  { code: 'TPA', name: 'Tampa Bay, FL', country: 'USA', flag: '🇺🇸', coords: [27.9506, -82.4572] },
+  { code: 'PIT', name: 'Pittsburgh, PA', country: 'USA', flag: '🇺🇸', coords: [40.4406, -79.9959] },
+  { code: 'MSY', name: 'New Orleans Port, LA', country: 'USA', flag: '🇺🇸', coords: [29.9511, -90.0715] },
+  { code: 'STL', name: 'St. Louis Lambert, MO', country: 'USA', flag: '🇺🇸', coords: [38.6270, -90.1994] },
+  { code: 'BAL', name: 'Baltimore Port, MD', country: 'USA', flag: '🇺🇸', coords: [39.2904, -76.6122] },
+  { code: 'WAS', name: 'Washington Dulles, DC', country: 'USA', flag: '🇺🇸', coords: [38.9072, -77.0369] },
+  { code: 'AUS', name: 'Austin Bergstrom, TX', country: 'USA', flag: '🇺🇸', coords: [30.2672, -97.7431] },
+  { code: 'SAT', name: 'San Antonio, TX', country: 'USA', flag: '🇺🇸', coords: [29.4241, -98.4936] },
+
+  // --- GLOBAL KEY GATEWAYS ---
   { code: 'DXB', name: 'Dubai Cargo City, UAE', country: 'Global', flag: '🇦🇪', coords: [25.2532, 55.3657] },
   { code: 'SIN', name: 'Singapore Changi, Singapore', country: 'Global', flag: '🇸🇬', coords: [1.3521, 103.8198] },
   { code: 'HND', name: 'Tokyo Haneda, Japan', country: 'Global', flag: '🇯🇵', coords: [35.5494, 139.7798] },
-  { code: 'HKG', name: 'Hong Kong International', country: 'Global', flag: '🇭🇰', coords: [22.3193, 114.1694] },
+  { code: 'NRT', name: 'Tokyo Narita Cargo, Japan', country: 'Global', flag: '🇯🇵', coords: [35.7720, 140.3929] },
+  { code: 'HKG', name: 'Hong Kong International Cargo', country: 'Global', flag: '🇭🇰', coords: [22.3193, 114.1694] },
   { code: 'PVG', name: 'Shanghai Pudong, China', country: 'Global', flag: '🇨🇳', coords: [31.2304, 121.4737] },
-  { code: 'SZX', name: 'Shenzhen Freight, China', country: 'Global', flag: '🇨🇳', coords: [22.6393, 113.8107] },
+  { code: 'SZX', name: 'Shenzhen Freight Hub, China', country: 'Global', flag: '🇨🇳', coords: [22.6393, 113.8107] },
   { code: 'BOM', name: 'Mumbai Express Cargo, India', country: 'Global', flag: '🇮🇳', coords: [19.0896, 72.8656] },
+  { code: 'DEL', name: 'Delhi Indira Gandhi, India', country: 'Global', flag: '🇮🇳', coords: [28.6139, 77.2090] },
   { code: 'YYZ', name: 'Toronto Pearson, Canada', country: 'Global', flag: '🇨🇦', coords: [43.6532, -79.3832] },
   { code: 'YVR', name: 'Vancouver Port, Canada', country: 'Global', flag: '🇨🇦', coords: [49.2827, -123.1207] },
-  { code: 'SYD', name: 'Sydney Kingsford, Australia', country: 'Global', flag: '🇦🇺', coords: [-33.8688, 151.2093] }
+  { code: 'YUL', name: 'Montreal Cargo, Canada', country: 'Global', flag: '🇨🇦', coords: [45.5017, -73.5673] },
+  { code: 'SYD', name: 'Sydney Kingsford, Australia', country: 'Global', flag: '🇦🇺', coords: [-33.8688, 151.2093] },
+  { code: 'MEL', name: 'Melbourne Tullamarine, Australia', country: 'Global', flag: '🇦🇺', coords: [-37.8136, 144.9631] }
 ];
 
 // Expanded coordinates map for Leaflet pins & calculations
@@ -205,6 +292,7 @@ export function calculateOptimalRoute(originCode, destCode) {
 const CitySearchInput = ({ value, selectedCode, placeholder, onChange }) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState('All');
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -219,13 +307,17 @@ const CitySearchInput = ({ value, selectedCode, placeholder, onChange }) => {
 
   const filtered = useMemo(() => {
     const q = (query || '').toLowerCase().trim();
-    if (!q) return CITIES_DATA.slice(0, 16);
-    return CITIES_DATA.filter(c => 
+    let list = CITIES_DATA;
+    if (selectedRegion !== 'All') {
+      list = list.filter(c => c.country === selectedRegion);
+    }
+    if (!q) return list.slice(0, 50);
+    return list.filter(c => 
       c.name.toLowerCase().includes(q) || 
       c.code.toLowerCase().includes(q) || 
       c.country.toLowerCase().includes(q)
-    ).slice(0, 20);
-  }, [query]);
+    ).slice(0, 80);
+  }, [query, selectedRegion]);
 
   const displayVal = value || (selectedCode ? (CITIES_DATA.find(c => c.code === selectedCode)?.name || selectedCode) : '');
 
@@ -267,32 +359,51 @@ const CitySearchInput = ({ value, selectedCode, placeholder, onChange }) => {
 
       {isOpen && (
         <div className="city-dropdown-menu">
-          {filtered.length > 0 ? (
-            filtered.map((item) => (
-              <div 
-                key={item.code} 
-                className={`city-dropdown-item ${selectedCode === item.code ? 'active' : ''}`}
-                onMouseDown={() => {
-                  onChange(item.name, item.code);
-                  setQuery(item.name);
-                  setIsOpen(false);
+          {/* Quick Region Filter Bar */}
+          <div className="city-region-filter-bar">
+            {['All', 'Europe', 'UK', 'USA', 'Global'].map((region) => (
+              <button
+                key={region}
+                type="button"
+                className={`city-region-pill ${selectedRegion === region ? 'active' : ''}`}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setSelectedRegion(region);
                 }}
               >
-                <div className="city-item-left">
-                  <span className="city-item-flag">{item.flag}</span>
-                  <div>
-                    <span className="city-item-name">{item.name}</span>
-                    <span className="city-item-country-tag">{item.country}</span>
+                {region === 'Europe' ? '🇪🇺 Europe' : region === 'UK' ? '🇬🇧 UK' : region === 'USA' ? '🇺🇸 USA' : region === 'Global' ? '🌐 Global' : '🌍 All (150+)'}
+              </button>
+            ))}
+          </div>
+
+          <div className="city-dropdown-list">
+            {filtered.length > 0 ? (
+              filtered.map((item) => (
+                <div 
+                  key={item.code} 
+                  className={`city-dropdown-item ${selectedCode === item.code ? 'active' : ''}`}
+                  onMouseDown={() => {
+                    onChange(item.name, item.code);
+                    setQuery(item.name);
+                    setIsOpen(false);
+                  }}
+                >
+                  <div className="city-item-left">
+                    <span className="city-item-flag">{item.flag}</span>
+                    <div>
+                      <span className="city-item-name">{item.name}</span>
+                      <span className="city-item-country-tag">{item.country}</span>
+                    </div>
                   </div>
+                  <span className="city-item-badge">{item.code}</span>
                 </div>
-                <span className="city-item-badge">{item.code}</span>
+              ))
+            ) : (
+              <div style={{ padding: '14px', fontSize: '0.85rem', color: '#64748b', textAlign: 'center' }}>
+                No standard hub found for "{query}". You can continue typing to save a custom location.
               </div>
-            ))
-          ) : (
-            <div style={{ padding: '10px 14px', fontSize: '0.85rem', color: '#64748b' }}>
-              No standard city found. You can keep typing to use a custom location.
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </div>
