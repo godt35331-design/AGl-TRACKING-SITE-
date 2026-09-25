@@ -159,48 +159,100 @@ export const CITIES_DATA = [
   { code: 'ESB', name: 'Ankara, Turkey', country: 'Europe', flag: '🇹🇷', coords: [39.9334, 32.8597] },
   { code: 'ADB', name: 'Izmir Port, Turkey', country: 'Europe', flag: '🇹🇷', coords: [38.4237, 27.1428] },
 
-  // --- UNITED STATES ---
-  { code: 'NYC', name: 'New York City, NY', country: 'USA', flag: '🇺🇸', coords: [40.7128, -74.0060] },
-  { code: 'JFK', name: 'New York JFK Cargo, NY', country: 'USA', flag: '🇺🇸', coords: [40.6413, -73.7781] },
-  { code: 'EWR', name: 'Newark Liberty Cargo, NJ', country: 'USA', flag: '🇺🇸', coords: [40.6895, -74.1745] },
-  { code: 'LAX', name: 'Los Angeles, CA', country: 'USA', flag: '🇺🇸', coords: [34.0522, -118.2437] },
-  { code: 'LGB', name: 'Long Beach Container Port, CA', country: 'USA', flag: '🇺🇸', coords: [33.7701, -118.1937] },
-  { code: 'CHI', name: 'Chicago, IL', country: 'USA', flag: '🇺🇸', coords: [41.8781, -87.6298] },
-  { code: 'ORD', name: 'Chicago O\'Hare Cargo, IL', country: 'USA', flag: '🇺🇸', coords: [41.9742, -87.9073] },
-  { code: 'HOU', name: 'Houston Intercontinental, TX', country: 'USA', flag: '🇺🇸', coords: [29.7604, -95.3698] },
-  { code: 'PHX', name: 'Phoenix Sky Harbor, AZ', country: 'USA', flag: '🇺🇸', coords: [33.4484, -112.0740] },
-  { code: 'PHL', name: 'Philadelphia, PA', country: 'USA', flag: '🇺🇸', coords: [39.9526, -75.1652] },
-  { code: 'DFW', name: 'Dallas / Fort Worth Logistics, TX', country: 'USA', flag: '🇺🇸', coords: [32.7767, -96.7970] },
-  { code: 'SFO', name: 'San Francisco, CA', country: 'USA', flag: '🇺🇸', coords: [37.7749, -122.4194] },
-  { code: 'OAK', name: 'Oakland Port, CA', country: 'USA', flag: '🇺🇸', coords: [37.8044, -122.2712] },
-  { code: 'SEA', name: 'Seattle Tacoma, WA', country: 'USA', flag: '🇺🇸', coords: [47.6062, -122.3321] },
-  { code: 'DEN', name: 'Denver Mile High Hub, CO', country: 'USA', flag: '🇺🇸', coords: [39.7392, -104.9903] },
-  { code: 'BOS', name: 'Boston Logan, MA', country: 'USA', flag: '🇺🇸', coords: [42.3601, -71.0589] },
-  { code: 'MIA', name: 'Miami International Cargo, FL', country: 'USA', flag: '🇺🇸', coords: [25.7617, -80.1918] },
-  { code: 'ATL', name: 'Atlanta Hartsfield, GA', country: 'USA', flag: '🇺🇸', coords: [33.7490, -84.3880] },
-  { code: 'KC',  name: 'Kansas City Central, MO', country: 'USA', flag: '🇺🇸', coords: [39.0997, -94.5786] },
-  { code: 'MEM', name: 'Memphis SuperHub, TN', country: 'USA', flag: '🇺🇸', coords: [35.1495, -90.0490] },
-  { code: 'SDF', name: 'Louisville Worldport, KY', country: 'USA', flag: '🇺🇸', coords: [38.2527, -85.7585] },
-  { code: 'IND', name: 'Indianapolis Cargo Hub, IN', country: 'USA', flag: '🇺🇸', coords: [39.7684, -86.1581] },
-  { code: 'CVG', name: 'Cincinnati Global Hub, OH', country: 'USA', flag: '🇺🇸', coords: [39.1031, -84.5120] },
-  { code: 'CLE', name: 'Cleveland, OH', country: 'USA', flag: '🇺🇸', coords: [41.4993, -81.6944] },
-  { code: 'DET', name: 'Detroit Metro, MI', country: 'USA', flag: '🇺🇸', coords: [42.3314, -83.0458] },
-  { code: 'MSP', name: 'Minneapolis St Paul, MN', country: 'USA', flag: '🇺🇸', coords: [44.9778, -93.2650] },
-  { code: 'SLC', name: 'Salt Lake City, UT', country: 'USA', flag: '🇺🇸', coords: [40.7608, -111.8910] },
-  { code: 'LAS', name: 'Las Vegas McCarran, NV', country: 'USA', flag: '🇺🇸', coords: [36.1699, -115.1398] },
-  { code: 'PDX', name: 'Portland Freight, OR', country: 'USA', flag: '🇺🇸', coords: [45.5152, -122.6784] },
-  { code: 'SAN', name: 'San Diego Lindbergh, CA', country: 'USA', flag: '🇺🇸', coords: [32.7157, -117.1611] },
-  { code: 'BNA', name: 'Nashville, TN', country: 'USA', flag: '🇺🇸', coords: [36.1627, -86.7816] },
-  { code: 'CLT', name: 'Charlotte Douglas, NC', country: 'USA', flag: '🇺🇸', coords: [35.2271, -80.8431] },
-  { code: 'ORL', name: 'Orlando, FL', country: 'USA', flag: '🇺🇸', coords: [28.5383, -81.3792] },
-  { code: 'TPA', name: 'Tampa Bay, FL', country: 'USA', flag: '🇺🇸', coords: [27.9506, -82.4572] },
-  { code: 'PIT', name: 'Pittsburgh, PA', country: 'USA', flag: '🇺🇸', coords: [40.4406, -79.9959] },
-  { code: 'MSY', name: 'New Orleans Port, LA', country: 'USA', flag: '🇺🇸', coords: [29.9511, -90.0715] },
-  { code: 'STL', name: 'St. Louis Lambert, MO', country: 'USA', flag: '🇺🇸', coords: [38.6270, -90.1994] },
-  { code: 'BAL', name: 'Baltimore Port, MD', country: 'USA', flag: '🇺🇸', coords: [39.2904, -76.6122] },
-  { code: 'WAS', name: 'Washington Dulles, DC', country: 'USA', flag: '🇺🇸', coords: [38.9072, -77.0369] },
-  { code: 'AUS', name: 'Austin Bergstrom, TX', country: 'USA', flag: '🇺🇸', coords: [30.2672, -97.7431] },
-  { code: 'SAT', name: 'San Antonio, TX', country: 'USA', flag: '🇺🇸', coords: [29.4241, -98.4936] },
+  // --- UNITED STATES (TEXAS & NATIONWIDE HUBS) ---
+  { code: 'HOU', name: 'Houston Intercontinental, Texas', country: 'USA', flag: '🇺🇸', coords: [29.7604, -95.3698] },
+  { code: 'DFW', name: 'Dallas / Fort Worth Logistics, Texas', country: 'USA', flag: '🇺🇸', coords: [32.7767, -96.7970] },
+  { code: 'AUS', name: 'Austin Bergstrom, Texas', country: 'USA', flag: '🇺🇸', coords: [30.2672, -97.7431] },
+  { code: 'SAT', name: 'San Antonio International, Texas', country: 'USA', flag: '🇺🇸', coords: [29.4241, -98.4936] },
+  { code: 'ELP', name: 'El Paso Border Logistics Hub, Texas', country: 'USA', flag: '🇺🇸', coords: [31.7619, -106.4850] },
+  { code: 'FTW', name: 'Fort Worth Alliance Cargo, Texas', country: 'USA', flag: '🇺🇸', coords: [32.7555, -97.3308] },
+  { code: 'ARL', name: 'Arlington Logistics, Texas', country: 'USA', flag: '🇺🇸', coords: [32.7357, -97.1081] },
+  { code: 'CRP', name: 'Corpus Christi Deepwater Port, Texas', country: 'USA', flag: '🇺🇸', coords: [27.8006, -97.3964] },
+  { code: 'PLN', name: 'Plano North Texas Hub, Texas', country: 'USA', flag: '🇺🇸', coords: [33.0198, -96.6989] },
+  { code: 'LBB', name: 'Lubbock Preston Smith, Texas', country: 'USA', flag: '🇺🇸', coords: [33.5779, -101.8552] },
+  { code: 'LRD', name: 'Laredo World Trade Port, Texas', country: 'USA', flag: '🇺🇸', coords: [27.5306, -99.4803] },
+  { code: 'AMA', name: 'Amarillo Rick Husband, Texas', country: 'USA', flag: '🇺🇸', coords: [35.2220, -101.8313] },
+  { code: 'MFE', name: 'McAllen Foreign Trade Zone, Texas', country: 'USA', flag: '🇺🇸', coords: [26.2034, -98.2300] },
+  { code: 'ACT', name: 'Waco Central Logistics, Texas', country: 'USA', flag: '🇺🇸', coords: [31.5493, -97.1467] },
+  { code: 'BRO', name: 'Brownsville Port of Texas, Texas', country: 'USA', flag: '🇺🇸', coords: [25.9017, -97.4975] },
+  { code: 'BPT', name: 'Beaumont / Port Arthur Petrochemical Port, Texas', country: 'USA', flag: '🇺🇸', coords: [30.0802, -94.1266] },
+  { code: 'MAF', name: 'Midland / Odessa Permian Hub, Texas', country: 'USA', flag: '🇺🇸', coords: [31.9973, -102.0779] },
+  { code: 'TYR', name: 'Tyler East Texas Gateway, Texas', country: 'USA', flag: '🇺🇸', coords: [32.3513, -95.3011] },
+  { code: 'GLS', name: 'Galveston Port & Cruise Terminal, Texas', country: 'USA', flag: '🇺🇸', coords: [29.3013, -94.7977] },
+  { code: 'ABI', name: 'Abilene Regional, Texas', country: 'USA', flag: '🇺🇸', coords: [32.4487, -99.7331] },
+  { code: 'SPS', name: 'Wichita Falls, Texas', country: 'USA', flag: '🇺🇸', coords: [33.9137, -98.4934] },
+  { code: 'SJT', name: 'San Angelo Concho Valley, Texas', country: 'USA', flag: '🇺🇸', coords: [31.4638, -100.4370] },
+  { code: 'GRK', name: 'Killeen / Fort Cavazos Logistics, Texas', country: 'USA', flag: '🇺🇸', coords: [31.1171, -97.7278] },
+  { code: 'CLL', name: 'College Station / Bryan, Texas', country: 'USA', flag: '🇺🇸', coords: [30.6280, -96.3344] },
+  { code: 'GGG', name: 'Longview Gregg County, Texas', country: 'USA', flag: '🇺🇸', coords: [32.5007, -94.7405] },
+  { code: 'TXK', name: 'Texarkana Gateway, Texas', country: 'USA', flag: '🇺🇸', coords: [33.4251, -94.0477] },
+  { code: 'VCT', name: 'Victoria Regional, Texas', country: 'USA', flag: '🇺🇸', coords: [28.8053, -97.0036] },
+  { code: 'HRL', name: 'Harlingen Valley International, Texas', country: 'USA', flag: '🇺🇸', coords: [26.1906, -97.6961] },
+  { code: 'NYC', name: 'New York City, New York', country: 'USA', flag: '🇺🇸', coords: [40.7128, -74.0060] },
+  { code: 'JFK', name: 'New York JFK Cargo, New York', country: 'USA', flag: '🇺🇸', coords: [40.6413, -73.7781] },
+  { code: 'EWR', name: 'Newark Liberty Cargo, New Jersey', country: 'USA', flag: '🇺🇸', coords: [40.6895, -74.1745] },
+  { code: 'LAX', name: 'Los Angeles International, California', country: 'USA', flag: '🇺🇸', coords: [34.0522, -118.2437] },
+  { code: 'LGB', name: 'Long Beach Container Port, California', country: 'USA', flag: '🇺🇸', coords: [33.7701, -118.1937] },
+  { code: 'SFO', name: 'San Francisco Bay Area, California', country: 'USA', flag: '🇺🇸', coords: [37.7749, -122.4194] },
+  { code: 'OAK', name: 'Oakland Port & Air Cargo, California', country: 'USA', flag: '🇺🇸', coords: [37.8044, -122.2712] },
+  { code: 'SJC', name: 'San Jose Silicon Valley, California', country: 'USA', flag: '🇺🇸', coords: [37.3382, -121.8863] },
+  { code: 'SAN', name: 'San Diego Lindbergh, California', country: 'USA', flag: '🇺🇸', coords: [32.7157, -117.1611] },
+  { code: 'SMF', name: 'Sacramento Valley Hub, California', country: 'USA', flag: '🇺🇸', coords: [38.5816, -121.4944] },
+  { code: 'FAT', name: 'Fresno Central Valley, California', country: 'USA', flag: '🇺🇸', coords: [36.7468, -119.7726] },
+  { code: 'ONT', name: 'Ontario Air Cargo SuperHub, California', country: 'USA', flag: '🇺🇸', coords: [34.0560, -117.6012] },
+  { code: 'CHI', name: 'Chicago Central Hub, Illinois', country: 'USA', flag: '🇺🇸', coords: [41.8781, -87.6298] },
+  { code: 'ORD', name: 'Chicago O\'Hare Global Cargo, Illinois', country: 'USA', flag: '🇺🇸', coords: [41.9742, -87.9073] },
+  { code: 'PHX', name: 'Phoenix Sky Harbor, Arizona', country: 'USA', flag: '🇺🇸', coords: [33.4484, -112.0740] },
+  { code: 'TUS', name: 'Tucson International, Arizona', country: 'USA', flag: '🇺🇸', coords: [32.2226, -110.9747] },
+  { code: 'PHL', name: 'Philadelphia Regional Port, Pennsylvania', country: 'USA', flag: '🇺🇸', coords: [39.9526, -75.1652] },
+  { code: 'PIT', name: 'Pittsburgh Intermodal, Pennsylvania', country: 'USA', flag: '🇺🇸', coords: [40.4406, -79.9959] },
+  { code: 'SEA', name: 'Seattle Tacoma Container Port, Washington', country: 'USA', flag: '🇺🇸', coords: [47.6062, -122.3321] },
+  { code: 'TCM', name: 'Tacoma Logistics Port, Washington', country: 'USA', flag: '🇺🇸', coords: [47.2529, -122.4443] },
+  { code: 'GEG', name: 'Spokane Inland Hub, Washington', country: 'USA', flag: '🇺🇸', coords: [47.6588, -117.4260] },
+  { code: 'DEN', name: 'Denver Intermodal Freight, Colorado', country: 'USA', flag: '🇺🇸', coords: [39.7392, -104.9903] },
+  { code: 'COS', name: 'Colorado Springs, Colorado', country: 'USA', flag: '🇺🇸', coords: [38.8339, -104.8214] },
+  { code: 'BOS', name: 'Boston Logan Freight, Massachusetts', country: 'USA', flag: '🇺🇸', coords: [42.3601, -71.0589] },
+  { code: 'MIA', name: 'Miami International Gateway, Florida', country: 'USA', flag: '🇺🇸', coords: [25.7617, -80.1918] },
+  { code: 'ORL', name: 'Orlando Central Cargo, Florida', country: 'USA', flag: '🇺🇸', coords: [28.5383, -81.3792] },
+  { code: 'TPA', name: 'Tampa Bay Freight, Florida', country: 'USA', flag: '🇺🇸', coords: [27.9506, -82.4572] },
+  { code: 'JAX', name: 'Jacksonville Deepwater Port, Florida', country: 'USA', flag: '🇺🇸', coords: [30.3322, -81.6557] },
+  { code: 'FLL', name: 'Fort Lauderdale Port Everglades, Florida', country: 'USA', flag: '🇺🇸', coords: [26.1224, -80.1373] },
+  { code: 'ATL', name: 'Atlanta Hartsfield SuperHub, Georgia', country: 'USA', flag: '🇺🇸', coords: [33.7490, -84.3880] },
+  { code: 'SAV', name: 'Savannah Container Terminal, Georgia', country: 'USA', flag: '🇺🇸', coords: [32.0809, -81.0912] },
+  { code: 'KC',  name: 'Kansas City Logistics Park, Missouri', country: 'USA', flag: '🇺🇸', coords: [39.0997, -94.5786] },
+  { code: 'STL', name: 'St. Louis Mississippi Gateway, Missouri', country: 'USA', flag: '🇺🇸', coords: [38.6270, -90.1994] },
+  { code: 'MEM', name: 'Memphis FedEx World Hub, Tennessee', country: 'USA', flag: '🇺🇸', coords: [35.1495, -90.0490] },
+  { code: 'BNA', name: 'Nashville Music City Logistics, Tennessee', country: 'USA', flag: '🇺🇸', coords: [36.1627, -86.7816] },
+  { code: 'SDF', name: 'Louisville UPS Worldport Hub, Kentucky', country: 'USA', flag: '🇺🇸', coords: [38.2527, -85.7585] },
+  { code: 'IND', name: 'Indianapolis Air Cargo Hub, Indiana', country: 'USA', flag: '🇺🇸', coords: [39.7684, -86.1581] },
+  { code: 'CVG', name: 'Cincinnati / Northern KY DHL Global Hub, Ohio', country: 'USA', flag: '🇺🇸', coords: [39.1031, -84.5120] },
+  { code: 'CLE', name: 'Cleveland Lake Erie Logistics, Ohio', country: 'USA', flag: '🇺🇸', coords: [41.4993, -81.6944] },
+  { code: 'CMH', name: 'Columbus Rickenbacker Air Cargo Hub, Ohio', country: 'USA', flag: '🇺🇸', coords: [39.9612, -82.9988] },
+  { code: 'DET', name: 'Detroit Ambassador Bridge Hub, Michigan', country: 'USA', flag: '🇺🇸', coords: [42.3314, -83.0458] },
+  { code: 'MSP', name: 'Minneapolis St Paul, Minnesota', country: 'USA', flag: '🇺🇸', coords: [44.9778, -93.2650] },
+  { code: 'MKE', name: 'Milwaukee Lake Port, Wisconsin', country: 'USA', flag: '🇺🇸', coords: [43.0389, -87.9065] },
+  { code: 'SLC', name: 'Salt Lake City Crossroads, Utah', country: 'USA', flag: '🇺🇸', coords: [40.7608, -111.8910] },
+  { code: 'LAS', name: 'Las Vegas Logistics Hub, Nevada', country: 'USA', flag: '🇺🇸', coords: [36.1699, -115.1398] },
+  { code: 'RNO', name: 'Reno Tahoe Industrial Center, Nevada', country: 'USA', flag: '🇺🇸', coords: [39.5296, -119.8138] },
+  { code: 'PDX', name: 'Portland Maritime Gateway, Oregon', country: 'USA', flag: '🇺🇸', coords: [45.5152, -122.6784] },
+  { code: 'CLT', name: 'Charlotte Douglas Cargo, North Carolina', country: 'USA', flag: '🇺🇸', coords: [35.2271, -80.8431] },
+  { code: 'RDU', name: 'Raleigh Durham Research Triangle, North Carolina', country: 'USA', flag: '🇺🇸', coords: [35.7796, -78.6382] },
+  { code: 'GSO', name: 'Greensboro Piedmont Triad Hub, North Carolina', country: 'USA', flag: '🇺🇸', coords: [36.0726, -79.7920] },
+  { code: 'CHS', name: 'Charleston Port Terminal, South Carolina', country: 'USA', flag: '🇺🇸', coords: [32.7765, -79.9311] },
+  { code: 'GSP', name: 'Greenville / Spartanburg Hub, South Carolina', country: 'USA', flag: '🇺🇸', coords: [34.8526, -82.3940] },
+  { code: 'MSY', name: 'New Orleans Gulf Port, Louisiana', country: 'USA', flag: '🇺🇸', coords: [29.9511, -90.0715] },
+  { code: 'BAL', name: 'Baltimore Seagirt Marine Terminal, Maryland', country: 'USA', flag: '🇺🇸', coords: [39.2904, -76.6122] },
+  { code: 'WAS', name: 'Washington Dulles Air Cargo, DC', country: 'USA', flag: '🇺🇸', coords: [38.9072, -77.0369] },
+  { code: 'ABQ', name: 'Albuquerque Rio Grande Hub, New Mexico', country: 'USA', flag: '🇺🇸', coords: [35.0844, -106.6504] },
+  { code: 'OKC', name: 'Oklahoma City Crossroads, Oklahoma', country: 'USA', flag: '🇺🇸', coords: [35.4676, -97.5164] },
+  { code: 'TUL', name: 'Tulsa Port of Catoosa, Oklahoma', country: 'USA', flag: '🇺🇸', coords: [36.1540, -95.9928] },
+  { code: 'OMA', name: 'Omaha Union Pacific Hub, Nebraska', country: 'USA', flag: '🇺🇸', coords: [41.2565, -95.9345] },
+  { code: 'DSM', name: 'Des Moines Heartland Hub, Iowa', country: 'USA', flag: '🇺🇸', coords: [41.5868, -93.6250] },
+  { code: 'LIT', name: 'Little Rock River Port, Arkansas', country: 'USA', flag: '🇺🇸', coords: [34.7465, -92.2896] },
+  { code: 'BHM', name: 'Birmingham Southern Hub, Alabama', country: 'USA', flag: '🇺🇸', coords: [33.5186, -86.8104] },
+  { code: 'MOB', name: 'Mobile Container Terminal, Alabama', country: 'USA', flag: '🇺🇸', coords: [30.6954, -88.0399] },
+  { code: 'JAN', name: 'Jackson Freight Center, Mississippi', country: 'USA', flag: '🇺🇸', coords: [32.2988, -90.1848] },
+  { code: 'BOI', name: 'Boise Intermountain Hub, Idaho', country: 'USA', flag: '🇺🇸', coords: [43.6150, -116.2023] },
 
   // --- GLOBAL KEY GATEWAYS ---
   { code: 'DXB', name: 'Dubai Cargo City, UAE', country: 'Global', flag: '🇦🇪', coords: [25.2532, 55.3657] },
@@ -1343,6 +1395,21 @@ export default function App() {
   const [simActiveShipmentId, setSimActiveShipmentId] = useState('');
   const [simSpeed, setSimSpeed] = useState(2);
   const [isSimRunning, setIsSimRunning] = useState(false);
+  const [simDurationHours, setSimDurationHours] = useState(72); // Default 3 days (1h up to 168h / 7 days)
+  const [durationUnit, setDurationUnit] = useState('days'); // 'hours' or 'days'
+  const simDurationHoursRef = useRef(simDurationHours);
+  useEffect(() => {
+    simDurationHoursRef.current = simDurationHours;
+  }, [simDurationHours]);
+
+  useEffect(() => {
+    if (simActiveShipmentId) {
+      const activeShip = shipments.find(s => s.id === simActiveShipmentId);
+      if (activeShip && activeShip.simulation && activeShip.simulation.durationHours) {
+        setSimDurationHours(activeShip.simulation.durationHours);
+      }
+    }
+  }, [simActiveShipmentId, shipments]);
 
   const shipmentsRef = useRef(shipments);
   useEffect(() => {
@@ -1842,26 +1909,61 @@ export default function App() {
     }
   };
 
-  const handleStartSim = () => {
+  const handleUpdateSimDuration = (hours) => {
+    const validHours = Math.max(0.5, Math.min(168, Number(hours) || 72));
+    setSimDurationHours(validHours);
+    if (simActiveShipmentId) {
+      const activeShip = shipmentsRef.current.find(s => s.id === simActiveShipmentId);
+      if (activeShip && activeShip.simulation && activeShip.simulation.active) {
+        fetch(`${API_BASE}/shipments/${simActiveShipmentId}/simulation`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            simulation: {
+              active: true,
+              durationHours: validHours,
+              startedAt: Date.now(),
+              startProgress: activeShip.simulation.currentProgress || 0
+            }
+          })
+        }).then(res => res.ok ? res.json() : null)
+          .then(updated => {
+            if (updated) {
+              setShipments(prev => prev.map(s => s.id === updated.id ? updated : s));
+            }
+          });
+      }
+    }
+  };
+
+  const handleStartSim = (customHours) => {
     if (!simActiveShipmentId) return;
-    if (simIntervalRef.current) clearInterval(simIntervalRef.current);
+    const durHours = typeof customHours === 'number' ? customHours : (simDurationHoursRef.current || 72);
+    const shipment = shipmentsRef.current.find(s => s.id === simActiveShipmentId);
+    const currProg = shipment?.simulation?.currentProgress || 0;
+    const startProg = currProg >= 100 ? 0 : currProg;
 
     fetch(`${API_BASE}/shipments/${simActiveShipmentId}/simulation`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        status: 'In Transit',
         simulation: {
           active: true,
+          durationHours: durHours,
+          startedAt: Date.now(),
+          startProgress: startProg,
+          currentProgress: startProg,
           speedMultiplier: simSpeedRef.current
         }
       })
-    });
+    }).then(res => res.ok ? res.json() : null)
+      .then(updated => {
+        if (updated) {
+          setShipments(prev => prev.map(s => s.id === updated.id ? updated : s));
+        }
+      });
 
-    const interval = setInterval(() => {
-      updateSimTelemetry(simActiveShipmentId, simSpeedRef.current, null);
-    }, 1500);
-
-    simIntervalRef.current = interval;
     setIsSimRunning(true);
   };
 
@@ -1873,18 +1975,48 @@ export default function App() {
     setIsSimRunning(false);
     
     if (simActiveShipmentId) {
+      const shipment = shipmentsRef.current.find(s => s.id === simActiveShipmentId);
       fetch(`${API_BASE}/shipments/${simActiveShipmentId}/simulation`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ simulation: { active: false } })
-      });
+        body: JSON.stringify({
+          simulation: {
+            active: false,
+            currentProgress: shipment?.simulation?.currentProgress || 0
+          }
+        })
+      }).then(res => res.ok ? res.json() : null)
+        .then(updated => {
+          if (updated) {
+            setShipments(prev => prev.map(s => s.id === updated.id ? updated : s));
+          }
+        });
     }
   };
 
   const handleStopSim = () => {
     handlePauseSim();
     if (simActiveShipmentId) {
-      updateSimTelemetry(simActiveShipmentId, -200, 'Simulator reset. Grounded in departure port.');
+      fetch(`${API_BASE}/shipments/${simActiveShipmentId}/simulation`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: 'Registered',
+          currentLocationName: 'Grounded at origin departure port',
+          simulation: {
+            active: false,
+            currentProgress: 0,
+            startedAt: 0,
+            startProgress: 0,
+            logs: 'Simulator reset. Grounded in departure port.'
+          }
+        })
+      }).then(res => res.ok ? res.json() : null)
+        .then(updated => {
+          if (updated) {
+            setShipments(prev => prev.map(s => s.id === updated.id ? updated : s));
+          }
+        });
     }
   };
 
@@ -4144,6 +4276,136 @@ export default function App() {
                           />
                         </div>
 
+                        {/* 🕒 Autonomous Delivery Duration & Schedule (Up to 7 Days / 1 Week) */}
+                        <div className="controller-section mt-15">
+                          <div className="slider-header-flex">
+                            <span className="section-label">AUTONOMOUS DELIVERY SCHEDULE</span>
+                            <span className="speed-val-badge">
+                              {simDurationHours >= 24 ? `${(simDurationHours / 24).toFixed(1)} Days` : `${simDurationHours} Hours`}
+                            </span>
+                          </div>
+
+                          <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '4px 0 8px 0', lineHeight: 1.4 }}>
+                            Select target delivery duration up to 7 days (1 week). Progresses automatically 24/7 on the server even when logged out or offline!
+                          </p>
+
+                          {/* Quick Duration Preset Pills */}
+                          <div className="sim-duration-pill-row">
+                            {[
+                              { label: '1 Hr', hours: 1 },
+                              { label: '6 Hrs', hours: 6 },
+                              { label: '12 Hrs', hours: 12 },
+                              { label: '1 Day', hours: 24 },
+                              { label: '2 Days', hours: 48 },
+                              { label: '3 Days', hours: 72 },
+                              { label: '5 Days', hours: 120 },
+                              { label: '7 Days (1 Wk)', hours: 168 }
+                            ].map(preset => (
+                              <button
+                                key={preset.hours}
+                                type="button"
+                                className={`sim-duration-pill ${Math.abs(simDurationHours - preset.hours) < 0.1 ? 'active' : ''}`}
+                                onClick={() => handleUpdateSimDuration(preset.hours)}
+                              >
+                                {preset.label}
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* Custom Hours / Days Stepper */}
+                          <div className="sim-days-input-wrap mt-10">
+                            <label style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>
+                              CUSTOM TRANSIT WINDOW:
+                            </label>
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '5px' }}>
+                              <input
+                                type="number"
+                                min="0.5"
+                                max="168"
+                                step={durationUnit === 'days' ? '0.25' : '1'}
+                                value={durationUnit === 'days' ? +(simDurationHours / 24).toFixed(2) : simDurationHours}
+                                onChange={(e) => {
+                                  const val = parseFloat(e.target.value) || 1;
+                                  const hours = durationUnit === 'days' ? val * 24 : val;
+                                  handleUpdateSimDuration(hours);
+                                }}
+                                style={{
+                                  flex: 1,
+                                  background: 'var(--bg-secondary)',
+                                  color: 'var(--text-primary)',
+                                  border: '1px solid var(--border-color)',
+                                  borderRadius: '6px',
+                                  padding: '6px 10px',
+                                  fontSize: '0.85rem'
+                                }}
+                              />
+                              <div className="unit-toggle-group" style={{ display: 'flex', borderRadius: '6px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => setDurationUnit('hours')}
+                                  style={{
+                                    padding: '5px 10px',
+                                    fontSize: '0.75rem',
+                                    border: 'none',
+                                    background: durationUnit === 'hours' ? 'var(--primary-color)' : 'transparent',
+                                    color: durationUnit === 'hours' ? '#fff' : 'var(--text-secondary)',
+                                    cursor: 'pointer',
+                                    fontWeight: durationUnit === 'hours' ? 'bold' : 'normal'
+                                  }}
+                                >
+                                  Hours
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setDurationUnit('days')}
+                                  style={{
+                                    padding: '5px 10px',
+                                    fontSize: '0.75rem',
+                                    border: 'none',
+                                    background: durationUnit === 'days' ? 'var(--primary-color)' : 'transparent',
+                                    color: durationUnit === 'days' ? '#fff' : 'var(--text-secondary)',
+                                    cursor: 'pointer',
+                                    fontWeight: durationUnit === 'days' ? 'bold' : 'normal'
+                                  }}
+                                >
+                                  Days
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Calculated Speed & ETA Card */}
+                          <div className="sim-calculation-card mt-10">
+                            <div className="calc-row">
+                              <span className="calc-label">Progression Velocity:</span>
+                              <span className="calc-val">
+                                ~{(100 / simDurationHours).toFixed(2)}% / hr ({((100 / simDurationHours) / 60).toFixed(4)}% / min)
+                              </span>
+                            </div>
+                            <div className="calc-row">
+                              <span className="calc-label">Estimated Arrival (ETA):</span>
+                              <span className="calc-val highlight">
+                                {new Date(Date.now() + simDurationHours * 3600 * 1000).toLocaleString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </span>
+                            </div>
+                            <div className="calc-row server-status-row">
+                              <span className="calc-label">24/7 Autonomous Engine:</span>
+                              {selectedShipmentForSim?.simulation?.active ? (
+                                <span className="autonomous-badge active">
+                                  <span className="pulse-dot"></span> 24/7 SERVER RUNNING
+                                </span>
+                              ) : (
+                                <span className="autonomous-badge idle">STANDBY / READY</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
                         <div className="controller-section mt-15">
                           <span className="section-label">PLAYBACK CONTROLS</span>
                           
@@ -4202,7 +4464,7 @@ export default function App() {
                             <label>UPDATE STATUS OVERRIDE</label>
                             <select className="override-select" value={selectedShipmentForSim?.status || 'Manifest Prepared'} onChange={(e) => {
                               if (selectedShipmentForSim) {
-                                fetch(`http://localhost:5000/api/shipments/${selectedShipmentForSim.id}/simulation`, {
+                                fetch(`${API_BASE}/shipments/${selectedShipmentForSim.id}/simulation`, {
                                   method: 'PUT',
                                   headers: { 'Content-Type': 'application/json' },
                                   body: JSON.stringify({ status: e.target.value })

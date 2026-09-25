@@ -30,6 +30,9 @@ const shipmentSchema = new mongoose.Schema({
     currentProgress: { type: Number, default: 0 },
     waypoints: { type: [String], default: ['CHI', 'KC', 'DEN', 'SEA'] },
     speedMultiplier: { type: Number, default: 1 },
+    durationHours: { type: Number, default: 72 }, // Default 3 days (1h to 168h / 7 days)
+    startedAt: { type: Number, default: 0 },
+    startProgress: { type: Number, default: 0 },
     logs: { type: String, default: 'Shipment registered in portal.' }
   }
 }, { timestamps: true });
@@ -333,6 +336,9 @@ class MockShipment {
         currentProgress: 0,
         waypoints: ['CHI', 'KC', 'DEN', 'SEA'],
         speedMultiplier: 1,
+        durationHours: 72,
+        startedAt: 0,
+        startProgress: 0,
         logs: 'Shipment registered.'
       };
     }

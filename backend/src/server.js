@@ -4,7 +4,8 @@ import { WebSocketServer } from 'ws';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDatabase } from './db/connection.js';
-import apiRouter, { setWssInstance } from './routes/api.js';
+import apiRouter, { setWssInstance, updateShipmentAutoProgress, broadcastShipmentUpdate } from './routes/api.js';
+import { Shipment } from './db/models.js';
 
 dotenv.config();
 
@@ -77,6 +78,24 @@ async function initializeServer() {
     console.log(`WebSocket server connected at ws://localhost:${PORT}`);
     console.log(`REST APIs available at http://localhost:${PORT}/api`);
     console.log(`===============================================`);
+
+    // 🕒 24/7 Autonomous Simulation Worker (Advances active shipments every 15s in background)
+    setInterval(async () => {
+      try {
+        const activeShipments = await Shipment.find({ 'simulation.active': true });
+        if (activeShipments && activeShipments.length > 0) {
+          for (const ship of activeShipments) {
+            const hasChanged = updateShipmentAutoProgress(ship);
+            if (hasChanged) {
+              await ship.save();
+              broadcastShipmentUpdate(ship);
+            }
+          }
+        }
+      } catch (err) {
+        // Continue silently
+      }
+    }, 15000);
   });
 }
 

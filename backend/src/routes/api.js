@@ -10,7 +10,7 @@ export function setWssInstance(wss) {
   wssInstance = wss;
 }
 
-function broadcastShipmentUpdate(shipment) {
+export function broadcastShipmentUpdate(shipment) {
   if (!wssInstance) return;
   const message = JSON.stringify({
     type: 'SHIPMENT_UPDATE',
@@ -22,6 +22,80 @@ function broadcastShipmentUpdate(shipment) {
       client.send(message);
     }
   });
+}
+
+/**
+ * Autonomous Time-Based Progress Engine
+ * Advances shipment simulation based on elapsed real-world time.
+ * Operates 24/7 autonomously up to 7 days (168 hours) or custom duration.
+ */
+export function updateShipmentAutoProgress(shipment) {
+  if (!shipment || !shipment.simulation || !shipment.simulation.active) {
+    return false;
+  }
+
+  const sim = shipment.simulation;
+  const startedAt = Number(sim.startedAt) || 0;
+  const durationHours = Math.max(0.1, Number(sim.durationHours) || 72);
+  const durationMs = durationHours * 3600 * 1000;
+  const startProgress = Math.max(0, Math.min(100, Number(sim.startProgress) || 0));
+
+  if (!startedAt || durationMs <= 0) return false;
+
+  const now = Date.now();
+  const elapsed = Math.max(0, now - startedAt);
+  const fraction = Math.min(1, elapsed / durationMs);
+
+  let calculatedProg = startProgress + fraction * (100 - startProgress);
+  calculatedProg = Math.min(100, Math.max(0, Math.round(calculatedProg * 100) / 100));
+
+  let changed = false;
+  if (Math.abs((sim.currentProgress || 0) - calculatedProg) >= 0.05) {
+    sim.currentProgress = calculatedProg;
+    changed = true;
+  }
+
+  const waypoints = sim.waypoints && sim.waypoints.length > 0 ? sim.waypoints : [shipment.originCode || 'ORG', shipment.destCode || 'DST'];
+  const numWp = waypoints.length;
+
+  if (calculatedProg >= 100) {
+    if (shipment.status !== 'Delivered') {
+      shipment.status = 'Delivered';
+      shipment.currentLocationName = `Delivered at destination (${shipment.destination})`;
+      sim.logs = 'Package successfully delivered. Signed and verified at destination.';
+      sim.active = false; // Autonomous run completed
+      changed = true;
+    }
+  } else if (calculatedProg >= 85) {
+    if (shipment.status !== 'Out for Delivery') {
+      shipment.status = 'Out for Delivery';
+      shipment.currentLocationName = `Local Delivery Terminal near ${shipment.destination}`;
+      sim.logs = `Out for final courier delivery in ${shipment.destination}.`;
+      changed = true;
+    }
+  } else if (calculatedProg >= 20) {
+    if (shipment.status !== 'In Transit') {
+      shipment.status = 'In Transit';
+      changed = true;
+    }
+    const wpIdx = Math.min(numWp - 1, Math.floor((calculatedProg / 100) * numWp));
+    const currentWp = waypoints[wpIdx] || shipment.destination;
+    const expectedLoc = `In transit near ${currentWp} via ${shipment.vessel || 'Freight'}`;
+    if (shipment.currentLocationName !== expectedLoc) {
+      shipment.currentLocationName = expectedLoc;
+      sim.logs = `Autonomous transit active: Passing logistics hub ${currentWp}.`;
+      changed = true;
+    }
+  } else if (calculatedProg > 0) {
+    if (shipment.status !== 'Warehouse') {
+      shipment.status = 'Warehouse';
+      shipment.currentLocationName = `Departing origin sort facility: ${shipment.origin}`;
+      sim.logs = `Cargo cleared security and departed origin facility ${shipment.origin}.`;
+      changed = true;
+    }
+  }
+
+  return changed;
 }
 
 // 1. Authentication Router API
@@ -79,6 +153,11 @@ router.get('/shipments', async (req, res) => {
     }
     
     const shipments = await Shipment.find(query).sort({ createdAt: -1 });
+    for (const s of shipments) {
+      if (updateShipmentAutoProgress(s)) {
+        await s.save();
+      }
+    }
     res.json(shipments);
   } catch (error) {
     console.error('Error retrieving shipments:', error);
@@ -93,6 +172,9 @@ router.get('/shipments/:id', async (req, res) => {
     const shipment = await Shipment.findOne({ id: id.toUpperCase() });
     if (!shipment) {
       return res.status(404).json({ error: 'Shipment ID not registered.' });
+    }
+    if (updateShipmentAutoProgress(shipment)) {
+      await shipment.save();
     }
     res.json(shipment);
   } catch (error) {
@@ -203,7 +285,7 @@ router.post('/shipments', async (req, res) => {
   }
 });
 
-// 5. Update Live Simulation Controls (Play, Pause, Stop, Waypoints, Logs, Status)
+// 5. Update Live Simulation Controls (Play, Pause, Stop, Waypoints, Logs, Status, Duration)
 router.put('/shipments/:id/simulation', async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -220,13 +302,55 @@ router.put('/shipments/:id/simulation', async (req, res) => {
     if (updates.vessel !== undefined) shipment.vessel = updates.vessel;
     
     if (updates.simulation) {
-      if (updates.simulation.active !== undefined) shipment.simulation.active = updates.simulation.active;
-      if (updates.simulation.currentProgress !== undefined) shipment.simulation.currentProgress = updates.simulation.currentProgress;
-      if (updates.simulation.waypoints !== undefined) shipment.simulation.waypoints = updates.simulation.waypoints;
-      if (updates.simulation.speedMultiplier !== undefined) shipment.simulation.speedMultiplier = updates.simulation.speedMultiplier;
-      if (updates.simulation.logs !== undefined) shipment.simulation.logs = updates.simulation.logs;
+      const sim = shipment.simulation || {};
+      
+      if (updates.simulation.active !== undefined) {
+        sim.active = Boolean(updates.simulation.active);
+        if (sim.active) {
+          const durHours = updates.simulation.durationHours !== undefined 
+            ? Number(updates.simulation.durationHours) 
+            : (sim.durationHours || 72);
+          sim.durationHours = durHours;
+          sim.startedAt = updates.simulation.startedAt || Date.now();
+          sim.startProgress = updates.simulation.currentProgress !== undefined 
+            ? Number(updates.simulation.currentProgress) 
+            : (sim.currentProgress || 0);
+
+          // Calculate estimated delivery date based on autonomous duration
+          const etaDate = new Date(sim.startedAt + durHours * 3600 * 1000);
+          shipment.eta = etaDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          if (shipment.status === 'Registered') {
+            shipment.status = 'In Transit';
+          }
+        }
+      }
+
+      if (updates.simulation.durationHours !== undefined) {
+        sim.durationHours = Number(updates.simulation.durationHours);
+        if (sim.active) {
+          sim.startedAt = Date.now();
+          sim.startProgress = sim.currentProgress || 0;
+          const etaDate = new Date(sim.startedAt + sim.durationHours * 3600 * 1000);
+          shipment.eta = etaDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+      }
+
+      if (updates.simulation.currentProgress !== undefined) {
+        sim.currentProgress = Number(updates.simulation.currentProgress);
+        sim.startProgress = sim.currentProgress;
+        if (sim.active) {
+          sim.startedAt = Date.now();
+        }
+      }
+
+      if (updates.simulation.waypoints !== undefined) sim.waypoints = updates.simulation.waypoints;
+      if (updates.simulation.speedMultiplier !== undefined) sim.speedMultiplier = updates.simulation.speedMultiplier;
+      if (updates.simulation.logs !== undefined) sim.logs = updates.simulation.logs;
+
+      shipment.simulation = sim;
     }
 
+    updateShipmentAutoProgress(shipment);
     await shipment.save();
 
     // Broadcast live update to Socket channels!
