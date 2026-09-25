@@ -1213,21 +1213,21 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
 };
 
 
+const SESSION_EXPIRY_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
 const getValidSession = () => {
   try {
     const savedStr = localStorage.getItem('apex_user');
     if (!savedStr) return null;
     const saved = JSON.parse(savedStr);
 
-    // Rule: Admin must log in EVERY time (never persist Admin sessions in localStorage across browser visits)
-    if (saved.role === 'admin') {
+    if (!saved || !saved.role) {
       localStorage.removeItem('apex_user');
       return null;
     }
 
-    // Rule: Client (Customer) session saved for 24 hours (24 * 60 * 60 * 1000 ms)
-    const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
-    if (saved.loginTimestamp && (Date.now() - saved.loginTimestamp > TWENTY_FOUR_HOURS_MS)) {
+    // Session persisted for 30 days for both Admin and Customer across page refreshes
+    if (saved.loginTimestamp && (Date.now() - saved.loginTimestamp > SESSION_EXPIRY_MS)) {
       localStorage.removeItem('apex_user');
       return null;
     }
@@ -1239,6 +1239,21 @@ const getValidSession = () => {
   }
 };
 
+const getInitialTab = () => {
+  try {
+    const rawHash = window.location.hash;
+    if (!rawHash || rawHash === '#home') return 'home';
+    const tab = rawHash.startsWith('#details?id=') ? 'details' : rawHash.replace('#', '');
+    const sess = getValidSession();
+    if (!sess && ['admin', 'dashboard', 'appointment', 'email-center', 'messages'].includes(tab)) {
+      return 'home';
+    }
+    return tab || 'home';
+  } catch {
+    return 'home';
+  }
+};
+
 export default function App() {
   const [user, setUser] = useState(() => getValidSession());
   const userRef = useRef(user);
@@ -1246,7 +1261,7 @@ export default function App() {
     userRef.current = user;
   }, [user]);
 
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState(getInitialTab);
   const [shipments, setShipments] = useState([]);
   const [messages, setMessages] = useState([]);
   const [isFlashing, setIsFlashing] = useState(false);
@@ -1521,19 +1536,13 @@ export default function App() {
       if (!res.ok) {
         setLoginError(data.error || 'Login authorization fail.');
       } else {
-        if (data.role === 'admin') {
-          localStorage.removeItem('apex_user');
-          setUser(data);
-          userRef.current = data;
-        } else {
-          const clientSession = {
-            ...data,
-            loginTimestamp: Date.now()
-          };
-          localStorage.setItem('apex_user', JSON.stringify(clientSession));
-          setUser(clientSession);
-          userRef.current = clientSession;
-        }
+        const sessionData = {
+          ...data,
+          loginTimestamp: Date.now()
+        };
+        localStorage.setItem('apex_user', JSON.stringify(sessionData));
+        setUser(sessionData);
+        userRef.current = sessionData;
         const targetTab = data.role === 'admin' ? 'admin' : 'dashboard';
         setActiveTab(targetTab);
         window.location.hash = `#${targetTab}`;
@@ -1573,19 +1582,13 @@ export default function App() {
       });
       const data = await res.json();
       if (res.ok) {
-        if (data.role === 'admin') {
-          localStorage.removeItem('apex_user');
-          setUser(data);
-          userRef.current = data;
-        } else {
-          const clientSession = {
-            ...data,
-            loginTimestamp: Date.now()
-          };
-          localStorage.setItem('apex_user', JSON.stringify(clientSession));
-          setUser(clientSession);
-          userRef.current = clientSession;
-        }
+        const sessionData = {
+          ...data,
+          loginTimestamp: Date.now()
+        };
+        localStorage.setItem('apex_user', JSON.stringify(sessionData));
+        setUser(sessionData);
+        userRef.current = sessionData;
         window.location.hash = role === 'admin' ? '#admin' : '#dashboard';
       }
     } catch (e) {
