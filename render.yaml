@@ -1,0 +1,15 @@
+services:
+  - type: static
+    name: Tracking-website
+    buildCommand: node build.js
+    staticPublishPath: ./dist
+  - type: web
+    name: Tracking-website-service
+    env: node
+    buildCommand: node build.js
+    startCommand: cd backend && node src/server.js
+    envVars:
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false
