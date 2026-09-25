@@ -2012,6 +2012,7 @@ export default function App() {
               </svg>
             </button>
             <div className="header-branding" onClick={() => window.location.hash = '#home'}>
+              <img src="/favicon.svg" alt="Apex Logo" style={{ width: '32px', height: '32px', borderRadius: '7px', display: 'block', objectFit: 'contain' }} />
               <div className="logo-apex">APEX</div>
               <span className="portal-title">Logistics</span>
             </div>
@@ -2052,6 +2053,7 @@ export default function App() {
         ) : (
           <header className="main-header">
             <div className="header-branding" onClick={() => window.location.hash = '#home'}>
+              <img src="/favicon.svg" alt="Apex Logo" style={{ width: '32px', height: '32px', borderRadius: '7px', display: 'block', objectFit: 'contain' }} />
               <div className="logo-apex">APEX</div>
               <span className="portal-title">Logistics</span>
             </div>
