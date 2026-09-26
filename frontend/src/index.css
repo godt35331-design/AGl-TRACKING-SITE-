@@ -5937,3 +5937,161 @@ body {
     font-size: 0.72rem !important;
   }
 }
+
+/* =========================================================
+   🚀 ELEVATED LOGOUT BUTTON & CUSTOMER SUPPORT MESSAGING
+   ========================================================= */
+
+/* Elevated Sidebar Logout & Bottom Links */
+.sidebar-bottom-links {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px !important;
+  margin-top: auto;
+  margin-bottom: 25px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.btn-sidebar-logout {
+  background: rgba(220, 38, 38, 0.08) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(220, 38, 38, 0.28) !important;
+  border-radius: 8px !important;
+  margin: 6px 14px 10px !important;
+  padding: 10px 14px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-align: left;
+  font-family: inherit;
+  width: calc(100% - 28px) !important;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.08);
+}
+
+.btn-sidebar-logout:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.sidebar-badge-unread {
+  margin-left: auto;
+  background-color: #dc2626;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Header Right Actions & Instant 1-Tap Logout */
+.header-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.header-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(220, 38, 38, 0.09);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.header-logout-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.header-logout-btn:active {
+  transform: translateY(0);
+}
+
+.customer-avatar-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffb900 0%, #b45309 100%);
+  color: #1a130f;
+  font-weight: 800;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 185, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.header-profile-widget.customer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Ensure mobile sidebar is scrollable and logout is never cut off */
+@media (max-width: 992px) {
+  .main-sidebar {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 60px !important;
+  }
+
+  .header-search-container {
+    max-width: 140px !important;
+  }
+
+  .header-profile-widget .profile-info-text {
+    display: none !important;
+  }
+
+  .header-logout-btn {
+    padding: 6px 10px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-search-container {
+    display: none !important;
+  }
+
+  .header-right-actions {
+    gap: 8px;
+  }
+
+  .header-logout-btn {
+    padding: 6px 9px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .customer-support-banner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}

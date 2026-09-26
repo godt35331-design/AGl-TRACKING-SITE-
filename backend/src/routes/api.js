@@ -678,24 +678,67 @@ router.post('/admin/messages/reply', async (req, res) => {
   }
 });
 
-// 12. Mark Customer Messages as Read
+// 12. Mark Messages as Read
 router.put('/messages/read', async (req, res) => {
-  const { customerEmail } = req.body;
+  const { customerEmail, readerRole } = req.body;
   if (!customerEmail) {
     return res.status(400).json({ error: 'Customer email required.' });
   }
 
   try {
     const cleanEmail = customerEmail.trim().toLowerCase();
+    const senderToMark = readerRole === 'customer' ? 'admin' : 'customer';
     await Message.updateMany(
-      { customerEmail: cleanEmail, sender: 'customer', read: false },
+      { customerEmail: cleanEmail, sender: senderToMark, read: false },
       { $set: { read: true } }
     );
 
-    res.json({ success: true, message: `Marked messages from ${cleanEmail} as read.` });
+    res.json({ success: true, message: `Marked messages from ${senderToMark} as read for ${cleanEmail}.` });
   } catch (error) {
     console.error('Error marking messages as read:', error);
     res.status(500).json({ error: 'Failed to update message read status.' });
+  }
+});
+
+// 13. Customer Send Message to Support
+router.post('/messages', async (req, res) => {
+  const { customerEmail, customerName, subject, body } = req.body;
+
+  if (!customerEmail || !customerEmail.trim()) {
+    return res.status(400).json({ error: 'Customer email is required.' });
+  }
+  if (!body || !body.trim()) {
+    return res.status(400).json({ error: 'Message body cannot be empty.' });
+  }
+
+  const cleanEmail = customerEmail.trim().toLowerCase();
+
+  try {
+    const newMsg = new Message({
+      customerEmail: cleanEmail,
+      customerName: customerName || cleanEmail.split('@')[0],
+      subject: subject || 'Support Request / Shipment Inquiry',
+      body: body.trim(),
+      sender: 'customer',
+      read: false,
+      messageId: `<msg-cust-${Date.now()}@aglgloballogistics.com>`
+    });
+
+    await newMsg.save();
+
+    // Broadcast WebSocket event so Admin immediately sees the new message and badge counter!
+    if (wssInstance) {
+      const msgObj = typeof newMsg.toObject === 'function' ? newMsg.toObject() : newMsg;
+      const wsMessage = JSON.stringify({ type: 'NEW_MESSAGE', payload: msgObj });
+      wssInstance.clients.forEach(c => {
+        if (c.readyState === 1) c.send(wsMessage);
+      });
+    }
+
+    res.json({ success: true, message: newMsg });
+  } catch (error) {
+    console.error('Error recording customer message:', error);
+    res.status(500).json({ error: 'Failed to record customer message.' });
   }
 });
 

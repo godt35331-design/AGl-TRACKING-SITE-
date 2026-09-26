@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { 
   Truck, Plane, Ship, Activity, ClipboardList, PlusCircle, CheckCircle, 
   MapPin, LogOut, ArrowRight, Eye, EyeOff, Shield, Users, Package, RefreshCw, Mail, Lock,
-  SlidersHorizontal, Download, Printer, Search, Trash, MessageSquare, Compass
+  SlidersHorizontal, Download, Printer, Search, Trash, MessageSquare, Compass, Send
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 
@@ -1264,6 +1264,427 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
   );
 };
 
+const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSent }) => {
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
+  const [sending, setSending] = useState(false);
+  const [feedback, setFeedback] = useState({ type: '', text: '' });
+  const chatBottomRef = useRef(null);
+
+  const customerEmail = (user?.email || '').toLowerCase().trim();
+
+  // Filter messages for current customer
+  const threadMessages = useMemo(() => {
+    if (!customerEmail) return [];
+    return (messages || [])
+      .filter(m => m.customerEmail && m.customerEmail.toLowerCase().trim() === customerEmail)
+      .sort((a, b) => new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime());
+  }, [messages, customerEmail]);
+
+  // Mark admin replies as read when customer opens the view
+  useEffect(() => {
+    if (customerEmail && onMarkRead) {
+      const hasUnread = threadMessages.some(m => m.sender === 'admin' && !m.read);
+      if (hasUnread) {
+        onMarkRead(customerEmail);
+      }
+    }
+  }, [customerEmail, threadMessages, onMarkRead]);
+
+  // Auto-scroll chat to latest message
+  useEffect(() => {
+    if (chatBottomRef.current) {
+      chatBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [threadMessages.length]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!body.trim() || sending) return;
+
+    setSending(true);
+    setFeedback({ type: '', text: '' });
+
+    try {
+      const res = await fetch(`${API_BASE}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerEmail: user.email,
+          customerName: user.name || user.email.split('@')[0],
+          subject: subject.trim() || 'General Shipment & Delivery Inquiry',
+          body: body.trim()
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setBody('');
+        setSubject('');
+        setFeedback({ 
+          type: 'success', 
+          text: 'Inquiry delivered directly to Apex Global Dispatch Operations!' 
+        });
+        if (onMessageSent && data.message) {
+          onMessageSent(data.message);
+        }
+      } else {
+        setFeedback({ type: 'error', text: data.error || 'Failed to dispatch inquiry.' });
+      }
+    } catch (err) {
+      setFeedback({ type: 'error', text: 'Network error connecting to support server.' });
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const quickTopics = [
+    'Customs Clearance & Duty Info',
+    'Change Delivery Address',
+    'Hold at Hub / Warehouse',
+    'Proof of Delivery / Signature',
+    'Urgent Telemetry Inquiry'
+  ];
+
+  return (
+    <section className="customer-support-view" style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px 16px 40px' }}>
+      {/* Header Banner */}
+      <div style={{
+        background: 'linear-gradient(135deg, #2a201a 0%, #16120f 100%)',
+        border: '1px solid rgba(255, 185, 0, 0.3)',
+        borderRadius: '14px',
+        padding: '24px 28px',
+        marginBottom: '24px',
+        boxShadow: '0 8px 30px rgba(0,0,0,0.25)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '12px',
+            background: 'rgba(255, 185, 0, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ffb900',
+            flexShrink: 0
+          }}>
+            <MessageSquare style={{ width: '26px', height: '26px' }} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#ffffff' }}>
+                Customer Support & Dispatch Helpdesk
+              </h2>
+              <span style={{
+                background: 'rgba(34, 197, 94, 0.2)',
+                color: '#4ade80',
+                border: '1px solid rgba(34, 197, 94, 0.4)',
+                fontSize: '0.75rem',
+                fontWeight: 800,
+                padding: '3px 10px',
+                borderRadius: '12px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px'
+              }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', display: 'inline-block' }}></span>
+                Desk Active 24/7
+              </span>
+            </div>
+            <p style={{ margin: '6px 0 0 0', fontSize: '0.88rem', color: '#cbd5e1' }}>
+              Direct threaded communication with Apex logistics dispatchers, cargo handlers, and fleet managers.
+            </p>
+          </div>
+        </div>
+
+        <button 
+          onClick={() => window.location.hash = '#dashboard'}
+          style={{
+            background: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            color: '#e2e8f0',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          ← Return to Dashboard
+        </button>
+      </div>
+
+      {/* Main Chat Card */}
+      <div style={{
+        background: '#ffffff',
+        borderRadius: '14px',
+        border: '1px solid #e2e8f0',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '560px'
+      }}>
+        {/* Chat Thread Header Bar */}
+        <div style={{
+          padding: '16px 22px',
+          background: '#f8fafc',
+          borderBottom: '1px solid #edf2f7',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '10px'
+        }}>
+          <div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b' }}>
+              Conversation with Apex Global Dispatch
+            </div>
+            <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
+              Connected as: <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#334155' }}>{customerEmail}</span>
+            </div>
+          </div>
+          <span style={{ fontSize: '0.8rem', background: '#e2e8f0', color: '#475569', padding: '4px 10px', borderRadius: '12px', fontWeight: 600 }}>
+            {threadMessages.length} Message{threadMessages.length === 1 ? '' : 's'}
+          </span>
+        </div>
+
+        {/* Message Bubble Stream */}
+        <div style={{
+          flex: 1,
+          padding: '24px',
+          background: '#f8fafc',
+          overflowY: 'auto',
+          maxHeight: '480px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '18px'
+        }}>
+          {threadMessages.length === 0 ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '60px 20px',
+              maxWidth: '460px',
+              margin: 'auto',
+              color: '#64748b'
+            }}>
+              <div style={{
+                width: '64px',
+                height: '64px',
+                borderRadius: '50%',
+                background: '#fef3c7',
+                color: '#d97706',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px'
+              }}>
+                <MessageSquare style={{ width: '32px', height: '32px' }} />
+              </div>
+              <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem', fontWeight: 700, color: '#1e293b' }}>
+                How can we assist you today?
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.5' }}>
+                Our dispatch operators are ready to help with parcel telemetry, delivery schedules, address modifications, or customs clearance. Send a message below!
+              </p>
+            </div>
+          ) : (
+            threadMessages.map((m, index) => {
+              const isCust = m.sender === 'customer';
+              const formattedDate = new Date(m.createdAt || Date.now()).toLocaleString([], {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+
+              return (
+                <div
+                  key={m._id || index}
+                  style={{
+                    alignSelf: isCust ? 'flex-end' : 'flex-start',
+                    maxWidth: '82%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: isCust ? 'flex-end' : 'flex-start'
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.75rem',
+                    color: '#64748b',
+                    marginBottom: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}>
+                    <span style={{ fontWeight: 700, color: isCust ? '#b45309' : '#047857' }}>
+                      {isCust ? 'You (Customer)' : 'Apex Dispatch Support'}
+                    </span>
+                    <span>•</span>
+                    <span>{formattedDate}</span>
+                  </div>
+
+                  <div style={{
+                    background: isCust ? '#351C15' : '#ffffff',
+                    color: isCust ? '#ffffff' : '#1e293b',
+                    padding: '14px 18px',
+                    borderRadius: isCust ? '14px 14px 2px 14px' : '14px 14px 14px 2px',
+                    border: isCust ? '1px solid #b45309' : '1px solid #e2e8f0',
+                    boxShadow: isCust ? '0 2px 8px rgba(53, 28, 21, 0.2)' : '0 2px 10px rgba(0,0,0,0.05)',
+                    fontSize: '0.92rem',
+                    lineHeight: '1.55',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word'
+                  }}>
+                    {m.subject && (
+                      <div style={{
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        marginBottom: '6px',
+                        paddingBottom: '5px',
+                        borderBottom: isCust ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid #f1f5f9',
+                        color: isCust ? '#ffb900' : '#0f172a'
+                      }}>
+                        {m.subject}
+                      </div>
+                    )}
+                    <div>{m.body}</div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+          <div ref={chatBottomRef} />
+        </div>
+
+        {/* Quick Topics Pills */}
+        <div style={{
+          padding: '12px 20px',
+          background: '#f1f5f9',
+          borderTop: '1px solid #e2e8f0',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch'
+        }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', whiteSpace: 'nowrap' }}>
+            Quick Topics:
+          </span>
+          {quickTopics.map((top, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setSubject(top)}
+              style={{
+                background: subject === top ? '#351C15' : '#ffffff',
+                color: subject === top ? '#ffffff' : '#334155',
+                border: '1px solid #cbd5e1',
+                padding: '4px 10px',
+                borderRadius: '12px',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              {top}
+            </button>
+          ))}
+        </div>
+
+        {/* Compose Form */}
+        <div style={{ padding: '20px', background: '#ffffff', borderTop: '1px solid #e2e8f0' }}>
+          {feedback.text && (
+            <div style={{
+              padding: '10px 14px',
+              borderRadius: '6px',
+              marginBottom: '14px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              backgroundColor: feedback.type === 'error' ? '#fef2f2' : '#f0fdf4',
+              color: feedback.type === 'error' ? '#dc2626' : '#16a34a',
+              border: `1px solid ${feedback.type === 'error' ? '#fca5a5' : '#86efac'}`
+            }}>
+              {feedback.text}
+            </div>
+          )}
+
+          <form onSubmit={handleSendMessage} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <input
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Subject / Shipment ID (optional, e.g. APX-8271-4492 delivery query)..."
+              style={{
+                padding: '10px 14px',
+                borderRadius: '8px',
+                border: '1px solid #cbd5e1',
+                fontSize: '0.9rem',
+                outline: 'none',
+                fontFamily: 'inherit'
+              }}
+            />
+
+            <textarea
+              rows="3"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="Type your message for Apex Dispatch Operations..."
+              style={{
+                padding: '12px 14px',
+                borderRadius: '8px',
+                border: '1px solid #cbd5e1',
+                fontSize: '0.92rem',
+                outline: 'none',
+                fontFamily: 'inherit',
+                resize: 'vertical'
+              }}
+            />
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                💡 Direct dispatch responses appear in real-time right here in your portal.
+              </span>
+              <button
+                type="submit"
+                disabled={sending || !body.trim()}
+                style={{
+                  background: 'linear-gradient(135deg, #351C15 0%, #1f100c 100%)',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  padding: '11px 24px',
+                  borderRadius: '8px',
+                  border: '1px solid #ffb900',
+                  cursor: (sending || !body.trim()) ? 'not-allowed' : 'pointer',
+                  opacity: (sending || !body.trim()) ? 0.6 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 2px 10px rgba(53, 28, 21, 0.25)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <Send style={{ width: '15px', height: '15px' }} />
+                <span>{sending ? 'Sending to Dispatch...' : 'Send Message'}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 
 const SESSION_EXPIRY_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
@@ -1320,13 +1741,25 @@ export default function App() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const unreadCount = messages.filter(m => m.sender === 'customer' && !m.read).length;
+  const customerUnreadCount = (messages || []).filter(
+    m => m.customerEmail && 
+         m.customerEmail.toLowerCase().trim() === (user?.email || '').toLowerCase().trim() && 
+         m.sender === 'admin' && 
+         !m.read
+  ).length;
 
   useEffect(() => {
-    if (user && user.role === 'admin') {
+    if (!user) return;
+    if (user.role === 'admin') {
       fetch(`${API_BASE}/messages`)
         .then(res => res.ok ? res.json() : [])
         .then(data => setMessages(Array.isArray(data) ? data : []))
         .catch(err => console.error('Error fetching messages:', err));
+    } else if (user.role === 'customer' && user.email) {
+      fetch(`${API_BASE}/messages?email=${encodeURIComponent(user.email.toLowerCase().trim())}`)
+        .then(res => res.ok ? res.json() : [])
+        .then(data => setMessages(Array.isArray(data) ? data : []))
+        .catch(err => console.error('Error fetching customer messages:', err));
     }
   }, [user, activeTab]);
 
@@ -2164,23 +2597,49 @@ export default function App() {
               </form>
             </div>
 
-            {user.role === 'admin' && (
-              <div className="header-profile-widget">
-                <div className="profile-info-text">
-                  <span className="profile-name">
-                    Administrator Profile
-                  </span>
-                  <span className="profile-role">
-                    Fleet Manager ID: #APX-8821
-                  </span>
+            <div className="header-right-actions">
+              {user.role === 'admin' ? (
+                <div className="header-profile-widget">
+                  <div className="profile-info-text">
+                    <span className="profile-name">
+                      Administrator
+                    </span>
+                    <span className="profile-role">
+                      Fleet Manager ID: #APX-8821
+                    </span>
+                  </div>
+                  <img 
+                    className="profile-avatar-circle" 
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&fit=crop&q=80"
+                    alt="User Profile" 
+                  />
                 </div>
-                <img 
-                  className="profile-avatar-circle" 
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&fit=crop&q=80"
-                  alt="User Profile" 
-                />
-              </div>
-            )}
+              ) : (
+                <div className="header-profile-widget customer">
+                  <div className="profile-info-text">
+                    <span className="profile-name">
+                      {user.name || user.email?.split('@')[0] || 'Customer'}
+                    </span>
+                    <span className="profile-role">
+                      Customer Portal
+                    </span>
+                  </div>
+                  <div className="customer-avatar-badge">
+                    {(user.name || user.email || 'C')[0].toUpperCase()}
+                  </div>
+                </div>
+              )}
+
+              {/* 🚪 Direct Header Logout Button for Instant 1-Tap Access on Mobile & Desktop */}
+              <button 
+                onClick={handleLogout} 
+                className="header-logout-btn" 
+                title="Log out of session"
+              >
+                <LogOut style={{ width: '15px', height: '15px' }} />
+                <span className="header-logout-text">Logout</span>
+              </button>
+            </div>
           </header>
         ) : (
           <header className="main-header">
@@ -2230,6 +2689,14 @@ export default function App() {
                   >
                     <ClipboardList className="nav-icon" /> Tracking
                   </a>
+                  <a href="#messages" className={`sidebar-link ${activeTab === 'messages' ? 'active' : ''}`}>
+                    <MessageSquare className="nav-icon" /> Support & Messages
+                    {customerUnreadCount > 0 && (
+                      <span className="sidebar-badge-unread">
+                        {customerUnreadCount}
+                      </span>
+                    )}
+                  </a>
                 </>
               ) : (
                 <>
@@ -2245,15 +2712,7 @@ export default function App() {
                   <a href="#messages" className={`sidebar-link ${activeTab === 'messages' ? 'active' : ''}`}>
                     <MessageSquare className="nav-icon" /> Messages
                     {unreadCount > 0 && (
-                      <span style={{
-                        marginLeft: 'auto',
-                        backgroundColor: '#e53e3e',
-                        color: '#ffffff',
-                        fontSize: '0.7rem',
-                        fontWeight: '800',
-                        padding: '2px 6px',
-                        borderRadius: '10px'
-                      }}>
+                      <span className="sidebar-badge-unread">
                         {unreadCount}
                       </span>
                     )}
@@ -2274,12 +2733,22 @@ export default function App() {
             </nav>
 
             <div className="sidebar-bottom-links">
-              {user.role === 'admin' && (
-                <a href="#dashboard" className="sidebar-link bottom-link" onClick={(e) => { e.preventDefault(); alert("Assistance request flagged. A representative will contact you shortly."); }}>
-                  <Users className="nav-icon" /> Support
+              {user.role === 'admin' ? (
+                <a href="#messages" className="sidebar-link bottom-link">
+                  <MessageSquare className="nav-icon" /> Support Desk
+                  {unreadCount > 0 && (
+                    <span className="sidebar-badge-unread">{unreadCount}</span>
+                  )}
+                </a>
+              ) : (
+                <a href="#messages" className="sidebar-link bottom-link">
+                  <MessageSquare className="nav-icon" /> Contact Dispatch
+                  {customerUnreadCount > 0 && (
+                    <span className="sidebar-badge-unread">{customerUnreadCount}</span>
+                  )}
                 </a>
               )}
-              <button onClick={handleLogout} className="sidebar-link bottom-link btn-sidebar-logout">
+              <button onClick={handleLogout} className="sidebar-link bottom-link btn-sidebar-logout" title="Log Out">
                 <LogOut className="nav-icon" /> Logout
               </button>
             </div>
@@ -2862,6 +3331,95 @@ export default function App() {
                   </div>
                 </div>
             </div>
+
+              {/* 💬 Customer Support & Dispatch Assistance Banner */}
+              <div className="customer-support-banner" style={{
+                marginTop: '22px',
+                marginBottom: '26px',
+                background: 'linear-gradient(135deg, #2a201a 0%, #171310 100%)',
+                border: '1px solid rgba(255, 185, 0, 0.35)',
+                borderRadius: '12px',
+                padding: '18px 24px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '16px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.12)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                  <div style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '10px',
+                    background: 'rgba(255, 185, 0, 0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffb900',
+                    flexShrink: 0
+                  }}>
+                    <MessageSquare style={{ width: '22px', height: '22px' }} />
+                  </div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                        Customer Support & Dispatch Helpdesk
+                      </h4>
+                      <span style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        background: 'rgba(34, 197, 94, 0.2)',
+                        color: '#4ade80',
+                        border: '1px solid rgba(34, 197, 94, 0.4)',
+                        padding: '2px 8px',
+                        borderRadius: '12px'
+                      }}>
+                        ● Dispatch Online
+                      </span>
+                    </div>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.84rem', color: '#cbd5e1' }}>
+                      Need assistance with customs clearance, delivery reschedule, or route inquiry? Message our team directly.
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  {customerUnreadCount > 0 && (
+                    <span style={{
+                      background: '#dc2626',
+                      color: '#ffffff',
+                      fontSize: '0.75rem',
+                      fontWeight: 800,
+                      padding: '5px 10px',
+                      borderRadius: '20px'
+                    }}>
+                      {customerUnreadCount} New Reply
+                    </span>
+                  )}
+                  <button 
+                    onClick={() => window.location.hash = '#messages'}
+                    style={{
+                      background: '#ffb900',
+                      color: '#1a130f',
+                      border: 'none',
+                      padding: '10px 18px',
+                      borderRadius: '8px',
+                      fontWeight: 700,
+                      fontSize: '0.88rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '7px',
+                      boxShadow: '0 2px 10px rgba(255, 185, 0, 0.25)',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <MessageSquare style={{ width: '15px', height: '15px' }} />
+                    <span>{customerUnreadCount > 0 ? 'View Replies' : 'Message Dispatch'}</span>
+                  </button>
+                </div>
+              </div>
 
               {/* Customer Active Shipments Section */}
               <div className="customer-shipments-section" style={{ marginTop: '25px', marginBottom: '35px' }}>
@@ -4577,23 +5135,50 @@ export default function App() {
             <EmailCenterView shipments={shipments} API_BASE={API_BASE} />
           )}
 
-          {activeTab === 'messages' && user?.role === 'admin' && (
-            <MessagesView 
-              messages={messages} 
-              API_BASE={API_BASE} 
-              onMarkRead={async (email) => {
-                try {
-                  await fetch(`${API_BASE}/messages/read`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ customerEmail: email })
+          {activeTab === 'messages' && (
+            user?.role === 'admin' ? (
+              <MessagesView 
+                messages={messages} 
+                API_BASE={API_BASE} 
+                onMarkRead={async (email) => {
+                  try {
+                    await fetch(`${API_BASE}/messages/read`, {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ customerEmail: email, readerRole: 'admin' })
+                    });
+                    setMessages(prev => prev.map(m => (m.customerEmail === email && m.sender === 'customer') ? { ...m, read: true } : m));
+                  } catch (e) {
+                    console.error('Failed marking messages read:', e);
+                  }
+                }}
+              />
+            ) : (
+              <CustomerSupportView 
+                user={user}
+                messages={messages} 
+                API_BASE={API_BASE} 
+                onMarkRead={async (email) => {
+                  try {
+                    await fetch(`${API_BASE}/messages/read`, {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ customerEmail: email, readerRole: 'customer' })
+                    });
+                    setMessages(prev => prev.map(m => (m.customerEmail === email && m.sender === 'admin') ? { ...m, read: true } : m));
+                  } catch (e) {
+                    console.error('Failed marking customer messages read:', e);
+                  }
+                }}
+                onMessageSent={(newMsg) => {
+                  setMessages(prev => {
+                    const exists = prev.some(m => m._id === newMsg._id);
+                    if (exists) return prev;
+                    return [newMsg, ...prev];
                   });
-                  setMessages(prev => prev.map(m => (m.customerEmail === email && m.sender === 'customer') ? { ...m, read: true } : m));
-                } catch (e) {
-                  console.error('Failed marking messages read:', e);
-                }
-              }}
-            />
+                }}
+              />
+            )
           )}
 
         </main>
