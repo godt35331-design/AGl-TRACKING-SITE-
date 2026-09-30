@@ -287,6 +287,8 @@ export const CITIES_DATA = [
   { code: 'IRP', name: 'Irapuato Freight Gateway, Guanajuato', country: 'Mexico', flag: '🇲🇽', coords: [20.6767, -101.3563] },
   { code: 'QRO', name: 'Querétaro Intercontinental Logistics, Querétaro', country: 'Mexico', flag: '🇲🇽', coords: [20.5888, -100.3899] },
   { code: 'PCA', name: 'Pachuca Central Hub, Hidalgo', country: 'Mexico', flag: '🇲🇽', coords: [20.1011, -98.7591] },
+  { code: 'TLN', name: 'Tulancingo Valley Logistics, Hidalgo, Mexico', country: 'Mexico', flag: '🇲🇽', coords: [20.0833, -98.3667] },
+  { code: 'SMA', name: 'San Miguel Ameyalco (Lerma), State of Mexico', country: 'Mexico', flag: '🇲🇽', coords: [19.3064, -99.4581] },
   { code: 'CVJ', name: 'Cuernavaca Industrial Park, Morelos', country: 'Mexico', flag: '🇲🇽', coords: [18.9242, -99.2216] },
   { code: 'TXA', name: 'Tlaxcala Valley Terminal, Tlaxcala', country: 'Mexico', flag: '🇲🇽', coords: [19.3182, -98.2375] },
   { code: 'PBC', name: 'Puebla Automotive & Industrial Hub, Puebla', country: 'Mexico', flag: '🇲🇽', coords: [19.0414, -98.2063] },

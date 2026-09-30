@@ -25,7 +25,9 @@ const COORDINATES = {
   MID: { lat: 20.9674, lng: -89.5926, label: "Mérida Logistics, Yucatán, Mexico" },
   ZLO: { lat: 19.0522, lng: -104.3158, label: "Manzanillo Port, Colima, Mexico" },
   CJS: { lat: 31.6904, lng: -106.4245, label: "Ciudad Juárez, Chihuahua, Mexico" },
-  HMO: { lat: 29.0729, lng: -110.9559, label: "Hermosillo, Sonora, Mexico" }
+  HMO: { lat: 29.0729, lng: -110.9559, label: "Hermosillo, Sonora, Mexico" },
+  TLN: { lat: 20.0833, lng: -98.3667, label: "Tulancingo, Hidalgo, Mexico" },
+  SMA: { lat: 19.3064, lng: -99.4581, label: "San Miguel Ameyalco (Lerma), Mexico" }
 };
 
 // Transport Configurations
