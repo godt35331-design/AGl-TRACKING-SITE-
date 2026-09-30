@@ -7,7 +7,10 @@ const getResendClient = () => {
 /**
  * Clean corporate email layout matching Dukascopy Bank reference design
  */
-function buildHtmlEmail({ recipientName, title, message, trackingNumber, status, origin, destination, credentials }) {
+/**
+ * Clean corporate email layout matching Dukascopy Bank reference design
+ */
+function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, senderAddress, title, message, trackingNumber, status, origin, destination, credentials }) {
   return `
   <!DOCTYPE html>
   <html>
@@ -29,12 +32,23 @@ function buildHtmlEmail({ recipientName, title, message, trackingNumber, status,
       <div style="background-color: #ffffff; border-radius: 4px; padding: 32px; margin-bottom: 16px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
         
         <p style="font-size: 15px; color: #2d3748; margin-top: 0; margin-bottom: 18px; font-weight: 600;">
-          Dear ${recipientName || 'Sir/Madam'},
+          Dear ${recipientName || 'Valued Customer'},
         </p>
 
         <div style="font-size: 15px; color: #4a5568; line-height: 1.6; margin-bottom: 24px;">
           ${message.replace(/\n/g, '<br/>')}
         </div>
+
+        ${senderName ? `
+        <!-- Sender Information Card -->
+        <div style="background-color: #f0f9ff; border-left: 4px solid #0284c7; border-radius: 4px; padding: 14px 18px; margin-bottom: 22px; font-size: 14px;">
+          <div style="font-weight: 700; color: #0369a1; margin-bottom: 8px; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Shipper / Sender Information</div>
+          <div style="margin-bottom: 4px; color: #1e293b;"><strong>Sender Name:</strong> ${senderName}</div>
+          ${senderPhone ? `<div style="margin-bottom: 4px; color: #334155;"><strong>Contact Phone:</strong> ${senderPhone}</div>` : ''}
+          ${senderEmail ? `<div style="margin-bottom: 4px; color: #334155;"><strong>Contact Email:</strong> ${senderEmail}</div>` : ''}
+          ${senderAddress ? `<div style="color: #334155;"><strong>Dispatch Address:</strong> ${senderAddress}</div>` : ''}
+        </div>
+        ` : ''}
 
         ${credentials ? `
         <!-- Credentials Summary -->
@@ -49,6 +63,8 @@ function buildHtmlEmail({ recipientName, title, message, trackingNumber, status,
         <!-- Tracking Summary -->
         <div style="background-color: #f7fafc; border: 1px solid #edf2f7; border-radius: 2px; padding: 16px; margin-bottom: 24px; font-size: 14px;">
           <div style="margin-bottom: 6px; color: #2d3748;"><strong>Tracking ID:</strong> <span style="font-family: monospace; font-weight: 700; color: #351C15;">${trackingNumber}</span></div>
+          ${senderName ? `<div style="margin-bottom: 6px; color: #2d3748;"><strong>Sender:</strong> ${senderName}</div>` : ''}
+          <div style="margin-bottom: 6px; color: #2d3748;"><strong>Recipient:</strong> ${recipientName || 'Valued Customer'}</div>
           ${status ? `<div style="margin-bottom: 6px; color: #2d3748;"><strong>Status:</strong> ${status}</div>` : ''}
           ${origin || destination ? `<div style="color: #2d3748;"><strong>Route:</strong> ${origin || 'N/A'} to ${destination || 'N/A'}</div>` : ''}
         </div>
@@ -80,9 +96,14 @@ function buildHtmlEmail({ recipientName, title, message, trackingNumber, status,
 /**
  * Main email sender service
  */
-export async function sendEmail({ to, recipientName, subject, messageBody, templateType, shipment, credentials, inReplyTo }) {
+export async function sendEmail({ to, recipientName, senderName, senderPhone, senderEmail, senderAddress, subject, messageBody, templateType, shipment, credentials, inReplyTo }) {
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.FROM_EMAIL || 'Apex Support <support@aglgloballogistics.com>';
+
+  const finalSenderName = senderName || shipment?.senderName || '';
+  const finalSenderPhone = senderPhone || shipment?.senderPhone || '';
+  const finalSenderEmail = senderEmail || shipment?.senderEmail || '';
+  const finalSenderAddress = senderAddress || shipment?.senderAddress || '';
 
   let emailSubject = subject || 'Update regarding your Apex Shipment';
   let trackingCode = shipment?.id || '';
@@ -91,17 +112,21 @@ export async function sendEmail({ to, recipientName, subject, messageBody, templ
   let destination = shipment?.destination || '';
 
   if (templateType === 'OUT_FOR_DELIVERY') {
-    emailSubject = subject || `Out for Delivery: Apex Package #${trackingCode}`;
+    emailSubject = subject || `Out for Delivery: Apex Package #${trackingCode}${finalSenderName ? ` from ${finalSenderName}` : ''}`;
   } else if (templateType === 'SHIPMENT_UPDATE') {
-    emailSubject = subject || `Shipment Update: Apex Package #${trackingCode}`;
+    emailSubject = subject || `Shipment Update: Apex Package #${trackingCode}${finalSenderName ? ` from ${finalSenderName}` : ''}`;
   } else if (templateType === 'DELAY_NOTICE') {
     emailSubject = subject || `Important Notice: Update on Apex Package #${trackingCode}`;
   } else if (templateType === 'NEW_REGISTRATION') {
-    emailSubject = subject || `Apex Shipment Confirmation & Credentials - #${trackingCode}`;
+    emailSubject = subject || `Apex Shipment Confirmation & Credentials - #${trackingCode}${finalSenderName ? ` (From: ${finalSenderName})` : ''}`;
   }
 
   const html = buildHtmlEmail({
     recipientName: recipientName || to.split('@')[0],
+    senderName: finalSenderName,
+    senderPhone: finalSenderPhone,
+    senderEmail: finalSenderEmail,
+    senderAddress: finalSenderAddress,
     title: emailSubject,
     message: messageBody,
     trackingNumber: trackingCode,
@@ -111,7 +136,7 @@ export async function sendEmail({ to, recipientName, subject, messageBody, templ
     credentials: credentials
   });
 
-  const textContent = `Dear ${recipientName || 'Sir/Madam'},\n\n${messageBody}\n\n${credentials ? `CUSTOMER PORTAL CREDENTIALS:\nUsername: ${credentials.email}\nPassword: ${credentials.password}\n\n` : ''}${trackingCode ? `SHIPMENT DETAILS:\nTracking Code: ${trackingCode}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n` : ''}\nTrack Shipment: https://aglgloballogistics.com/#login\n\nApex Global Logistics Services\nWebsite: https://aglgloballogistics.com/#login\nEmail: support@aglgloballogistics.com`;
+  const textContent = `Dear ${recipientName || 'Valued Customer'},\n\n${messageBody}\n\n${finalSenderName ? `SENDER INFORMATION:\nName: ${finalSenderName}${finalSenderPhone ? `\nPhone: ${finalSenderPhone}` : ''}${finalSenderEmail ? `\nEmail: ${finalSenderEmail}` : ''}${finalSenderAddress ? `\nAddress: ${finalSenderAddress}` : ''}\n\n` : ''}${credentials ? `CUSTOMER PORTAL CREDENTIALS:\nUsername: ${credentials.email}\nPassword: ${credentials.password}\n\n` : ''}${trackingCode ? `SHIPMENT DETAILS:\nTracking Code: ${trackingCode}\n${finalSenderName ? `Sender: ${finalSenderName}\n` : ''}Recipient: ${recipientName || 'Customer'}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n` : ''}\nTrack Shipment: https://aglgloballogistics.com/#login\n\nApex Global Logistics Services\nWebsite: https://aglgloballogistics.com/#login\nEmail: support@aglgloballogistics.com`;
 
   try {
     const resend = new Resend(apiKey);

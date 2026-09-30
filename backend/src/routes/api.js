@@ -200,6 +200,10 @@ router.post('/shipments', async (req, res) => {
 
     const newShipment = new Shipment({
       id: sData.id,
+      senderName: sData.senderName || '',
+      senderPhone: sData.senderPhone || '',
+      senderEmail: sData.senderEmail || '',
+      senderAddress: sData.senderAddress || '',
       customerName: sData.customerName,
       customerEmail: sData.customerEmail,
       customerPhone: sData.customerPhone,
@@ -258,12 +262,17 @@ router.post('/shipments', async (req, res) => {
 
     // Automatically send registration & credentials email to customer
     try {
-      const welcomeMessage = `Your shipping appointment has been successfully registered with Apex Global Logistics.\n\nBelow are your Customer Portal login credentials to monitor your package live telemetry, along with your shipment overview.`;
+      const senderNotice = sData.senderName ? ` sent by ${sData.senderName}` : '';
+      const welcomeMessage = `Your shipping appointment for the package${senderNotice} has been successfully registered with Apex Global Logistics.\n\nBelow are your Customer Portal login credentials to monitor your package live telemetry, along with your shipment overview.`;
 
       sendEmail({
         to: custEmail,
         recipientName: sData.customerName,
-        subject: `Apex Shipment Confirmation & Credentials - #${newShipment.id}`,
+        senderName: sData.senderName || '',
+        senderPhone: sData.senderPhone || '',
+        senderEmail: sData.senderEmail || '',
+        senderAddress: sData.senderAddress || '',
+        subject: `Apex Shipment Confirmation & Credentials - #${newShipment.id}${sData.senderName ? ` (From: ${sData.senderName})` : ''}`,
         messageBody: welcomeMessage,
         templateType: 'NEW_REGISTRATION',
         shipment: newShipment,
@@ -457,6 +466,8 @@ router.post('/admin/send-email', async (req, res) => {
     const result = await sendEmail({
       to: targetEmail,
       recipientName: recipientName,
+      senderName: shipmentData?.senderName || req.body.senderName || '',
+      senderPhone: shipmentData?.senderPhone || req.body.senderPhone || '',
       subject: subject,
       messageBody: messageBody,
       templateType: templateType,

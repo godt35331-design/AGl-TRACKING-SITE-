@@ -11,6 +11,10 @@ const customerSchema = new mongoose.Schema({
 // 2. Shipment Schema
 const shipmentSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true, uppercase: true, trim: true },
+  senderName: { type: String, default: '' },
+  senderPhone: { type: String, default: '' },
+  senderEmail: { type: String, default: '' },
+  senderAddress: { type: String, default: '' },
   customerName: { type: String, required: true },
   customerEmail: { type: String, required: true, lowercase: true, trim: true },
   customerPhone: { type: String, required: true },

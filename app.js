@@ -11,7 +11,21 @@ const COORDINATES = {
   PHX: { lat: 33.4484, lng: -112.0740, label: "Phoenix, AZ" },
   LA: { lat: 34.0522, lng: -118.2437, label: "Los Angeles (LAX)" },
   SEA: { lat: 47.6062, lng: -122.3321, label: "Seattle (SEA)" },
-  SF: { lat: 37.7749, lng: -122.4194, label: "San Francisco (SFO)" }
+  SF: { lat: 37.7749, lng: -122.4194, label: "San Francisco (SFO)" },
+  // Mexico Shipping Hubs & State Nodes
+  MEX: { lat: 19.4326, lng: -99.1332, label: "Mexico City (CDMX), Mexico" },
+  GDL: { lat: 20.6597, lng: -103.3496, label: "Guadalajara, Jalisco, Mexico" },
+  MTY: { lat: 25.6866, lng: -100.3161, label: "Monterrey, Nuevo León, Mexico" },
+  TIJ: { lat: 32.5149, lng: -117.0382, label: "Tijuana, Baja California, Mexico" },
+  QRO: { lat: 20.5888, lng: -100.3899, label: "Querétaro, Querétaro, Mexico" },
+  SLP: { lat: 22.1565, lng: -100.9855, label: "San Luis Potosí, SLP, Mexico" },
+  PBC: { lat: 19.0414, lng: -98.2063, label: "Puebla, Puebla, Mexico" },
+  VER: { lat: 19.1738, lng: -96.1342, label: "Veracruz Port, Veracruz, Mexico" },
+  CUN: { lat: 21.1619, lng: -86.8515, label: "Cancún Cargo, Quintana Roo, Mexico" },
+  MID: { lat: 20.9674, lng: -89.5926, label: "Mérida Logistics, Yucatán, Mexico" },
+  ZLO: { lat: 19.0522, lng: -104.3158, label: "Manzanillo Port, Colima, Mexico" },
+  CJS: { lat: 31.6904, lng: -106.4245, label: "Ciudad Juárez, Chihuahua, Mexico" },
+  HMO: { lat: 29.0729, lng: -110.9559, label: "Hermosillo, Sonora, Mexico" }
 };
 
 // Transport Configurations
@@ -801,7 +815,11 @@ class SimulationController {
   }
 
   // Live registration of shipping components
-  registerShippingAppointment() {
+    const senderName = document.getElementById("appt-sender-name")?.value || "";
+    const senderEmail = document.getElementById("appt-sender-email")?.value || "";
+    const senderPhone = document.getElementById("appt-sender-phone")?.value || "";
+    const senderAddr = document.getElementById("appt-sender-address")?.value || "";
+
     const custName = document.getElementById("appt-cust-name").value;
     const custEmail = document.getElementById("appt-cust-email").value;
     const custPhone = document.getElementById("appt-cust-phone").value;
@@ -817,6 +835,10 @@ class SimulationController {
 
     const newShipment = {
       id: trkId,
+      senderName: senderName,
+      senderEmail: senderEmail,
+      senderPhone: senderPhone,
+      senderAddress: senderAddr,
       customerName: custName,
       customerEmail: custEmail,
       customerPhone: custPhone,
@@ -826,15 +848,15 @@ class SimulationController {
       vessel: vessel,
       origin: origin,
       destination: destination,
-      originCode: "CHI", // simulated default coordinates
-      destCode: "SEA",   // maps to Chicago -> Seattle segment defaults
+      originCode: "MEX",
+      destCode: "MTY",
       eta: eta,
       status: "Registered",
       currentLocationName: `Scheduled for departure at ${origin}`,
       simulation: {
         active: false,
         currentProgress: 0,
-        waypoints: ["CHI", "KC", "DEN", "SEA"],
+        waypoints: ["MEX", "QRO", "SLP", "MTY"],
         speedMultiplier: 1,
         status: "Registered",
         logs: "Shipping appointment created. Awaiting first courier scan."

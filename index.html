@@ -655,11 +655,31 @@
                 <h2 class="card-title">Schedule Shipping Handoff</h2>
                 
                 <form id="appointment-form">
-                  <div class="form-section-title">Customer Coordinates</div>
+                  <div class="form-section-title">Sender / Shipper Information</div>
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="appt-sender-name" class="form-label">Sender Name / Company</label>
+                      <input type="text" id="appt-sender-name" class="form-input" placeholder="e.g. Carlos Mendoza / Logística Express">
+                    </div>
+                    <div class="form-group">
+                      <label for="appt-sender-email" class="form-label">Sender Email</label>
+                      <input type="email" id="appt-sender-email" class="form-input" placeholder="sender@logistics.com">
+                    </div>
+                    <div class="form-group">
+                      <label for="appt-sender-phone" class="form-label">Sender Phone Number</label>
+                      <input type="text" id="appt-sender-phone" class="form-input" placeholder="e.g. +52 33 1234 5678">
+                    </div>
+                    <div class="form-group">
+                      <label for="appt-sender-address" class="form-label">Sender Origin Address</label>
+                      <input type="text" id="appt-sender-address" class="form-input" placeholder="e.g. Av. Vallarta 1400, Guadalajara, JAL">
+                    </div>
+                  </div>
+
+                  <div class="form-section-title" style="margin-top: 24px;">Recipient / Customer Coordinates</div>
                   <div class="form-grid">
                     <div class="form-group">
                       <label for="appt-cust-name" class="form-label">Customer Name</label>
-                      <input type="text" id="appt-cust-name" class="form-input" placeholder="e.g. Johnathan Doe" required>
+                      <input type="text" id="appt-cust-name" class="form-input" placeholder="e.g. Maria Gonzalez" required>
                     </div>
                     <div class="form-group">
                       <label for="appt-cust-email" class="form-label">Email Address</label>
@@ -667,11 +687,11 @@
                     </div>
                     <div class="form-group">
                       <label for="appt-cust-phone" class="form-label">Phone Number</label>
-                      <input type="text" id="appt-cust-phone" class="form-input" placeholder="e.g. +1 555 0199" required>
+                      <input type="text" id="appt-cust-phone" class="form-input" placeholder="e.g. +52 55 9876 5432" required>
                     </div>
                     <div class="form-group">
                       <label for="appt-cust-address" class="form-label">Delivery Address</label>
-                      <input type="text" id="appt-cust-address" class="form-input" placeholder="e.g. 100 Main St, Chicago IL" required>
+                      <input type="text" id="appt-cust-address" class="form-input" placeholder="e.g. Insurgentes Sur 120, CDMX, Mexico" required>
                     </div>
                   </div>
                   
@@ -693,12 +713,12 @@
 
                     <div class="form-group">
                       <label for="appt-origin" class="form-label">Origin Location</label>
-                      <input type="text" id="appt-origin" class="form-input" placeholder="e.g. Chicago, IL" required>
+                      <input type="text" id="appt-origin" class="form-input" placeholder="e.g. Mexico City, CDMX" required>
                     </div>
 
                     <div class="form-group">
                       <label for="appt-destination" class="form-label">Destination Location</label>
-                      <input type="text" id="appt-destination" class="form-input" placeholder="e.g. Seattle, WA" required>
+                      <input type="text" id="appt-destination" class="form-input" placeholder="e.g. Monterrey, NL" required>
                     </div>
 
                     <div class="form-group">
@@ -755,33 +775,44 @@
                     <div class="route-waypoint">
                       <label class="form-label" style="font-size: 0.8rem;">Origin Stop</label>
                       <select id="sim-waypoint-start">
-                        <option value="NY">New York (JFK)</option>
-                        <option value="CHI" selected>Chicago (ORD)</option>
-                        <option value="MIA">Miami (MIA)</option>
+                        <option value="MEX" selected>🇲🇽 Mexico City (CDMX)</option>
+                        <option value="GDL">🇲🇽 Guadalajara, JAL</option>
+                        <option value="TIJ">🇲🇽 Tijuana, BC</option>
+                        <option value="NY">🇺🇸 New York (JFK)</option>
+                        <option value="CHI">🇺🇸 Chicago (ORD)</option>
+                        <option value="MIA">🇺🇸 Miami (MIA)</option>
                       </select>
                     </div>
                     <div class="route-waypoint">
                       <label class="form-label" style="font-size: 0.8rem;">Stop 1</label>
                       <select id="sim-waypoint-1">
-                        <option value="CLE">Cleveland, OH</option>
-                        <option value="KC" selected>Kansas City, MO</option>
-                        <option value="ATL">Atlanta, GA</option>
+                        <option value="QRO" selected>🇲🇽 Querétaro, QRO</option>
+                        <option value="SLP">🇲🇽 San Luis Potosí</option>
+                        <option value="CLE">🇺🇸 Cleveland, OH</option>
+                        <option value="KC">🇺🇸 Kansas City, MO</option>
+                        <option value="ATL">🇺🇸 Atlanta, GA</option>
                       </select>
                     </div>
                     <div class="route-waypoint">
                       <label class="form-label" style="font-size: 0.8rem;">Stop 2</label>
                       <select id="sim-waypoint-2">
-                        <option value="DEN" selected>Denver, CO</option>
-                        <option value="DAL">Dallas, TX</option>
-                        <option value="PHX">Phoenix, AZ</option>
+                        <option value="SLP" selected>🇲🇽 San Luis Potosí, SLP</option>
+                        <option value="PBC">🇲🇽 Puebla, PUE</option>
+                        <option value="VER">🇲🇽 Veracruz Port</option>
+                        <option value="DEN">🇺🇸 Denver, CO</option>
+                        <option value="DAL">🇺🇸 Dallas, TX</option>
+                        <option value="PHX">🇺🇸 Phoenix, AZ</option>
                       </select>
                     </div>
                     <div class="route-waypoint">
                       <label class="form-label" style="font-size: 0.8rem;">Destination</label>
                       <select id="sim-waypoint-end">
-                        <option value="LA">Los Angeles (LAX)</option>
-                        <option value="SEA" selected>Seattle (SEA)</option>
-                        <option value="SF">San Francisco (SFO)</option>
+                        <option value="MTY" selected>🇲🇽 Monterrey, NL</option>
+                        <option value="TIJ">🇲🇽 Tijuana, BC</option>
+                        <option value="CUN">🇲🇽 Cancún, QR</option>
+                        <option value="LA">🇺🇸 Los Angeles (LAX)</option>
+                        <option value="SEA">🇺🇸 Seattle (SEA)</option>
+                        <option value="SF">🇺🇸 San Francisco (SFO)</option>
                       </select>
                     </div>
                   </div>

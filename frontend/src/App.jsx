@@ -254,6 +254,65 @@ export const CITIES_DATA = [
   { code: 'JAN', name: 'Jackson Freight Center, Mississippi', country: 'USA', flag: '🇺🇸', coords: [32.2988, -90.1848] },
   { code: 'BOI', name: 'Boise Intermountain Hub, Idaho', country: 'USA', flag: '🇺🇸', coords: [43.6150, -116.2023] },
 
+  // --- MEXICO (ALL 32 STATES & KEY LOGISTICS HUBS) ---
+  { code: 'MEX', name: 'Mexico City (CDMX) Central Hub, Mexico', country: 'Mexico', flag: '🇲🇽', coords: [19.4326, -99.1332] },
+  { code: 'NLU', name: 'Felipe Ángeles (AIFA) Cargo Gateway, State of Mexico', country: 'Mexico', flag: '🇲🇽', coords: [19.7454, -99.0142] },
+  { code: 'TLC', name: 'Toluca Logistics & Air Cargo, State of Mexico', country: 'Mexico', flag: '🇲🇽', coords: [19.2826, -99.6557] },
+  { code: 'GDL', name: 'Guadalajara Tech Logistics Hub, Jalisco', country: 'Mexico', flag: '🇲🇽', coords: [20.6597, -103.3496] },
+  { code: 'MTY', name: 'Monterrey Industrial Center, Nuevo León', country: 'Mexico', flag: '🇲🇽', coords: [25.6866, -100.3161] },
+  { code: 'TIJ', name: 'Tijuana Otay Mesa Border Port, Baja California', country: 'Mexico', flag: '🇲🇽', coords: [32.5149, -117.0382] },
+  { code: 'MXL', name: 'Mexicali Industrial Corridor, Baja California', country: 'Mexico', flag: '🇲🇽', coords: [32.6245, -115.4523] },
+  { code: 'ESE', name: 'Ensenada Deep Sea Port, Baja California', country: 'Mexico', flag: '🇲🇽', coords: [31.8667, -116.5964] },
+  { code: 'LAP', name: 'La Paz Gateway, Baja California Sur', country: 'Mexico', flag: '🇲🇽', coords: [24.1426, -110.3128] },
+  { code: 'SJD', name: 'Los Cabos Transpeninsular Hub, Baja California Sur', country: 'Mexico', flag: '🇲🇽', coords: [23.0587, -109.7048] },
+  { code: 'HMO', name: 'Hermosillo Distribution Hub, Sonora', country: 'Mexico', flag: '🇲🇽', coords: [29.0729, -110.9559] },
+  { code: 'NOG', name: 'Nogales International Border Terminal, Sonora', country: 'Mexico', flag: '🇲🇽', coords: [31.3086, -110.9422] },
+  { code: 'CJS', name: 'Ciudad Juárez Border Gateway, Chihuahua', country: 'Mexico', flag: '🇲🇽', coords: [31.6904, -106.4245] },
+  { code: 'CUU', name: 'Chihuahua Aerospace Hub, Chihuahua', country: 'Mexico', flag: '🇲🇽', coords: [28.6353, -106.0889] },
+  { code: 'SLW', name: 'Saltillo Automotive Corridor, Coahuila', country: 'Mexico', flag: '🇲🇽', coords: [25.4260, -101.0053] },
+  { code: 'TRC', name: 'Torreón La Laguna Hub, Coahuila', country: 'Mexico', flag: '🇲🇽', coords: [25.5428, -103.4068] },
+  { code: 'NLD', name: 'Nuevo Laredo World Trade Bridge, Tamaulipas', country: 'Mexico', flag: '🇲🇽', coords: [27.4864, -99.5070] },
+  { code: 'REX', name: 'Reynosa Freight Gateway, Tamaulipas', country: 'Mexico', flag: '🇲🇽', coords: [26.0569, -98.2978] },
+  { code: 'MAM', name: 'Matamoros Port Terminal, Tamaulipas', country: 'Mexico', flag: '🇲🇽', coords: [25.8690, -97.5027] },
+  { code: 'TAM', name: 'Tampico & Altamira Container Port, Tamaulipas', country: 'Mexico', flag: '🇲🇽', coords: [22.2331, -97.8611] },
+  { code: 'CUL', name: 'Culiacán Agro-Logistics Center, Sinaloa', country: 'Mexico', flag: '🇲🇽', coords: [24.8091, -107.3940] },
+  { code: 'MZT', name: 'Mazatlán Pacific Port, Sinaloa', country: 'Mexico', flag: '🇲🇽', coords: [23.2494, -106.4111] },
+  { code: 'DGO', name: 'Durango Silver Corridor Hub, Durango', country: 'Mexico', flag: '🇲🇽', coords: [24.0277, -104.6532] },
+  { code: 'ZCL', name: 'Zacatecas Central Industrial Hub, Zacatecas', country: 'Mexico', flag: '🇲🇽', coords: [22.7709, -102.5832] },
+  { code: 'SLP', name: 'San Luis Potosí Logistics Valley, SLP', country: 'Mexico', flag: '🇲🇽', coords: [22.1565, -100.9855] },
+  { code: 'AGU', name: 'Aguascalientes Automotive Hub, Aguascalientes', country: 'Mexico', flag: '🇲🇽', coords: [21.8853, -102.2916] },
+  { code: 'TPQ', name: 'Tepic Logistics Center, Nayarit', country: 'Mexico', flag: '🇲🇽', coords: [21.5039, -104.8946] },
+  { code: 'BJX', name: 'León / Bajío Logistics Hub, Guanajuato', country: 'Mexico', flag: '🇲🇽', coords: [21.1221, -101.6826] },
+  { code: 'CYW', name: 'Celaya Intermodal Freight Yard, Guanajuato', country: 'Mexico', flag: '🇲🇽', coords: [20.5283, -100.8143] },
+  { code: 'IRP', name: 'Irapuato Freight Gateway, Guanajuato', country: 'Mexico', flag: '🇲🇽', coords: [20.6767, -101.3563] },
+  { code: 'QRO', name: 'Querétaro Intercontinental Logistics, Querétaro', country: 'Mexico', flag: '🇲🇽', coords: [20.5888, -100.3899] },
+  { code: 'PCA', name: 'Pachuca Central Hub, Hidalgo', country: 'Mexico', flag: '🇲🇽', coords: [20.1011, -98.7591] },
+  { code: 'CVJ', name: 'Cuernavaca Industrial Park, Morelos', country: 'Mexico', flag: '🇲🇽', coords: [18.9242, -99.2216] },
+  { code: 'TXA', name: 'Tlaxcala Valley Terminal, Tlaxcala', country: 'Mexico', flag: '🇲🇽', coords: [19.3182, -98.2375] },
+  { code: 'PBC', name: 'Puebla Automotive & Industrial Hub, Puebla', country: 'Mexico', flag: '🇲🇽', coords: [19.0414, -98.2063] },
+  { code: 'VER', name: 'Veracruz Gulf Deepwater Port, Veracruz', country: 'Mexico', flag: '🇲🇽', coords: [19.1738, -96.1342] },
+  { code: 'COA', name: 'Coatzacoalcos Isthmus Terminal, Veracruz', country: 'Mexico', flag: '🇲🇽', coords: [18.1345, -94.4578] },
+  { code: 'PAZ', name: 'Poza Rica / Tuxpan Port, Veracruz', country: 'Mexico', flag: '🇲🇽', coords: [20.5332, -97.4584] },
+  { code: 'JAL', name: 'Xalapa Freight Terminal, Veracruz', country: 'Mexico', flag: '🇲🇽', coords: [19.5438, -96.9102] },
+  { code: 'MLM', name: 'Morelia Logistics Hub, Michoacán', country: 'Mexico', flag: '🇲🇽', coords: [19.7060, -101.1950] },
+  { code: 'LZC', name: 'Lázaro Cárdenas Mega Container Port, Michoacán', country: 'Mexico', flag: '🇲🇽', coords: [17.9585, -102.2014] },
+  { code: 'ZLO', name: 'Manzanillo Pacific Container Port, Colima', country: 'Mexico', flag: '🇲🇽', coords: [19.0522, -104.3158] },
+  { code: 'COL', name: 'Colima Capital Logistics, Colima', country: 'Mexico', flag: '🇲🇽', coords: [19.2452, -103.7247] },
+  { code: 'CHV', name: 'Chilpancingo Freight Hub, Guerrero', country: 'Mexico', flag: '🇲🇽', coords: [17.5513, -99.5058] },
+  { code: 'ACA', name: 'Acapulco Maritime Gateway, Guerrero', country: 'Mexico', flag: '🇲🇽', coords: [16.8531, -99.8237] },
+  { code: 'OAX', name: 'Oaxaca Central Freight Center, Oaxaca', country: 'Mexico', flag: '🇲🇽', coords: [17.0732, -96.7266] },
+  { code: 'SCZ', name: 'Salina Cruz Interoceanic Port, Oaxaca', country: 'Mexico', flag: '🇲🇽', coords: [16.1833, -95.2000] },
+  { code: 'TGZ', name: 'Tuxtla Gutiérrez Southern Gateway, Chiapas', country: 'Mexico', flag: '🇲🇽', coords: [16.7569, -93.1292] },
+  { code: 'TAP', name: 'Tapachula / Puerto Chiapas Terminal, Chiapas', country: 'Mexico', flag: '🇲🇽', coords: [14.9042, -92.2618] },
+  { code: 'VSA', name: 'Villahermosa Oil & Cargo Hub, Tabasco', country: 'Mexico', flag: '🇲🇽', coords: [17.9892, -92.9281] },
+  { code: 'CPE', name: 'Campeche Gulf Marine Terminal, Campeche', country: 'Mexico', flag: '🇲🇽', coords: [19.8301, -90.5349] },
+  { code: 'CME', name: 'Ciudad del Carmen Offshore Hub, Campeche', country: 'Mexico', flag: '🇲🇽', coords: [18.6496, -91.8286] },
+  { code: 'MID', name: 'Mérida Yucatán Logistics Center, Yucatán', country: 'Mexico', flag: '🇲🇽', coords: [20.9674, -89.5926] },
+  { code: 'PGO', name: 'Progreso Deep Container Port, Yucatán', country: 'Mexico', flag: '🇲🇽', coords: [21.2828, -89.6644] },
+  { code: 'CUN', name: 'Cancún International Air Cargo, Quintana Roo', country: 'Mexico', flag: '🇲🇽', coords: [21.1619, -86.8515] },
+  { code: 'CTM', name: 'Chetumal Border Freight Terminal, Quintana Roo', country: 'Mexico', flag: '🇲🇽', coords: [18.5141, -88.3038] },
+  { code: 'CZM', name: 'Cozumel / Riviera Maya Gateway, Quintana Roo', country: 'Mexico', flag: '🇲🇽', coords: [20.5083, -86.9533] },
+
   // --- GLOBAL KEY GATEWAYS ---
   { code: 'DXB', name: 'Dubai Cargo City, UAE', country: 'Global', flag: '🇦🇪', coords: [25.2532, 55.3657] },
   { code: 'SIN', name: 'Singapore Changi, Singapore', country: 'Global', flag: '🇸🇬', coords: [1.3521, 103.8198] },
@@ -301,16 +360,24 @@ export function calculateOptimalRoute(originCode, destCode) {
   const dLng = lng2 - lng1;
   const dist = Math.sqrt(dLat * dLat + dLng * dLng);
 
-  if (dist < 2.0) {
+  if (dist < 1.5) {
     return [originCode, destCode];
   }
 
-  const candidates = CITIES_DATA.filter(c => c.code !== originCode && c.code !== destCode).map(c => {
+  const originItem = CITIES_DATA.find(c => c.code === originCode);
+  const destItem = CITIES_DATA.find(c => c.code === destCode);
+  const sameCountry = (originItem && destItem && originItem.country === destItem.country) ? originItem.country : null;
+
+  const candidates = CITIES_DATA.filter(c => {
+    if (c.code === originCode || c.code === destCode) return false;
+    if (sameCountry && c.country !== sameCountry) return false;
+    return true;
+  }).map(c => {
     const [cLat, cLng] = c.coords;
     const dot = (cLat - lat1) * dLat + (cLng - lng1) * dLng;
     const t = dot / (dist * dist);
 
-    if (t < 0.20 || t > 0.80) return null;
+    if (t < 0.18 || t > 0.82) return null;
 
     const projLat = lat1 + t * dLat;
     const projLng = lng1 + t * dLng;
@@ -323,11 +390,11 @@ export function calculateOptimalRoute(originCode, destCode) {
 
   const waypoints = [originCode];
   if (candidates.length > 0) {
-    if (dist < 12 || candidates.length === 1) {
+    if (dist < 8 || candidates.length === 1) {
       waypoints.push(candidates[0].code);
     } else {
       const first = candidates[0];
-      const secondCandidates = candidates.slice(1).filter(c => Math.abs(c.t - first.t) > 0.22);
+      const secondCandidates = candidates.slice(1).filter(c => Math.abs(c.t - first.t) > 0.18);
       if (secondCandidates.length > 0) {
         const sortedPair = [first, secondCandidates[0]].sort((a, b) => a.t - b.t);
         waypoints.push(sortedPair[0].code, sortedPair[1].code);
@@ -382,7 +449,7 @@ const CitySearchInput = ({ value, selectedCode, placeholder, onChange }) => {
         <input
           type="text"
           className="city-search-input"
-          placeholder={placeholder || "Search city, state or country..."}
+          placeholder={placeholder || "Search city, state or hub in Mexico, USA, UK, Europe..."}
           value={isOpen ? query : (displayVal || query)}
           onFocus={() => {
             setQuery(value || '');
@@ -391,7 +458,7 @@ const CitySearchInput = ({ value, selectedCode, placeholder, onChange }) => {
           onChange={(e) => {
             setQuery(e.target.value);
             if (!isOpen) setIsOpen(true);
-            onChange(e.target.value, selectedCode || 'CHI');
+            onChange(e.target.value, selectedCode || 'MEX');
           }}
         />
         {(displayVal || query) && (
@@ -413,7 +480,7 @@ const CitySearchInput = ({ value, selectedCode, placeholder, onChange }) => {
         <div className="city-dropdown-menu">
           {/* Quick Region Filter Bar */}
           <div className="city-region-filter-bar">
-            {['All', 'Europe', 'UK', 'USA', 'Global'].map((region) => (
+            {['All', 'Mexico', 'USA', 'Europe', 'UK', 'Global'].map((region) => (
               <button
                 key={region}
                 type="button"
@@ -423,7 +490,7 @@ const CitySearchInput = ({ value, selectedCode, placeholder, onChange }) => {
                   setSelectedRegion(region);
                 }}
               >
-                {region === 'Europe' ? '🇪🇺 Europe' : region === 'UK' ? '🇬🇧 UK' : region === 'USA' ? '🇺🇸 USA' : region === 'Global' ? '🌐 Global' : '🌍 All (150+)'}
+                {region === 'Mexico' ? '🇲🇽 Mexico' : region === 'Europe' ? '🇪🇺 Europe' : region === 'UK' ? '🇬🇧 UK' : region === 'USA' ? '🇺🇸 USA' : region === 'Global' ? '🌐 Global' : '🌍 All (200+)'}
               </button>
             ))}
           </div>
@@ -493,15 +560,16 @@ const LeafletMap = ({ shipment }) => {
   const routeLineRef = useRef(null);
   const vehicleMarkerRef = useRef(null);
   const markersRef = useRef([]);
+  const lastFittedRouteKey = useRef('');
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    // Initialize map
-    const originCoords = GPS_COORDINATES[shipment.originCode] || [39.8283, -98.5795];
+    // Initialize map centered on shipment origin or Mexico City central hub
+    const originCoords = (shipment && GPS_COORDINATES[shipment.originCode]) ? GPS_COORDINATES[shipment.originCode] : [19.4326, -99.1332];
     mapInstanceRef.current = L.map(mapContainerRef.current, {
       zoomControl: true
-    }).setView(originCoords, 4);
+    }).setView(originCoords, 5);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
@@ -526,7 +594,7 @@ const LeafletMap = ({ shipment }) => {
     if (vehicleMarkerRef.current) map.removeLayer(vehicleMarkerRef.current);
 
     // Plot Route Waypoints
-    const routePoints = (shipment.simulation.waypoints || []).map(code => ({
+    const routePoints = (shipment.simulation?.waypoints || []).map(code => ({
       code,
       coords: GPS_COORDINATES[code]
     })).filter(pt => pt.coords);
@@ -556,15 +624,26 @@ const LeafletMap = ({ shipment }) => {
 
         const marker = L.marker(pt.coords, { icon: pinIcon })
           .addTo(map)
-          .bindPopup(`<b>Hub: ${pt.code}</b><br/>Stop Index: ${index}`);
+          .bindPopup(`<b>Hub: ${pt.code}</b><br/>${CITIES_DATA.find(c => c.code === pt.code)?.name || 'Transit Stop'}<br/>Stop Index: ${index}`);
         markersRef.current.push(marker);
       });
+
+      // Automatically frame route nicely when loaded or waypoints change
+      const currentRouteKey = `${shipment.id}-${(shipment.simulation?.waypoints || []).join('-')}`;
+      if (lastFittedRouteKey.current !== currentRouteKey && latlngs.length > 1) {
+        lastFittedRouteKey.current = currentRouteKey;
+        try {
+          map.fitBounds(L.latLngBounds(latlngs), { padding: [40, 40], maxZoom: 8 });
+        } catch (err) {
+          // Fallback if container size is pending
+        }
+      }
     }
 
     // Set Vehicle Marker
-    const vehiclePos = getInterpolatedPosition(shipment.simulation.waypoints, shipment.simulation.currentProgress);
+    const vehiclePos = getInterpolatedPosition(shipment.simulation?.waypoints, shipment.simulation?.currentProgress || 0);
     const vehicleIcon = L.divIcon({
-      html: `<div class="sim-vehicle ${shipment.vessel.toLowerCase()}" style="transform: rotate(0deg);"><i class="fas fa-${shipment.vessel === 'Plane' ? 'plane' : shipment.vessel === 'Ship' ? 'ship' : 'truck'}"></i></div>`,
+      html: `<div class="sim-vehicle ${(shipment.vessel || 'Truck').toLowerCase()}" style="transform: rotate(0deg);"><i class="fas fa-${shipment.vessel === 'Plane' ? 'plane' : shipment.vessel === 'Ship' ? 'ship' : 'truck'}"></i></div>`,
       className: 'custom-vehicle-container',
       iconSize: [30, 30],
       iconAnchor: [15, 15]
@@ -572,12 +651,14 @@ const LeafletMap = ({ shipment }) => {
 
     vehicleMarkerRef.current = L.marker(vehiclePos, { icon: vehicleIcon })
       .addTo(map)
-      .bindPopup(`<b>${shipment.id} (${shipment.vessel})</b><br/>Telemetry: ${shipment.simulation.currentProgress.toFixed(1)}% complete`);
+      .bindPopup(`<b>${shipment.id} (${shipment.vessel || 'Freight'})</b><br/>Telemetry: ${(shipment.simulation?.currentProgress || 0).toFixed(1)}% complete`);
 
-    // Pan map to vehicle position
-    map.panTo(vehiclePos);
+    // Pan map to vehicle position during movement
+    if (shipment.simulation?.active) {
+      map.panTo(vehiclePos);
+    }
 
-  }, [shipment, shipment.simulation.currentProgress, shipment.simulation.waypoints]);
+  }, [shipment, shipment.simulation?.currentProgress, shipment.simulation?.waypoints]);
 
   return (
     <div style={{ height: '350px', width: '100%', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
@@ -623,19 +704,20 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
     setTemplateType(type);
     const activeShipment = shipment || shipments.find(s => s.id === selectedShipmentId);
     const code = activeShipment?.id || '[TRACKING_CODE]';
+    const senderNote = activeShipment?.senderName ? ` from ${activeShipment.senderName}` : '';
 
     if (type === 'SHIPMENT_UPDATE') {
-      setSubject(`Shipment Update: Apex Package #${code}`);
-      setMessageBody(`Your package #${code} has been updated to "${activeShipment?.status || 'In Transit'}". Current location: ${activeShipment?.currentLocationName || activeShipment?.origin || 'Hub'}.`);
+      setSubject(`Shipment Update: Apex Package #${code}${senderNote}`);
+      setMessageBody(`Your package #${code}${senderNote} has been updated to "${activeShipment?.status || 'In Transit'}". Current location: ${activeShipment?.currentLocationName || activeShipment?.origin || 'Hub'}.`);
     } else if (type === 'OUT_FOR_DELIVERY') {
-      setSubject(`Out for Delivery: Apex Package #${code}`);
-      setMessageBody(`Great news! Your Apex package #${code} is out for final delivery today. Please ensure someone is available to receive the package.`);
+      setSubject(`Out for Delivery: Apex Package #${code}${senderNote}`);
+      setMessageBody(`Great news! Your Apex package #${code}${senderNote} is out for final delivery today. Please ensure someone is available to receive the package.`);
     } else if (type === 'DELAY_NOTICE') {
       setSubject(`Important Notice: Update on Apex Package #${code}`);
-      setMessageBody(`We wanted to notify you that shipment #${code} is experiencing a slight delay due to logistics processing. Our team is actively resolving this to deliver your package as soon as possible.`);
+      setMessageBody(`We wanted to notify you that shipment #${code}${senderNote} is experiencing a slight delay due to logistics processing. Our team is actively resolving this to deliver your package as soon as possible.`);
     } else {
       setSubject(`Notice regarding your Apex Shipment #${code}`);
-      setMessageBody(`Hello,\n\nWe are writing to provide an update regarding your parcel with Apex Logistics.\n\nThank you for choosing Apex Logistics.`);
+      setMessageBody(`Hello,\n\nWe are writing to provide an update regarding your parcel with Apex Logistics${senderNote}.\n\nThank you for choosing Apex Logistics.`);
     }
   };
 
@@ -653,6 +735,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
     setSending(true);
     setFeedback({ type: '', text: '' });
 
+    const linkedShipment = shipments.find(s => s.id === selectedShipmentId);
+
     try {
       const res = await fetch(`${API_BASE}/admin/send-email`, {
         method: 'POST',
@@ -660,6 +744,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
         body: JSON.stringify({
           toEmail: recipientEmail,
           recipientName: recipientName || recipientEmail.split('@')[0],
+          senderName: linkedShipment?.senderName || '',
+          senderPhone: linkedShipment?.senderPhone || '',
           subject: subject,
           messageBody: messageBody,
           templateType: templateType,
@@ -735,7 +821,7 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
                 <option value="" style={{ background: '#1b1613', color: '#ffffff' }}>-- None (Manual Recipient) --</option>
                 {shipments.map(s => (
                   <option key={s.id} value={s.id} style={{ background: '#1b1613', color: '#ffffff' }}>
-                    {s.id} - {s.customerName || 'No Name'} ({s.customerEmail || 'No Email'})
+                    {s.id} - {s.customerName || 'No Name'} ({s.customerEmail || 'No Email'}){s.senderName ? ` [Sender: ${s.senderName}]` : ''}
                   </option>
                 ))}
               </select>
@@ -1787,22 +1873,27 @@ export default function App() {
   const [showPassword, setShowPassword] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
 
-  // Shipping Form States
+  // Shipping Form States (Sender & Recipient)
+  const [formSenderName, setFormSenderName] = useState('');
+  const [formSenderCountryCode, setFormSenderCountryCode] = useState('+52');
+  const [formSenderPhone, setFormSenderPhone] = useState('');
+  const [formSenderEmail, setFormSenderEmail] = useState('');
+  const [formSenderAddress, setFormSenderAddress] = useState('');
   const [formCustomerName, setFormCustomerName] = useState('');
   const [formCustomerEmail, setFormCustomerEmail] = useState('');
-  const [formCountryCode, setFormCountryCode] = useState('+1');
+  const [formCountryCode, setFormCountryCode] = useState('+52');
   const [formCustomerPhone, setFormCustomerPhone] = useState('');
   const [formAddress, setFormAddress] = useState('');
   const [formUploadedImage, setFormUploadedImage] = useState(null);
   const [formWeight, setFormWeight] = useState('');
   const [formDesc, setFormDesc] = useState('');
   const [formVessel, setFormVessel] = useState('Truck');
-  const [formOrigin, setFormOrigin] = useState('');
-  const [formDestination, setFormDestination] = useState('');
-  const [formOriginCode, setFormOriginCode] = useState('CHI');
-  const [formDestCode, setFormDestCode] = useState('SEA');
+  const [formOrigin, setFormOrigin] = useState('Mexico City (CDMX) Central Hub, Mexico');
+  const [formDestination, setFormDestination] = useState('Monterrey Industrial Center, Nuevo León');
+  const [formOriginCode, setFormOriginCode] = useState('MEX');
+  const [formDestCode, setFormDestCode] = useState('MTY');
   const [formEta, setFormEta] = useState('2026-07-25');
-  const [formRouteConfig, setFormRouteConfig] = useState('CHI-KC-DEN-SEA');
+  const [formRouteConfig, setFormRouteConfig] = useState('MEX-QRO-SLP-MTY');
   const [formMsg, setFormMsg] = useState({ type: '', text: '' });
   const [formTrackingId, setFormTrackingId] = useState(`APX-${Math.floor(10000000 + Math.random() * 90000000)}`);
   const [formShipmentType, setFormShipmentType] = useState('Standard');
@@ -2102,17 +2193,21 @@ export default function App() {
     setFormMsg({ type: '', text: '' });
 
     if (!formCustomerEmail || !formCustomerName || !formOrigin || !formDestination) {
-      setFormMsg({ type: 'error', text: 'Please fill in all required fields.' });
+      setFormMsg({ type: 'error', text: 'Please fill in all required fields (Recipient name, email, origin, destination).' });
       return;
     }
 
-    const waypointsArray = formRouteConfig.split('-');
+    const waypointsArray = formRouteConfig.split('-').filter(Boolean);
 
     const shipmentPayload = {
       id: formTrackingId,
-      customerName: formCustomerName,
-      customerEmail: formCustomerEmail,
-      customerPhone: formCustomerPhone ? `${formCountryCode} ${formCustomerPhone}`.trim() : '+1 555 0100',
+      senderName: formSenderName.trim(),
+      senderPhone: formSenderPhone ? `${formSenderCountryCode} ${formSenderPhone}`.trim() : '',
+      senderEmail: formSenderEmail.trim(),
+      senderAddress: formSenderAddress.trim(),
+      customerName: formCustomerName.trim(),
+      customerEmail: formCustomerEmail.trim(),
+      customerPhone: formCustomerPhone ? `${formCountryCode} ${formCustomerPhone}`.trim() : '+52 55 5100 0100',
       address: formAddress || 'Warehouse facility D',
       weight: parseFloat(formWeight) || 500,
       desc: formDesc || 'Commercial freight cargo items',
@@ -2134,14 +2229,20 @@ export default function App() {
       const data = await res.json();
 
       if (res.ok) {
-        setFormMsg({ type: 'success', text: `Appointment made! Code: ${data.id}` });
+        setFormMsg({ type: 'success', text: `Shipping appointment registered successfully! Tracking Code: ${data.id}` });
         if (data.credentials) {
           setCredentialsModal(data.credentials);
         }
+        setSimActiveShipmentId(data.id);
         // Clear input form
+        setFormSenderName('');
+        setFormSenderPhone('');
+        setFormSenderCountryCode('+52');
+        setFormSenderEmail('');
+        setFormSenderAddress('');
         setFormCustomerName('');
         setFormCustomerEmail('');
-        setFormCountryCode('+1');
+        setFormCountryCode('+52');
         setFormCustomerPhone('');
         setFormAddress('');
         setFormUploadedImage(null);
@@ -3943,6 +4044,34 @@ export default function App() {
                         </div>
                       </div>
                     </div>
+
+                    {(activeShipment.senderName || activeShipment.customerName) && (
+                      <>
+                        <div className="matrix-separator"></div>
+                        <div className="matrix-row">
+                          <div className="matrix-item">
+                            <span className="matrix-label">SENDER / SHIPPER</span>
+                            <div className="matrix-val">
+                              <strong className="main-val-text">{activeShipment.senderName || 'Apex Logistics Partner'}</strong>
+                              {activeShipment.senderPhone && <span className="sub-val-text">{activeShipment.senderPhone}</span>}
+                            </div>
+                          </div>
+                          <div className="matrix-item">
+                            <span className="matrix-label">RECIPIENT / CONSIGNEE</span>
+                            <div className="matrix-val">
+                              <strong className="main-val-text">{activeShipment.customerName || 'Valued Customer'}</strong>
+                              {activeShipment.customerPhone && <span className="sub-val-text">{activeShipment.customerPhone}</span>}
+                            </div>
+                          </div>
+                          <div className="matrix-item" style={{ gridColumn: 'span 2' }}>
+                            <span className="matrix-label">DELIVERY DESTINATION ADDRESS</span>
+                            <div className="matrix-val">
+                              <strong className="main-val-text" style={{ fontSize: '0.88rem', wordBreak: 'break-word' }}>{activeShipment.address}</strong>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="next-update-progress-card">
@@ -4161,7 +4290,14 @@ export default function App() {
                               <td>
                                 <div className="route-cell">
                                   <span className="route-cities">{s.origin} to {s.destination}</span>
-                                  <span className="route-codes">{s.originCode} ➔ {s.destCode}</span>
+                                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                    <span className="route-codes">{s.originCode} ➔ {s.destCode}</span>
+                                    {s.senderName && (
+                                      <span style={{ fontSize: '0.75rem', color: '#ffb900' }}>
+                                        From: {s.senderName}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
                               </td>
                               <td>
@@ -4310,18 +4446,24 @@ export default function App() {
                       <div className="title-actions">
                         <button type="button" className="btn-discard-draft" onClick={() => {
                           if (window.confirm("Are you sure you want to discard this draft?")) {
+                            setFormSenderName('');
+                            setFormSenderCountryCode('+52');
+                            setFormSenderPhone('');
+                            setFormSenderEmail('');
+                            setFormSenderAddress('');
                             setFormCustomerName('');
                             setFormCustomerEmail('');
+                            setFormCountryCode('+52');
                             setFormCustomerPhone('');
                             setFormAddress('');
                             setFormWeight('');
                             setFormDesc('');
                             setFormVessel('Truck');
-                            setFormOrigin('Los Angeles (LAX)');
-                            setFormOriginCode('LA');
-                            setFormDestination('New York (JFK)');
-                            setFormDestCode('NY');
-                            setFormRouteConfig('LA-KC-CHI-NY');
+                            setFormOrigin('Mexico City (CDMX) Central Hub, Mexico');
+                            setFormOriginCode('MEX');
+                            setFormDestination('Monterrey Industrial Center, Nuevo León');
+                            setFormDestCode('MTY');
+                            setFormRouteConfig('MEX-QRO-SLP-MTY');
                           }
                         }}>Discard Draft</button>
                         
@@ -4338,31 +4480,93 @@ export default function App() {
 
                   {/* Main Grid split layout */}
                   <div className="appointment-form-grid">
-                    {/* Left Column: Customer Info & Shipment Details */}
+                    {/* Left Column: Sender Info, Customer Info & Shipment Details */}
                     <div className="appointment-form-left-col">
-                      {/* Customer Information Card */}
-                      <div className="appointment-card">
+                      {/* Sender Information Card */}
+                      <div className="appointment-card mb-24">
                         <div className="card-header">
-                          <Users className="card-header-icon" />
-                          <h3>Customer Information</h3>
+                          <Send className="card-header-icon" />
+                          <h3>Sender Information</h3>
                         </div>
                         
                         <div className="card-body">
                           <div className="form-double-row">
                             <div className="input-field">
-                              <label>FULL NAME</label>
+                              <label>SENDER FULL NAME / COMPANY</label>
                               <input 
                                 type="text" 
-                                placeholder=""
+                                placeholder="e.g. Carlos Mendoza / Guadalajara Freight S.A."
+                                value={formSenderName}
+                                onChange={(e) => setFormSenderName(e.target.value)}
+                              />
+                            </div>
+                            <div className="input-field">
+                              <label>SENDER EMAIL ADDRESS</label>
+                              <input 
+                                type="email" 
+                                placeholder="e.g. sender@logistics.com"
+                                value={formSenderEmail}
+                                onChange={(e) => setFormSenderEmail(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="form-double-row mt-15">
+                            <div className="input-field">
+                              <label>SENDER PHONE NUMBER</label>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <input 
+                                  type="text" 
+                                  placeholder="+52"
+                                  value={formSenderCountryCode}
+                                  onChange={(e) => setFormSenderCountryCode(e.target.value)}
+                                  style={{ width: '70px', textAlign: 'center' }}
+                                />
+                                <input 
+                                  type="tel" 
+                                  placeholder="e.g. 33 1234 5678"
+                                  value={formSenderPhone}
+                                  onChange={(e) => setFormSenderPhone(e.target.value)}
+                                  style={{ flex: 1 }}
+                                />
+                              </div>
+                            </div>
+                            <div className="input-field">
+                              <label>SENDER ORIGIN ADDRESS / HUB</label>
+                              <input 
+                                type="text" 
+                                placeholder="e.g. Av. Vallarta 1400, Guadalajara, Jalisco"
+                                value={formSenderAddress}
+                                onChange={(e) => setFormSenderAddress(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Customer / Recipient Information Card */}
+                      <div className="appointment-card">
+                        <div className="card-header">
+                          <Users className="card-header-icon" />
+                          <h3>Recipient / Consignee Information</h3>
+                        </div>
+                        
+                        <div className="card-body">
+                          <div className="form-double-row">
+                            <div className="input-field">
+                              <label>RECIPIENT FULL NAME</label>
+                              <input 
+                                type="text" 
+                                placeholder="e.g. Maria Gonzalez"
                                 value={formCustomerName}
                                 onChange={(e) => setFormCustomerName(e.target.value)}
                               />
                             </div>
                             <div className="input-field">
-                              <label>EMAIL ADDRESS</label>
+                              <label>RECIPIENT EMAIL ADDRESS</label>
                               <input 
                                 type="email" 
-                                placeholder=""
+                                placeholder="e.g. customer@domain.com"
                                 value={formCustomerEmail}
                                 onChange={(e) => setFormCustomerEmail(e.target.value)}
                               />
@@ -4371,18 +4575,18 @@ export default function App() {
                           
                           <div className="form-double-row mt-15">
                             <div className="input-field">
-                              <label>PHONE NUMBER</label>
+                              <label>RECIPIENT PHONE NUMBER</label>
                               <div style={{ display: 'flex', gap: '8px' }}>
                                 <input 
                                   type="text" 
-                                  placeholder="+1"
+                                  placeholder="+52"
                                   value={formCountryCode}
                                   onChange={(e) => setFormCountryCode(e.target.value)}
                                   style={{ width: '70px', textAlign: 'center' }}
                                 />
                                 <input 
                                   type="tel" 
-                                  placeholder=""
+                                  placeholder="e.g. 55 9876 5432"
                                   value={formCustomerPhone}
                                   onChange={(e) => setFormCustomerPhone(e.target.value)}
                                   style={{ flex: 1 }}
@@ -4390,10 +4594,10 @@ export default function App() {
                               </div>
                             </div>
                             <div className="input-field">
-                              <label>FULL ADDRESS</label>
+                              <label>DELIVERY DESTINATION ADDRESS</label>
                               <input 
                                 type="text" 
-                                placeholder=""
+                                placeholder="e.g. Av. Insurgentes Sur 120, CDMX, Mexico"
                                 value={formAddress}
                                 onChange={(e) => setFormAddress(e.target.value)}
                               />
@@ -4467,7 +4671,7 @@ export default function App() {
                               <CitySearchInput
                                 value={formOrigin}
                                 selectedCode={formOriginCode}
-                                placeholder="Search origin city in USA, UK, Europe (e.g. London, Chicago)..."
+                                placeholder="Search origin city/state in Mexico, USA, Europe (e.g. Mexico City, Guadalajara, CDMX)..."
                                 onChange={(cityName, code) => {
                                   setFormOrigin(cityName);
                                   if (code) {
@@ -4486,7 +4690,7 @@ export default function App() {
                               <CitySearchInput
                                 value={formDestination}
                                 selectedCode={formDestCode}
-                                placeholder="Search destination city in USA, UK, Europe (e.g. Manchester, New York)..."
+                                placeholder="Search destination city/state in Mexico, USA, Europe (e.g. Monterrey, Tijuana, Cancun)..."
                                 onChange={(cityName, code) => {
                                   setFormDestination(cityName);
                                   if (code) {
@@ -4789,7 +4993,7 @@ export default function App() {
                               <option value="">-- Select Shipment --</option>
                               {shipments.map(s => (
                                 <option key={s.id} value={s.id}>
-                                  {s.id} ({s.customerName} - {s.vessel})
+                                  {s.id} ({s.customerName} - {s.vessel}){s.senderName ? ` [From: ${s.senderName}]` : ''}
                                 </option>
                               ))}
                             </select>
@@ -4799,7 +5003,7 @@ export default function App() {
                             <label>ORDER HUB</label>
                             <div className="mock-control-input-read">
                               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width: '14px', height: '14px', color: '#ffb900'}}><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                              <span>{selectedShipmentForSim?.originCode || 'LAX-04'}</span>
+                              <span>{selectedShipmentForSim?.originCode || 'MEX'}</span>
                             </div>
                           </div>
                           
@@ -4853,9 +5057,14 @@ export default function App() {
                               <option value="">-- Add Waypoint --</option>
                               {Object.keys(GPS_COORDINATES)
                                 .filter(code => !selectedShipmentForSim?.simulation?.waypoints?.includes(code))
-                                .map(code => (
-                                  <option key={code} value={code}>{code}</option>
-                                ))
+                                .map(code => {
+                                  const cInfo = CITIES_DATA.find(c => c.code === code);
+                                  return (
+                                    <option key={code} value={code}>
+                                      {cInfo ? `${cInfo.flag} ${code} - ${cInfo.name}` : code}
+                                    </option>
+                                  );
+                                })
                               }
                             </select>
                           </div>
@@ -4864,7 +5073,7 @@ export default function App() {
                             <label>DESTINATION HUB</label>
                             <div className="mock-control-input-read">
                               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width: '14px', height: '14px', color: '#ff4d4d'}}><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                              <span>{selectedShipmentForSim?.destCode || 'JFK-01'}</span>
+                              <span>{selectedShipmentForSim?.destCode || 'MTY'}</span>
                             </div>
                           </div>
                         </div>
