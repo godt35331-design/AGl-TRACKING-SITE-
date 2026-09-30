@@ -771,8 +771,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
   const selectedShipment = shipments.find(s => s.id === selectedShipmentId);
 
   return (
-    <section className="email-center-view" style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+    <section className="email-center-view">
+      <div className="email-center-header">
         <div>
           <h2 style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Mail style={{ color: '#ffb900' }} /> Admin Email Dispatch Center
@@ -781,7 +781,7 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
             Send transactional emails & updates directly to customers via Resend API
           </p>
         </div>
-        <div style={{ background: 'rgba(255, 185, 0, 0.1)', border: '1px solid #ffb900', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem', color: '#ffb900', fontWeight: '700' }}>
+        <div className="resend-active-badge">
           ✓ Resend Active: support@aglgloballogistics.com
         </div>
       </div>
@@ -801,10 +801,10 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+      <div className="email-center-grid">
         
         {/* Left Column: Form Controls */}
-        <div style={{ background: 'var(--card-bg, #2a2521)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '24px' }}>
+        <div className="email-compose-card" style={{ background: 'var(--card-bg, #2a2521)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '24px' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#ffb900', marginTop: 0, marginBottom: '16px' }}>
             1. Compose Email
           </h3>
@@ -829,7 +829,7 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className="email-form-row">
               <div>
                 <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#e2e8f0', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>
                   Recipient Email *
@@ -1136,8 +1136,8 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
   );
 
   return (
-    <section className="messages-view" style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+    <section className="messages-view admin-messages-view">
+      <div className="messages-view-header">
         <div>
           <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#1a202c', margin: 0 }}>Customer Support Inbox</h2>
           <p style={{ color: '#718096', fontSize: '14px', margin: '4px 0 0 0' }}>
@@ -1146,28 +1146,16 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
         </div>
         <button
           onClick={handleSimulateInbound}
-          style={{
-            backgroundColor: '#2b6cb0',
-            color: '#ffffff',
-            fontWeight: '700',
-            fontSize: '13px',
-            padding: '8px 16px',
-            borderRadius: '6px',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
+          className="btn-test-inbound-reply"
         >
           + Test Inbound Reply
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: '20px', minHeight: '650px' }}>
+      <div className="messages-thread-grid">
         
         {/* Left Column: Conversation List */}
-        <div style={{ background: '#ffffff', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div className="messages-conv-sidebar" style={{ background: '#ffffff', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <div style={{ padding: '16px', borderBottom: '1px solid #edf2f7', background: '#f8fafc' }}>
             <input 
               type="text"
@@ -5413,7 +5401,9 @@ export default function App() {
             border: '1px solid var(--primary-color, #ffb900)',
             borderRadius: '12px',
             padding: '24px',
-            width: '420px',
+            width: '100%',
+            maxWidth: '440px',
+            boxSizing: 'border-box',
             boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
             color: 'var(--text-primary, #ffffff)',
             animation: 'fadeInCode 0.25s ease-out'
@@ -5560,7 +5550,9 @@ export default function App() {
             border: '1px solid var(--primary-color, #ffb900)',
             borderRadius: '12px',
             padding: '24px',
-            width: '400px',
+            width: '100%',
+            maxWidth: '420px',
+            boxSizing: 'border-box',
             boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
             color: 'var(--text-primary, #ffffff)',
             animation: 'fadeInCode 0.25s ease-out'
@@ -5668,7 +5660,8 @@ export default function App() {
             border: '1px solid #ffb900',
             borderRadius: '12px',
             padding: '24px',
-            width: '420px',
+            width: '100%',
+            maxWidth: '420px',
             color: '#fff',
             boxSizing: 'border-box',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'

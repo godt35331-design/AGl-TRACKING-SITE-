@@ -6095,3 +6095,434 @@ body {
     align-items: flex-start !important;
   }
 }
+
+/* ==========================================================================
+   📱 COMPREHENSIVE MOBILE PHONE RESPONSIVENESS FOR ADMIN PANEL
+   ========================================================================== */
+
+/* Base Email Center & Support Inbox Styles */
+.email-center-view {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.email-center-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.email-center-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.email-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.resend-active-badge {
+  background: rgba(255, 185, 0, 0.1);
+  border: 1px solid #ffb900;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #ffb900;
+  font-weight: 700;
+}
+
+.admin-messages-view {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.messages-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.messages-thread-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  min-height: 650px;
+}
+
+.btn-test-inbound-reply {
+  background-color: #2b6cb0;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s ease;
+}
+
+.btn-test-inbound-reply:hover {
+  background-color: #2c5282;
+}
+
+/* Tablets and Below (<= 992px) */
+@media (max-width: 992px) {
+  .email-center-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .messages-thread-grid {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+
+  .messages-conv-sidebar {
+    max-height: 280px !important;
+  }
+}
+
+/* Mobile Phones (<= 768px) */
+@media (max-width: 768px) {
+  /* Global Page Containers */
+  .shipping-appointment-view {
+    padding: 16px 12px !important;
+    min-height: auto !important;
+  }
+
+  .admin-dashboard-view,
+  .email-center-view,
+  .admin-messages-view {
+    padding: 14px 10px !important;
+  }
+
+  /* Shipping Appointment Header & Actions */
+  .appointment-header-section {
+    margin-bottom: 16px !important;
+  }
+
+  .appointment-title-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .appointment-title-row h2 {
+    font-size: 1.35rem !important;
+  }
+
+  .appointment-subtitle {
+    font-size: 0.85rem !important;
+  }
+
+  .title-actions {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  .btn-discard-draft,
+  .btn-submit-registration {
+    flex: 1 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 10px 8px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* Appointment Form Cards & Grids */
+  .appointment-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .appointment-card {
+    border-radius: 10px !important;
+  }
+
+  .appointment-card .card-header {
+    padding: 12px 14px !important;
+  }
+
+  .appointment-card .card-header h3 {
+    font-size: 0.98rem !important;
+  }
+
+  .appointment-card .card-body {
+    padding: 14px 12px !important;
+  }
+
+  .form-double-row,
+  .form-triple-row,
+  .email-form-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .input-field input,
+  .input-field select,
+  .input-field textarea {
+    font-size: 0.88rem !important;
+    padding: 9px 12px !important;
+  }
+
+  /* Tracking Number Badge on Mobile */
+  .tracking-number-badge-input {
+    height: auto !important;
+    min-height: 38px !important;
+    padding: 8px 10px !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .tracking-number-code {
+    font-size: 0.85rem !important;
+    word-break: break-all !important;
+  }
+
+  /* Transport Buttons */
+  .transport-type-btn-group {
+    height: auto !important;
+    min-height: 38px !important;
+  }
+
+  .transport-btn {
+    padding: 8px 4px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Route Builder Bar on Mobile */
+  .route-manual-edit-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .route-manual-edit-row .route-raw-input,
+  .route-manual-edit-row .add-waypoint-select,
+  .route-manual-edit-row .route-recalc-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .route-chips-flow {
+    gap: 6px !important;
+  }
+
+  .route-node-chip {
+    font-size: 0.76rem !important;
+    padding: 4px 8px !important;
+    max-width: 100% !important;
+  }
+
+  .sim-duration-pill-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .sim-duration-pill {
+    padding: 7px 4px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .upload-dropzone {
+    padding: 20px 14px !important;
+  }
+
+  /* Simulation Panel Bottom Layout */
+  .appointment-simulation-panel {
+    border-radius: 10px !important;
+    margin-top: 18px !important;
+  }
+
+  .sim-panel-header {
+    padding: 12px 14px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .sim-panel-header .header-left {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .sim-panel-header .header-actions {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .sim-panel-titles h3 {
+    font-size: 1rem !important;
+  }
+
+  .sim-pill-group {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .sim-panel-content-split {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+
+  .sim-panel-map-col {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .sim-panel-map-col .leaflet-container {
+    height: 300px !important;
+  }
+
+  /* Telemetry Badge: Embedded Card on Mobile instead of blocking the map */
+  .map-sim-telemetry-badge {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    padding: 12px 14px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+    backdrop-filter: none !important;
+  }
+
+  .sim-panel-controls-col {
+    padding: 16px 14px !important;
+  }
+
+  .playback-grid-buttons {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .btn-play-ctrl {
+    padding: 9px 6px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .playback-navigation-row {
+    gap: 8px !important;
+  }
+
+  .btn-save-tracking-config {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px !important;
+  }
+
+  /* Admin Stats Grid */
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .admin-stat-card {
+    padding: 14px 12px !important;
+  }
+
+  .stat-card-number {
+    font-size: 1.5rem !important;
+  }
+
+  /* Admin Dashboard Table */
+  .admin-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .admin-dashboard-table {
+    min-width: 580px !important;
+  }
+
+  .admin-panels-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Modals on Mobile */
+  .credentials-modal {
+    width: 100% !important;
+    max-width: 92vw !important;
+    margin: 10px !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Extra Small Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+  .shipping-appointment-view {
+    padding: 10px 8px !important;
+  }
+
+  .appointment-card .card-body {
+    padding: 12px 10px !important;
+  }
+
+  .admin-stat-card {
+    padding: 10px 8px !important;
+  }
+
+  .stat-card-number {
+    font-size: 1.3rem !important;
+  }
+
+  .sim-panel-map-col .leaflet-container {
+    height: 260px !important;
+  }
+
+  .playback-grid-buttons {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+
+  .btn-play-ctrl span {
+    font-size: 0.68rem !important;
+  }
+
+  .telemetry-row {
+    font-size: 0.76rem !important;
+  }
+
+  .email-compose-card,
+  .email-preview-card {
+    padding: 14px 10px !important;
+  }
+
+  .email-center-header h2,
+  .messages-view-header h2 {
+    font-size: 1.25rem !important;
+  }
+
+  .city-dropdown-menu {
+    max-width: calc(100vw - 20px) !important;
+  }
+}
