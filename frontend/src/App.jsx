@@ -1902,6 +1902,10 @@ export default function App() {
   const [visitorTrackResult, setVisitorTrackResult] = useState(null);
   const [visitorTrackLoading, setVisitorTrackLoading] = useState(false);
 
+  // Hero Section Quick-Track Bar States
+  const [heroTrackCode, setHeroTrackCode] = useState('');
+  const [heroTrackLoading, setHeroTrackLoading] = useState(false);
+
   // Tracking Search
   const [searchTrackId, setSearchTrackId] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -2614,7 +2618,51 @@ export default function App() {
     updateSimTelemetry(simActiveShipmentId, target === 'destination' ? 100 : -100, logText);
   };
 
-  // 5. Landing page quick-track box trigger
+  // 5. Landing page hero track submit trigger
+  const handleHeroTrackSubmit = async (e) => {
+    e.preventDefault();
+    const code = heroTrackCode.trim();
+    if (!code) {
+      triggerNavigationWithFlash('#login');
+      return;
+    }
+    setLoginTrackingCode(code);
+    setLoginEmail(code);
+    setHeroTrackLoading(true);
+
+    try {
+      // 1. Check loaded shipments in memory
+      const directMatch = shipments.find(s => s.id?.toUpperCase() === code.toUpperCase());
+      if (directMatch) {
+        setSelectedShipmentId(directMatch.id);
+        setActiveTab('details');
+        window.location.hash = `#details?id=${directMatch.id}`;
+        setHeroTrackLoading(false);
+        return;
+      }
+
+      // 2. Query backend API
+      const res = await fetch(`${API_BASE}/shipments/${encodeURIComponent(code.toUpperCase())}`);
+      const data = await res.json();
+      if (res.ok && data && (data.id || data.trackingNumber)) {
+        const id = data.id || data.trackingNumber;
+        setSelectedShipmentId(id);
+        setActiveTab('details');
+        window.location.hash = `#details?id=${id}`;
+        setHeroTrackLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.warn('Hero quick track query error:', err);
+    } finally {
+      setHeroTrackLoading(false);
+    }
+
+    // Default fallback to dedicated tracking portal
+    triggerNavigationWithFlash('#login');
+  };
+
+  // 5b. Landing page quick-track box trigger
   const handleQuickTrackSubmit = (e) => {
     e.preventDefault();
     if (!searchTrackId) return;
@@ -2875,57 +2923,140 @@ export default function App() {
           {activeTab === 'home' && (
             <section className="landing-view">
               {/* 1. Hero Layout */}
-              <div className="hero-row">
-                <div className="hero-text-block">
-                  <div className="hero-sticker">
-                    <span className="sticker-bullet">✓</span>
-                    <span>Trusted Global Logistics Partner</span>
-                  </div>
-                  <h1>
-                    Track Your Shipment <br />
-                    <span className="highlight">Anytime, Anywhere</span>
-                  </h1>
-                  <p>
-                    Experience next-generation logistics with secure end-to-end tracking, real-time status updates, and enterprise-grade fleet management tailored for your business needs.
-                  </p>
-                  
-                  <div className="hero-action-buttons">
-                    <button className="btn-hero-primary" onClick={() => triggerNavigationWithFlash('#login')}>
-                      <svg className="btn-hero-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10h10z" /><path strokeLinecap="round" strokeLinejoin="round" d="M13 8h7a1 1 0 011 1v3H13V8z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19 12h2a1 1 0 011 1v3h-3v-4z" /></svg>
-                      Track Shipment
-                    </button>
-                  </div>
-
-                  <div className="hero-social-trust">
-                    <div className="avatar-stack">
-                      <img className="profile-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80" alt="avatar" />
-                      <img className="profile-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&fit=crop&q=80" alt="avatar" />
-                      <img className="profile-avatar" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=80&fit=crop&q=80" alt="avatar" />
+              <div className="landing-hero-container">
+                <div className="hero-row">
+                  <div className="hero-text-block">
+                    <div className="hero-sticker">
+                      <span className="sticker-bullet">✓</span>
+                      <span>Apex Global Express &bull; Real-Time Satellite Telemetry</span>
                     </div>
-                    <span className="trust-caption">12,000+ Businesses Trust Our Global Network</span>
-                  </div>
-                </div>
-
-                <div className="hero-visual-col">
-                  <div className="hero-main-img-card">
-                    <img className="hero-main-img" src="/hero-bg-2.jpg" alt="Warehouse logistics hub" />
+                    <h1>
+                      Track Your Shipment <br />
+                      <span className="highlight">In Real-Time</span> Worldwide
+                    </h1>
+                    <p>
+                      Precision logistics, automated dispatch hubs, and live satellite tracking across 220+ countries and territories. Enter your tracking number below for instant delivery status and route telemetry.
+                    </p>
                     
-                    <div className="image-text-overlay">
-                      <div className="overlay-title">GLOBAL LOGISTICS</div>
-                      <div className="overlay-desc">Real-time visibility for your supply chain</div>
-                      <button className="btn-overlay-quote">GET A QUOTE</button>
+                    {/* Embedded Instant Hero Tracking Form */}
+                    <form className="hero-track-bar" onSubmit={handleHeroTrackSubmit}>
+                      <div className="hero-track-input-wrap">
+                        <Search className="hero-track-icon" />
+                        <input 
+                          type="text" 
+                          placeholder="Enter 8-digit tracking number (e.g. APX-31518784)..."
+                          value={heroTrackCode}
+                          onChange={(e) => setHeroTrackCode(e.target.value)}
+                          className="hero-track-input"
+                        />
+                        {heroTrackCode && (
+                          <button 
+                            type="button" 
+                            className="hero-track-clear"
+                            onClick={() => setHeroTrackCode('')}
+                            title="Clear tracking input"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                      <button 
+                        type="submit" 
+                        className="btn-hero-primary hero-track-submit-btn" 
+                        disabled={heroTrackLoading}
+                      >
+                        {heroTrackLoading ? (
+                          <>
+                            <span className="btn-spinner"></span>
+                            <span>Locating…</span>
+                          </>
+                        ) : (
+                          <>
+                            <Search style={{ width: '16px', height: '16px' }} />
+                            <span>Track Shipment</span>
+                          </>
+                        )}
+                      </button>
+                    </form>
+
+                    {/* Quick Suggestions & Trust Points */}
+                    <div className="hero-quick-hints">
+                      <span className="hint-label">Sample tracking code:</span>
+                      <button 
+                        type="button" 
+                        className="hero-sample-chip"
+                        onClick={() => setHeroTrackCode('APX-31518784')}
+                      >
+                        APX-31518784
+                      </button>
+                      <span className="hint-divider">&bull;</span>
+                      <a href="#login" className="hero-portal-shortcut" onClick={(e) => { e.preventDefault(); triggerNavigationWithFlash('#login'); }}>
+                        Dedicated Portal <ArrowRight style={{ width: '13px', height: '13px', display: 'inline', verticalAlign: 'middle' }} />
+                      </a>
                     </div>
 
-                    {/* Floating Status card over image */}
-                    <div className="floating-overlay-card">
-                      <div className="float-header-row">
-                        <span className="float-code">Shipment #230248</span>
-                        <span className="float-badge">
-                          <span className="float-green-dot"></span>
-                          <span>ONLINE</span>
-                        </span>
+                    <div className="hero-social-trust">
+                      <div className="avatar-stack">
+                        <img className="profile-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80" alt="avatar" />
+                        <img className="profile-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&fit=crop&q=80" alt="avatar" />
+                        <img className="profile-avatar" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=80&fit=crop&q=80" alt="avatar" />
                       </div>
-                      <div className="float-body">In Transit - London</div>
+                      <div className="hero-trust-text">
+                        <div className="trust-stars">★★★★★ <span className="trust-score">4.9 / 5.0</span></div>
+                        <span className="trust-caption">12,000+ Enterprises & Shippers Worldwide</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="hero-visual-col">
+                    <div className="hero-main-img-card">
+                      <img className="hero-main-img" src="/hero-bg-2.jpg" alt="Warehouse logistics hub" />
+                      <div className="hero-card-glow"></div>
+                      
+                      {/* Top live radar badge */}
+                      <div className="hero-live-hud-top">
+                        <div className="hud-pulse-tag">
+                          <span className="hud-radar-dot"></span>
+                          <span>LIVE SATELLITE DISPATCH</span>
+                        </div>
+                        <span className="hud-flight-tag">AIR CARGO 777F</span>
+                      </div>
+
+                      {/* Floating Telemetry HUD Card */}
+                      <div className="hero-telemetry-hud-card">
+                        <div className="hud-route-header">
+                          <div className="hud-route-point">
+                            <span className="hud-city">Frankfurt (FRA)</span>
+                            <span className="hud-country">Germany Hub</span>
+                          </div>
+                          <div className="hud-arrow-indicator">
+                            <Plane className="hud-plane-icon" />
+                            <div className="hud-arrow-line"></div>
+                          </div>
+                          <div className="hud-route-point right">
+                            <span className="hud-city">New York (JFK)</span>
+                            <span className="hud-country">United States</span>
+                          </div>
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div className="hud-progress-wrap">
+                          <div className="hud-progress-bar">
+                            <div className="hud-progress-fill" style={{ width: '74%' }}></div>
+                          </div>
+                          <div className="hud-progress-labels">
+                            <span>Status: <strong>In Transit (74%)</strong></span>
+                            <span>ETA: <strong>Today, 16:30 EST</strong></span>
+                          </div>
+                        </div>
+
+                        {/* Telemetry Micro-Pills */}
+                        <div className="hud-telemetry-pills">
+                          <span className="hud-pill"><Shield style={{ width: '12px', height: '12px' }} /> GPS Encrypted</span>
+                          <span className="hud-pill"><Activity style={{ width: '12px', height: '12px' }} /> 540 mph &bull; 34k ft</span>
+                          <span className="hud-pill live"><span className="hud-green-dot"></span> On Schedule</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3031,8 +3162,8 @@ export default function App() {
                       </div>
                       <div className="seq-index-badge">2</div>
                     </div>
-                    <h4>Receive Credentials</h4>
-                    <p>Secure login details are sent via encrypted notification channels.</p>
+                    <h4>Tracking Code Issued</h4>
+                    <p>Instant 8-digit tracking number is dispatched to your receipt and email.</p>
                   </div>
 
                   <div className="seq-node-card">
@@ -3042,8 +3173,8 @@ export default function App() {
                       </div>
                       <div className="seq-index-badge">3</div>
                     </div>
-                    <h4>Secure Login</h4>
-                    <p>Access your private dashboard with multi-factor authentication.</p>
+                    <h4>Live Satellite Tracking</h4>
+                    <p>Monitor package transit live on map with GPS coordinates and route telemetry.</p>
                   </div>
 
                   <div className="seq-node-card">
@@ -3275,7 +3406,7 @@ export default function App() {
                 <div className="footer-divider-line"></div>
 
                 <div className="footer-bottom-row">
-                  <span>© 2026 United Parcel Service of America, Inc. All rights reserved.</span>
+                  <span>© 2026 Apex Global Logistics Portal. All rights reserved.</span>
                   <div className="footer-bottom-links">
                     <a href="#home">Privacy Notice</a>
                     <a href="#home">Service Terms</a>
