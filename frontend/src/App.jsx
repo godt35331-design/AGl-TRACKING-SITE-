@@ -2762,7 +2762,7 @@ export default function App() {
             </div>
 
             <div className="header-ctrls-right">
-              <a href="#login" className="header-login-link">Track Your Shipment</a>
+              <a href="#login" className="header-login-link">Track Shipment</a>
             </div>
           </header>
         )
@@ -2891,17 +2891,6 @@ export default function App() {
                   
                   <div className="hero-action-buttons">
                     <button className="btn-hero-primary" onClick={() => triggerNavigationWithFlash('#login')}>
-                      Login to Portal
-                    </button>
-                    <button 
-                      className="btn-hero-secondary" 
-                      onClick={() => {
-                        setVisitorTrackInput('');
-                        setVisitorTrackError('');
-                        setVisitorTrackResult(null);
-                        setShowVisitorTrackModal(true);
-                      }}
-                    >
                       <svg className="btn-hero-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10h10z" /><path strokeLinecap="round" strokeLinejoin="round" d="M13 8h7a1 1 0 011 1v3H13V8z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19 12h2a1 1 0 011 1v3h-3v-4z" /></svg>
                       Track Shipment
                     </button>
@@ -3312,7 +3301,7 @@ export default function App() {
                 {/* Shield badge */}
                 <div className="login-shield-badge">APEX</div>
 
-                <h2 className="login-brand-title">Track Your Shipment</h2>
+                <h2 className="login-brand-title">Track Shipment</h2>
                 <p className="login-brand-tagline">Enter your tracking number to access real-time status and live GPS telemetry</p>
 
                 <div className="login-card-custom">
@@ -3348,7 +3337,7 @@ export default function App() {
                           <span>Verifying Tracking Number…</span>
                         </>
                       ) : (
-                        <>Track Your Shipment <ArrowRight className="btn-arrow" /></>
+                        <>Track Shipment <ArrowRight className="btn-arrow" /></>
                       )}
                     </button>
                   </form>
@@ -5414,7 +5403,7 @@ export default function App() {
               }}>
                 <i className="fas fa-key" style={{ color: '#ffb900', fontSize: '18px' }}></i>
               </div>
-              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#ffb900' }}>Customer Portal Created</h3>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#ffb900' }}>Shipment Tracking Created</h3>
             </div>
             
             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary, #cccccc)', marginBottom: '16px', lineHeight: '1.4' }}>
@@ -5434,7 +5423,7 @@ export default function App() {
               alignItems: 'center',
               gap: '8px'
             }}>
-              <span>✓ Automated confirmation email with credentials & tracking link sent to <strong>{credentialsModal.email}</strong>.</span>
+              <span>✓ Automated confirmation email with tracking key sent to <strong>{credentialsModal.email}</strong>.</span>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
@@ -5471,22 +5460,8 @@ export default function App() {
                   </button>
                 </div>
               </div>
-              
-              <div>
-                <label style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Auto-Generated Password</label>
-                <div style={{ display: 'flex', background: 'var(--bg-secondary, #1b1613)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '8px 12px', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'monospace', fontWeight: 'bold', color: '#ffb900' }}>{credentialsModal.password}</span>
-                  <button 
-                    type="button" 
-                    onClick={() => {
-                      navigator.clipboard.writeText(credentialsModal.password);
-                      alert("Password copied!");
-                    }} 
-                    style={{ background: 'none', border: 'none', color: '#ffb900', cursor: 'pointer', fontSize: '0.85rem' }}
-                  >
-                    Copy
-                  </button>
-                </div>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: '1.4', marginTop: '4px' }}>
+                ℹ️ No password required. Entering this Tracking ID (<strong>{credentialsModal.trackingId}</strong>) on the Track Shipment page will open the live shipment dashboard directly.
               </div>
             </div>
             
@@ -5633,223 +5608,6 @@ export default function App() {
               </button>
             </div>
           </form>
-        </div>
-      )}
-
-      {showVisitorTrackModal && (
-        <div className="credentials-overlay" style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.75)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999,
-          backdropFilter: 'blur(4px)'
-        }}>
-          <div className="credentials-modal" style={{
-            background: 'rgba(30, 24, 21, 0.95)',
-            border: '1px solid #ffb900',
-            borderRadius: '12px',
-            padding: '24px',
-            width: '100%',
-            maxWidth: '420px',
-            color: '#fff',
-            boxSizing: 'border-box',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-              <div style={{
-                background: '#ffb900',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#1b1613'
-              }}>
-                <Search style={{ width: '16px', height: '16px' }} />
-              </div>
-              <h3 style={{ margin: 0, color: '#ffb900', fontSize: '1.2rem', fontFamily: 'Outfit, sans-serif' }}>
-                Track Your Shipment
-              </h3>
-            </div>
-
-            {!visitorTrackResult ? (
-              <form onSubmit={async (e) => {
-                e.preventDefault();
-                setVisitorTrackError('');
-                if (!visitorTrackInput.trim()) {
-                  setVisitorTrackError('Please enter a tracking number.');
-                  return;
-                }
-                setVisitorTrackLoading(true);
-                try {
-                  const res = await fetch(`${API_BASE}/shipments/${visitorTrackInput.trim().toUpperCase()}`);
-                  const data = await res.json();
-                  if (res.ok && data && data.id) {
-                    setVisitorTrackResult(data);
-                  } else {
-                    setVisitorTrackError('Tracking ID not found in system databases. Please verify and try again.');
-                  }
-                } catch (err) {
-                  setVisitorTrackError('Server is currently offline.');
-                } finally {
-                  setVisitorTrackLoading(false);
-                }
-              }}>
-                <p style={{ fontSize: '0.85rem', color: '#cccccc', margin: '0 0 16px 0', lineHeight: '1.4' }}>
-                  Please enter the 8-digit tracking ID reference printed on your receipt or dispatch email.
-                </p>
-                <div style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', fontSize: '0.75rem', color: '#ffb900', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 'bold' }}>
-                    TRACKING NUMBER
-                  </label>
-                  <input 
-                    type="text"
-                    placeholder="APX-00000000"
-                    value={visitorTrackInput}
-                    onChange={(e) => setVisitorTrackInput(e.target.value)}
-                    style={{
-                      width: '100%',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid #ffb900',
-                      borderRadius: '6px',
-                      padding: '10px',
-                      color: '#fff',
-                      fontSize: '0.95rem',
-                      fontFamily: 'monospace',
-                      boxSizing: 'border-box'
-                    }}
-                  />
-                  {visitorTrackError && (
-                    <span style={{ display: 'block', color: '#ff4d4d', fontSize: '0.75rem', marginTop: '6px' }}>
-                      {visitorTrackError}
-                    </span>
-                  )}
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                  <button 
-                    type="button" 
-                    onClick={() => setShowVisitorTrackModal(false)}
-                    style={{
-                      background: 'none',
-                      color: '#ccc',
-                      border: '1px solid #444',
-                      borderRadius: '6px',
-                      padding: '10px 16px',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem'
-                    }}
-                  >
-                    CANCEL
-                  </button>
-                  <button 
-                    type="submit" 
-                    disabled={visitorTrackLoading}
-                    style={{
-                      background: 'linear-gradient(135deg, #ffb900 0%, #d89600 100%)',
-                      color: '#1b1613',
-                      border: 'none',
-                      borderRadius: '6px',
-                      padding: '10px 20px',
-                      fontWeight: 'bold',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem',
-                      opacity: visitorTrackLoading ? 0.7 : 1
-                    }}
-                  >
-                    {visitorTrackLoading ? 'SEARCHING...' : 'TRACK SHIPMENT'}
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div>
-                {/* 📄 Written Information Cargo Slip */}
-                <div style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px dashed rgba(255, 185, 0, 0.4)',
-                  borderRadius: '8px',
-                  padding: '16px',
-                  marginBottom: '16px',
-                  fontSize: '0.85rem',
-                  lineHeight: '1.6',
-                  fontFamily: 'monospace'
-                }}>
-                  <div style={{ textAlign: 'center', borderBottom: '1px dashed rgba(255,185,0,0.2)', paddingBottom: '8px', marginBottom: '12px' }}>
-                    <span style={{ fontSize: '1rem', fontWeight: 'bold', color: '#0284c7' }}>APEX CARGO RECEIPT</span>
-                  </div>
-                  <div><strong>TRACKING ID:</strong> {visitorTrackResult.id}</div>
-                  <div><strong>RECIPIENT:</strong> {visitorTrackResult.customerName}</div>
-                  <div><strong>DESTINATION:</strong> {visitorTrackResult.address}</div>
-                  <div><strong>CARGO WEIGHT:</strong> {visitorTrackResult.weight} lbs</div>
-                  <div><strong>VESSEL TYPE:</strong> {visitorTrackResult.vessel}</div>
-                  <div style={{ height: '8px' }}></div>
-                  <div style={{ borderTop: '1px dashed rgba(255,185,0,0.2)', paddingTop: '8px' }}>
-                    <strong>STATUS:</strong> <span style={{ color: '#ffb900', fontWeight: 'bold' }}>{visitorTrackResult.status}</span>
-                  </div>
-                  <div><strong>LAST LOCATION:</strong> {visitorTrackResult.currentLocationName}</div>
-                  <div><strong>EST. DELIVERY:</strong> {visitorTrackResult.eta || 'Pending'}</div>
-                </div>
-
-                {/* Promotional banner calling to login */}
-                <div style={{
-                  background: 'rgba(255, 185, 0, 0.1)',
-                  borderLeft: '4px solid #ffb900',
-                  padding: '12px',
-                  borderRadius: '4px',
-                  marginBottom: '20px',
-                  fontSize: '0.8rem',
-                  color: '#fff',
-                  lineHeight: '1.4'
-                }}>
-                  🔑 Please login into your account to keep track of thier details on live map how they are moving still it gets to tier destination
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                  <button 
-                    type="button" 
-                    onClick={() => setVisitorTrackResult(null)}
-                    style={{
-                      background: 'none',
-                      color: '#ccc',
-                      border: '1px solid #444',
-                      borderRadius: '6px',
-                      padding: '10px 16px',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem'
-                    }}
-                  >
-                    BACK
-                  </button>
-                  <button 
-                    type="button" 
-                    onClick={() => {
-                      setShowVisitorTrackModal(false);
-                      window.location.hash = '#login';
-                    }}
-                    style={{
-                      background: 'linear-gradient(135deg, #ffb900 0%, #d89600 100%)',
-                      color: '#1b1613',
-                      border: 'none',
-                      borderRadius: '6px',
-                      padding: '10px 20px',
-                      fontWeight: 'bold',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem'
-                    }}
-                  >
-                    GO TO LOGIN
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       )}
     </div>

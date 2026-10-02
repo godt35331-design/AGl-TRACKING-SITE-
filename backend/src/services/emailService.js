@@ -51,11 +51,12 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
         ` : ''}
 
         ${credentials ? `
-        <!-- Credentials Summary -->
-        <div style="background-color: #f7fafc; border-left: 4px solid #351C15; border-radius: 2px; padding: 16px; margin-bottom: 24px; font-size: 14px;">
-          <div style="font-weight: 700; color: #351C15; margin-bottom: 8px; text-transform: uppercase; font-size: 13px;">Customer Portal Credentials</div>
-          <div style="margin-bottom: 6px; color: #2d3748;"><strong>Username / Email:</strong> <span style="font-family: monospace;">${credentials.email}</span></div>
-          <div style="color: #2d3748;"><strong>Password:</strong> <span style="font-family: monospace; font-weight: 700; background: #fff3c4; padding: 2px 6px; border-radius: 2px; color: #351C15;">${credentials.password}</span></div>
+        <!-- Tracking & Portal Access Card -->
+        <div style="background-color: #f7fafc; border-left: 4px solid #351C15; border-radius: 4px; padding: 18px 20px; margin-bottom: 24px; font-size: 14px;">
+          <div style="font-weight: 700; color: #351C15; margin-bottom: 10px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Live Shipment Tracking Access</div>
+          <div style="margin-bottom: 8px; color: #2d3748;"><strong>Tracking ID:</strong> <span style="font-family: monospace; font-weight: 700; background: #fff3c4; padding: 3px 8px; border-radius: 3px; color: #351C15; font-size: 15px;">${credentials.trackingId || trackingNumber || 'N/A'}</span></div>
+          <div style="margin-bottom: 8px; color: #2d3748;"><strong>Registered Email:</strong> <span style="font-family: monospace;">${credentials.email}</span></div>
+          <div style="font-size: 12px; color: #64748b; margin-top: 8px; line-height: 1.5;">* No password required. Enter your Tracking ID directly on the portal to view live status and GPS telemetry.</div>
         </div>
         ` : ''}
 
@@ -118,7 +119,7 @@ export async function sendEmail({ to, recipientName, senderName, senderPhone, se
   } else if (templateType === 'DELAY_NOTICE') {
     emailSubject = subject || `Important Notice: Update on Apex Package #${trackingCode}`;
   } else if (templateType === 'NEW_REGISTRATION') {
-    emailSubject = subject || `Apex Shipment Confirmation & Credentials - #${trackingCode}${finalSenderName ? ` (From: ${finalSenderName})` : ''}`;
+    emailSubject = subject || `Apex Shipment Confirmation - #${trackingCode}${finalSenderName ? ` (From: ${finalSenderName})` : ''}`;
   }
 
   const html = buildHtmlEmail({
@@ -136,7 +137,7 @@ export async function sendEmail({ to, recipientName, senderName, senderPhone, se
     credentials: credentials
   });
 
-  const textContent = `Dear ${recipientName || 'Valued Customer'},\n\n${messageBody}\n\n${finalSenderName ? `SENDER INFORMATION:\nName: ${finalSenderName}${finalSenderPhone ? `\nPhone: ${finalSenderPhone}` : ''}${finalSenderEmail ? `\nEmail: ${finalSenderEmail}` : ''}${finalSenderAddress ? `\nAddress: ${finalSenderAddress}` : ''}\n\n` : ''}${credentials ? `CUSTOMER PORTAL ACCESS KEY:\nLogin Tracking ID: ${credentials.trackingId || trackingNumber || 'N/A'}\nRegistered Email: ${credentials.email}\n(Simply enter your Tracking ID directly into the portal to log in - no password required)\n\n` : ''}${trackingCode ? `SHIPMENT DETAILS:\nTracking Code: ${trackingCode}\n${finalSenderName ? `Sender: ${finalSenderName}\n` : ''}Recipient: ${recipientName || 'Customer'}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n` : ''}\nTrack Shipment: https://aglgloballogistics.com/#login\n\nApex Global Logistics Services\nWebsite: https://aglgloballogistics.com/#login\nEmail: support@aglgloballogistics.com`;
+  const textContent = `Dear ${recipientName || 'Valued Customer'},\n\n${messageBody}\n\n${finalSenderName ? `SENDER INFORMATION:\nName: ${finalSenderName}${finalSenderPhone ? `\nPhone: ${finalSenderPhone}` : ''}${finalSenderEmail ? `\nEmail: ${finalSenderEmail}` : ''}${finalSenderAddress ? `\nAddress: ${finalSenderAddress}` : ''}\n\n` : ''}SHIPMENT TRACKING DETAILS:\nTracking ID: ${trackingCode}\nRecipient: ${recipientName || 'Customer'}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n\nTrack Shipment (No password required):\nhttps://aglgloballogistics.com/#login\n\nApex Global Logistics Services\nWebsite: https://aglgloballogistics.com/#login\nEmail: support@aglgloballogistics.com`;
 
   try {
     const resend = new Resend(apiKey);

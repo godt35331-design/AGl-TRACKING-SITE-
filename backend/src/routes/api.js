@@ -259,41 +259,29 @@ router.post('/shipments', async (req, res) => {
 
     await newShipment.save();
 
-    // Check if customer already exists, fetch password if they do, or generate a new one
+    // Check or update customer record without password requirement
     const custEmail = sData.customerEmail.trim().toLowerCase();
-    let existingCustomer = await Customer.findOne({ email: custEmail });
-    let password = '';
     
-    if (existingCustomer && existingCustomer.password) {
-      password = existingCustomer.password;
-    } else {
-      // Auto-generate a readable 8-character password
-      password = Math.random().toString(36).substring(2, 10).toUpperCase();
-    }
-
-    // Create or update Customer volume and password
     await Customer.findOneAndUpdate(
       { email: custEmail },
       { 
         $inc: { volume: 1 }, 
-        name: sData.customerName,
-        password: password
+        name: sData.customerName
       },
       { upsert: true, new: true }
     );
 
-    // Format response POJO to include credentials
+    // Format response payload (no password included)
     const responsePayload = typeof newShipment.toObject === 'function' ? newShipment.toObject() : JSON.parse(JSON.stringify(newShipment));
     responsePayload.credentials = {
       email: custEmail,
-      password: password,
       trackingId: newShipment.id
     };
 
     // Automatically send registration & credentials email to customer
     try {
       const senderNotice = sData.senderName ? ` sent by ${sData.senderName}` : '';
-      const welcomeMessage = `Your shipping appointment for the package${senderNotice} has been successfully registered with Apex Global Logistics.\n\nBelow are your Customer Portal login credentials to monitor your package live telemetry, along with your shipment overview.`;
+      const welcomeMessage = `Your shipment${senderNotice} has been successfully registered with Apex Global Logistics.\n\nBelow are your shipment details. You can track your package and view live GPS telemetry anytime by entering your Tracking ID directly on the portal.`;
 
       sendEmail({
         to: custEmail,
@@ -302,7 +290,7 @@ router.post('/shipments', async (req, res) => {
         senderPhone: sData.senderPhone || '',
         senderEmail: sData.senderEmail || '',
         senderAddress: sData.senderAddress || '',
-        subject: `Apex Shipment Confirmation & Credentials - #${newShipment.id}${sData.senderName ? ` (From: ${sData.senderName})` : ''}`,
+        subject: `Apex Shipment Confirmation - #${newShipment.id}${sData.senderName ? ` (From: ${sData.senderName})` : ''}`,
         messageBody: welcomeMessage,
         templateType: 'NEW_REGISTRATION',
         shipment: newShipment,
