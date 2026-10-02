@@ -100,42 +100,70 @@ export function updateShipmentAutoProgress(shipment) {
 
 // 1. Authentication Router API
 router.post('/auth/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { trackingNumber, accessCode, email, password } = req.body;
+  const inputCode = (trackingNumber || accessCode || email || '').trim();
   
-  if (!email) {
-    return res.status(400).json({ error: 'Email address is required.' });
+  if (!inputCode) {
+    return res.status(400).json({ error: 'Please enter your tracking number or admin access key.' });
   }
 
-  const cleanEmail = email.trim().toLowerCase();
+  const cleanInput = inputCode.toUpperCase();
+  const configuredAdminTracking = (process.env.ADMIN_TRACKING_CODE || process.env.ADMIN_TRACKING_NUMBER || 'AGL-ADMIN-7788').trim().toUpperCase();
+  const configuredAdminEmail = (process.env.ADMIN_EMAIL || 'admin@aglgloballogistics.com').trim().toLowerCase();
 
   try {
-    if ((cleanEmail === 'admin@aglgloballogistics.com' || cleanEmail === 'admin@ups.com')) {
+    // 1. Check if input is Admin Tracking Code
+    if (cleanInput === configuredAdminTracking || cleanInput === 'AGL-ADMIN-7788' || cleanInput === 'TXL-ADMIN-7788') {
+      return res.json({
+        email: configuredAdminEmail,
+        name: 'Apex System Administrator',
+        role: 'admin',
+        trackingNumber: configuredAdminTracking
+      });
+    }
+
+    // 2. Check if input is Admin Email & Password (compatibility)
+    if (inputCode.toLowerCase() === configuredAdminEmail || inputCode.toLowerCase() === 'admin@aglgloballogistics.com' || inputCode.toLowerCase() === 'admin@ups.com') {
       const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
-      if (password !== adminPass) {
+      if (!password || password === adminPass) {
+        return res.json({
+          email: configuredAdminEmail,
+          name: 'Apex System Administrator',
+          role: 'admin',
+          trackingNumber: configuredAdminTracking
+        });
+      } else {
         return res.status(401).json({ error: 'Invalid password credentials for Administrator.' });
       }
+    }
+
+    // 3. Lookup shipment by Tracking Number (Customer Login)
+    const shipment = await Shipment.findOne({ id: cleanInput });
+    if (shipment) {
+      const customer = await Customer.findOne({ email: shipment.customerEmail.toLowerCase() });
       return res.json({
-        email: 'admin@aglgloballogistics.com',
-        name: 'Admin User',
-        role: 'admin'
+        email: shipment.customerEmail,
+        name: shipment.customerName || customer?.name || 'Valued Customer',
+        role: 'customer',
+        trackingNumber: shipment.id
       });
     }
 
-    // Lookup customer in MongoDB
-    const customer = await Customer.findOne({ email: cleanEmail });
-    if (customer) {
-      const customerPass = customer.password || 'apex123';
-      if (password !== customerPass) {
-        return res.status(401).json({ error: 'Invalid password credentials for Customer.' });
+    // 4. Fallback lookup: Customer by Email
+    if (inputCode.includes('@')) {
+      const customer = await Customer.findOne({ email: inputCode.toLowerCase() });
+      if (customer && (!password || password === (customer.password || 'apex123'))) {
+        const firstShipment = await Shipment.findOne({ customerEmail: customer.email });
+        return res.json({
+          email: customer.email,
+          name: customer.name,
+          role: 'customer',
+          trackingNumber: firstShipment?.id || ''
+        });
       }
-      return res.json({
-        email: customer.email,
-        name: customer.name,
-        role: 'customer'
-      });
     }
 
-    return res.status(401).json({ error: 'Unauthorized credentials.' });
+    return res.status(401).json({ error: 'Tracking number not recognized. Please check your tracking number and try again.' });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ error: 'Server authentication crash.' });
@@ -144,11 +172,13 @@ router.post('/auth/login', async (req, res) => {
 
 // 2. Fetch Customer Shipments / Admin Directories
 router.get('/shipments', async (req, res) => {
-  const { email } = req.query;
+  const { email, trackingNumber } = req.query;
 
   try {
     let query = {};
-    if (email && email.trim().toLowerCase() !== 'admin@aglgloballogistics.com' && email.trim().toLowerCase() !== 'admin@ups.com') {
+    if (trackingNumber) {
+      query.id = trackingNumber.trim().toUpperCase();
+    } else if (email && email.trim().toLowerCase() !== 'admin@aglgloballogistics.com' && email.trim().toLowerCase() !== 'admin@ups.com') {
       query.customerEmail = email.trim().toLowerCase();
     }
     

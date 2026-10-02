@@ -1857,6 +1857,7 @@ export default function App() {
   const [selectedShipmentId, setSelectedShipmentId] = useState(null);
   
   // Login Form States
+  const [loginTrackingCode, setLoginTrackingCode] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -2002,8 +2003,8 @@ export default function App() {
   // Fetch initial core shipments / data
   const fetchShipments = async () => {
     try {
-      const emailQuery = user ? (user.role === 'admin' ? '' : `?email=${user.email}`) : '';
-      const res = await fetch(`${API_BASE}/shipments${emailQuery}`);
+      const queryParam = user ? (user.role === 'admin' ? '' : (user.trackingNumber ? `?trackingNumber=${encodeURIComponent(user.trackingNumber)}` : `?email=${encodeURIComponent(user.email)}`)) : '';
+      const res = await fetch(`${API_BASE}/shipments${queryParam}`);
       const data = await res.json();
       if (Array.isArray(data)) {
         setShipments(data);
@@ -2103,19 +2104,28 @@ export default function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
-    if (!loginEmail) return;
+    const code = (loginTrackingCode || loginEmail || '').trim();
+    if (!code) {
+      setLoginError('Please enter your tracking number or admin access key.');
+      return;
+    }
 
     try {
       setLoggingIn(true);
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: loginEmail, password: loginPassword })
+        body: JSON.stringify({ 
+          trackingNumber: code, 
+          accessCode: code, 
+          email: code,
+          password: loginPassword 
+        })
       });
       const data = await res.json();
 
       if (!res.ok) {
-        setLoginError(data.error || 'Login authorization fail.');
+        setLoginError(data.error || 'Tracking number or access code not recognized.');
       } else {
         const sessionData = {
           ...data,
@@ -2124,9 +2134,20 @@ export default function App() {
         localStorage.setItem('apex_user', JSON.stringify(sessionData));
         setUser(sessionData);
         userRef.current = sessionData;
-        const targetTab = data.role === 'admin' ? 'admin' : 'dashboard';
-        setActiveTab(targetTab);
-        window.location.hash = `#${targetTab}`;
+
+        if (data.role === 'admin') {
+          setActiveTab('admin');
+          window.location.hash = '#admin';
+        } else {
+          if (data.trackingNumber) {
+            setSelectedShipmentId(data.trackingNumber);
+            setActiveTab('details');
+            window.location.hash = `#details?id=${data.trackingNumber}`;
+          } else {
+            setActiveTab('dashboard');
+            window.location.hash = '#dashboard';
+          }
+        }
       }
     } catch (err) {
       setLoginError('Could not link to backend server.');
@@ -2741,7 +2762,7 @@ export default function App() {
             </div>
 
             <div className="header-ctrls-right">
-              <a href="#login" className="header-login-link">Login</a>
+              <a href="#login" className="header-login-link">Track Your Shipment</a>
             </div>
           </header>
         )
@@ -3291,72 +3312,46 @@ export default function App() {
                 {/* Shield badge */}
                 <div className="login-shield-badge">APEX</div>
 
-                <h2 className="login-brand-title">Logistics Portal</h2>
-                <p className="login-brand-tagline">Manage your global fleet and shipments</p>
+                <h2 className="login-brand-title">Track Your Shipment</h2>
+                <p className="login-brand-tagline">Enter your tracking number to access real-time status and live GPS telemetry</p>
 
                 <div className="login-card-custom">
                   {loginError && <div className="error-banner" style={{marginBottom:'20px'}}>{loginError}</div>}
                   
                   <form onSubmit={handleLogin}>
                     <div className="login-form-label-row">
-                      <label>Email Address</label>
+                      <label>ENTER TRACKING NUMBER</label>
                     </div>
                     <div className="login-input-wrapper">
-                      <Mail className="login-input-icon-left" />
+                      <Package className="login-input-icon-left" />
                       <input 
-                        type="email" 
-                        placeholder="name@company.com"
-                        value={loginEmail}
-                        onChange={(e) => setLoginEmail(e.target.value)}
+                        type="text" 
+                        placeholder="e.g. APX-31518784 or Access Key"
+                        value={loginTrackingCode || loginEmail}
+                        onChange={(e) => {
+                          setLoginTrackingCode(e.target.value);
+                          setLoginEmail(e.target.value);
+                        }}
+                        style={{ fontFamily: 'monospace', letterSpacing: '1px', textTransform: 'uppercase' }}
+                        autoFocus
                         required
                       />
                     </div>
-
-                    <div className="login-form-label-row">
-                      <label>Password</label>
-                      <a href="#login" className="login-forgot-link" onClick={(e) => { e.preventDefault(); alert("Verification code reset links have been dispatched to registered emails."); }}>Forgot Password?</a>
-                    </div>
-                    <div className="login-input-wrapper">
-                      <Lock className="login-input-icon-left" />
-                      <input 
-                        type={showPassword ? 'text' : 'password'} 
-                        placeholder="••••••••" 
-                        value={loginPassword}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                        required
-                      />
-                      <button 
-                        type="button" 
-                        className="login-input-icon-right-btn" 
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <EyeOff className="login-icon-size" /> : <Eye className="login-icon-size" />}
-                      </button>
-                    </div>
-
-                    <div className="login-remember-row">
-                      <input type="checkbox" id="rememberDevice" defaultChecked />
-                      <label htmlFor="rememberDevice">Remember this device</label>
-                    </div>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary, #64748B)', marginTop: '8px', marginBottom: '20px', lineHeight: '1.4' }}>
+                      Enter your 8-digit tracking number to view package status and live GPS telemetry.
+                    </p>
 
                     <button type="submit" className="btn-login-submit-gold" disabled={loggingIn}>
                       {loggingIn ? (
                         <>
-                          <span className="btn-spinner" aria-label="Signing in"></span>
-                          <span>Signing in…</span>
+                          <span className="btn-spinner" aria-label="Verifying"></span>
+                          <span>Verifying Tracking Number…</span>
                         </>
                       ) : (
-                        <>Login <ArrowRight className="btn-arrow" /></>
+                        <>Track Your Shipment <ArrowRight className="btn-arrow" /></>
                       )}
                     </button>
                   </form>
-
-                  <div className="login-divider-line"></div>
-
-                  <div className="login-new-label">New to the enterprise portal?</div>
-                  <button className="btn-login-outline-access" onClick={() => handleRoleBypass('customer')}>
-                    Request Portal Access
-                  </button>
                 </div>
 
                 <div className="login-page-subfooter">
@@ -5444,7 +5439,7 @@ export default function App() {
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
               <div>
-                <label style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Tracking ID</label>
+                <label style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Customer Login Tracking ID</label>
                 <div style={{ display: 'flex', background: 'var(--bg-secondary, #1b1613)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '8px 12px', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>{credentialsModal.trackingId}</span>
                   <button 
