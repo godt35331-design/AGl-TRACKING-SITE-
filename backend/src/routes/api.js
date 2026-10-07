@@ -246,6 +246,9 @@ router.post('/shipments', async (req, res) => {
       originCode: sData.originCode || 'CHI',
       destCode: sData.destCode || 'SEA',
       eta: sData.eta,
+      internalNotes: sData.internalNotes || '',
+      amount: Number(sData.amount) > 0 ? Number(sData.amount) : 0,
+      paymentStatus: 'Unpaid',
       status: 'Registered',
       currentLocationName: `Scheduled for departure at ${sData.origin}`,
       simulation: {
@@ -309,6 +312,78 @@ router.post('/shipments', async (req, res) => {
   } catch (error) {
     console.error('Error registering cargo shipment:', error);
     res.status(500).json({ error: 'Database write error. Check parameter formats.' });
+  }
+});
+
+// 4b. Admin Edit Shipment Details (customer, cargo, route, status, ETA, notes)
+router.put('/shipments/:id', async (req, res) => {
+  const { id } = req.params;
+  const u = req.body || {};
+
+  try {
+    const shipment = await Shipment.findOne({ id: id.toUpperCase() });
+    if (!shipment) {
+      return res.status(404).json({ error: 'Shipment not found.' });
+    }
+
+    if (u.vessel !== undefined && !['Truck', 'Plane', 'Ship'].includes(u.vessel)) {
+      return res.status(400).json({ error: 'Invalid vessel type.' });
+    }
+    if (u.weight !== undefined && (u.weight === '' || isNaN(Number(u.weight)))) {
+      return res.status(400).json({ error: 'Weight must be a number.' });
+    }
+
+    const oldEmail = (shipment.customerEmail || '').trim().toLowerCase();
+    const newEmail = u.customerEmail !== undefined ? String(u.customerEmail).trim().toLowerCase() : oldEmail;
+    if (!newEmail) {
+      return res.status(400).json({ error: 'Customer email is required.' });
+    }
+
+    const textFields = ['customerName', 'customerPhone', 'address', 'desc', 'vessel', 'origin', 'destination',
+      'originCode', 'destCode', 'eta', 'internalNotes', 'status', 'currentLocationName', 'packageImage'];
+    for (const f of textFields) {
+      if (u[f] !== undefined) shipment[f] = u[f];
+    }
+    if (u.weight !== undefined) shipment.weight = Number(u.weight);
+    if (u.amount !== undefined) {
+      const amt = Number(u.amount);
+      if (isNaN(amt) || amt < 0) return res.status(400).json({ error: 'Amount must be a positive number.' });
+      shipment.amount = amt;
+    }
+    if (u.paymentStatus !== undefined) {
+      if (!['Paid', 'Unpaid'].includes(u.paymentStatus)) return res.status(400).json({ error: 'Invalid payment status.' });
+      shipment.paymentStatus = u.paymentStatus;
+    }
+    shipment.customerEmail = newEmail;
+
+    if (Array.isArray(u.waypoints) && u.waypoints.length >= 2) {
+      shipment.simulation.waypoints = u.waypoints;
+    }
+
+    await shipment.save();
+
+    // Keep customer records consistent when the shipment is reassigned
+    if (newEmail !== oldEmail) {
+      await Customer.findOneAndUpdate({ email: oldEmail }, { $inc: { volume: -1 } });
+      const oldCust = await Customer.findOne({ email: oldEmail });
+      if (oldCust && oldCust.volume <= 0) await Customer.deleteOne({ email: oldEmail });
+
+      const newCust = await Customer.findOne({ email: newEmail });
+      const password = (newCust && newCust.password) || Math.random().toString(36).substring(2, 10).toUpperCase();
+      await Customer.findOneAndUpdate(
+        { email: newEmail },
+        { $inc: { volume: 1 }, name: shipment.customerName, password },
+        { upsert: true, new: true }
+      );
+    } else if (u.customerName !== undefined) {
+      await Customer.findOneAndUpdate({ email: newEmail }, { name: shipment.customerName });
+    }
+
+    broadcastShipmentUpdate(shipment);
+    res.json(shipment);
+  } catch (error) {
+    console.error('Error editing shipment:', error);
+    res.status(500).json({ error: 'Shipment update failed.' });
   }
 });
 

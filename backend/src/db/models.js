@@ -27,6 +27,9 @@ const shipmentSchema = new mongoose.Schema({
   originCode: { type: String, default: 'CHI' },
   destCode: { type: String, default: 'SEA' },
   eta: { type: String, required: true },
+  internalNotes: { type: String, default: '' },
+  amount: { type: Number, default: 0 },
+  paymentStatus: { type: String, enum: ['Unpaid', 'Paid'], default: 'Unpaid' },
   status: { type: String, default: 'Registered' },
   currentLocationName: { type: String, default: 'Scheduled' },
   simulation: {

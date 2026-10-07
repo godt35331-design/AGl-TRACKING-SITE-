@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { 
   Truck, Plane, Ship, Activity, ClipboardList, PlusCircle, CheckCircle, 
   MapPin, LogOut, ArrowRight, Eye, EyeOff, Shield, Users, Package, RefreshCw, Mail, Lock,
-  SlidersHorizontal, Download, Printer, Search, Trash, MessageSquare, Compass, Send
+  SlidersHorizontal, Download, Printer, Search, Trash, MessageSquare, Compass, Send, Pencil
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 
@@ -1890,7 +1890,12 @@ export default function App() {
   const [formShipmentType, setFormShipmentType] = useState('Standard');
   const [formInitialStatus, setFormInitialStatus] = useState('Manifest Prepared');
   const [formInternalNotes, setFormInternalNotes] = useState('');
+  const [formAmount, setFormAmount] = useState('');
+  const [adminSearch, setAdminSearch] = useState('');
   const [credentialsModal, setCredentialsModal] = useState(null);
+  const [editForm, setEditForm] = useState(null);
+  const [editError, setEditError] = useState('');
+  const [editSaving, setEditSaving] = useState(false);
   const [showCustomerTrackPrompt, setShowCustomerTrackPrompt] = useState(false);
   const [customerTrackInput, setCustomerTrackInput] = useState('');
   const [trackPromptError, setTrackPromptError] = useState('');
@@ -2232,7 +2237,9 @@ export default function App() {
       originCode: formOriginCode,
       destCode: formDestCode,
       eta: formEta,
-      waypoints: waypointsArray
+      waypoints: waypointsArray,
+      internalNotes: formInternalNotes || '',
+      amount: parseFloat(formAmount) || 0
     };
 
     try {
@@ -2265,6 +2272,7 @@ export default function App() {
         setFormDesc('');
         setFormTrackingId(`APX-${Math.floor(10000000 + Math.random() * 90000000)}`);
         setFormInternalNotes('');
+        setFormAmount('');
         fetchShipments();
         fetchStats();
       } else {
@@ -2673,6 +2681,86 @@ export default function App() {
       alert('Tracking identity code not registered in system databases.');
     }
   };
+
+  const openEditShipment = (s) => {
+    setEditError('');
+    setEditForm({
+      id: s.id,
+      customerName: s.customerName || '',
+      customerEmail: s.customerEmail || '',
+      customerPhone: s.customerPhone || '',
+      address: s.address || '',
+      weight: s.weight ?? '',
+      desc: s.desc || '',
+      vessel: s.vessel || 'Truck',
+      originCode: s.originCode || '',
+      destCode: s.destCode || '',
+      origin: s.origin || '',
+      destination: s.destination || '',
+      eta: s.eta || '',
+      status: s.status || 'Registered',
+      currentLocationName: s.currentLocationName || '',
+      internalNotes: s.internalNotes || '',
+      amount: s.amount ?? 0,
+      paymentStatus: s.paymentStatus || 'Unpaid',
+      route: ((s.simulation && s.simulation.waypoints) || []).join('-')
+    });
+  };
+
+  const setEditField = (key, value) => setEditForm(prev => ({ ...prev, [key]: value }));
+
+  const handleSaveEdit = async (e) => {
+    e.preventDefault();
+    if (!editForm.customerName.trim() || !editForm.customerEmail.trim() || !editForm.origin.trim() || !editForm.destination.trim()) {
+      setEditError('Customer name, email, origin and destination are required.');
+      return;
+    }
+    const waypoints = editForm.route.split('-').map(w => w.trim()).filter(Boolean);
+    const { id, route, ...fields } = editForm;
+    setEditSaving(true);
+    setEditError('');
+    try {
+      const res = await fetch(`${API_BASE}/shipments/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...fields, waypoints })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShipments(prev => prev.map(s => (s.id === id ? data : s)));
+        setEditForm(null);
+        fetchStats();
+      } else {
+        setEditError(data.error || 'Failed to save changes.');
+      }
+    } catch (err) {
+      setEditError('Failed to connect to backend server.');
+    } finally {
+      setEditSaving(false);
+    }
+  };
+
+  const handleTogglePaid = async (s) => {
+    const next = s.paymentStatus === 'Paid' ? 'Unpaid' : 'Paid';
+    if (!window.confirm(`Mark shipment #${s.id} as ${next}?`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/shipments/${s.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentStatus: next })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShipments(prev => prev.map(x => (x.id === s.id ? data : x)));
+      } else {
+        alert(data.error || 'Failed to update payment.');
+      }
+    } catch (err) {
+      alert('Failed to connect to backend server.');
+    }
+  };
+
+  const formatMoney = (n) => `$${Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   const handleDeleteShipment = async (shipmentId) => {
     if (!window.confirm(`Are you sure you want to permanently delete shipment #${shipmentId}? This action cannot be undone.`)) {
@@ -3721,6 +3809,86 @@ export default function App() {
           )}
 
           {/* TRACKING LIST VIEW */}
+          {activeTab === 'tracking' && user && user.role === 'admin' && (() => {
+            const q = adminSearch.trim().toLowerCase();
+            const rows = shipments.filter(s => !q || s.id.toLowerCase().includes(q));
+            const th = { textAlign: 'left', padding: '14px 16px', fontSize: '0.75rem', letterSpacing: '0.08em', color: '#64748B', fontWeight: 700 };
+            const td = { padding: '14px 16px', fontSize: '0.88rem', color: '#334155', borderTop: '1px solid #F1F5F9', verticalAlign: 'middle' };
+            return (
+              <section className="tracking-list-view">
+                <div className="table-search-header">
+                  <div>
+                    <h2 className="tracking-title-custom">Shipments</h2>
+                    <p className="tracking-subtitle-custom">Edit shipment details and confirm customer payments.</p>
+                  </div>
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="Search by tracking number..."
+                  value={adminSearch}
+                  onChange={(e) => setAdminSearch(e.target.value)}
+                  style={{ width: '100%', boxSizing: 'border-box', padding: '14px 18px', border: '1px solid #E2E8F0', borderRadius: '12px', fontSize: '1rem', marginBottom: '16px', background: '#fff', color: '#0F172A' }}
+                />
+
+                <div style={{ background: '#fff', borderRadius: '12px', overflowX: 'auto', boxShadow: '0 1px 4px rgba(15,23,42,0.08)' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
+                    <thead style={{ background: '#F8FAFC' }}>
+                      <tr>
+                        <th style={th}>TRACKING NUMBER</th>
+                        <th style={th}>CUSTOMER</th>
+                        <th style={th}>ROUTE</th>
+                        <th style={th}>STATUS</th>
+                        <th style={th}>AMOUNT</th>
+                        <th style={th}>PAYMENT</th>
+                        <th style={th}>EXPECTED DELIVERY</th>
+                        <th style={th}></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rows.map(s => {
+                        const paid = s.paymentStatus === 'Paid';
+                        return (
+                          <tr key={s.id}>
+                            <td style={{ ...td, fontWeight: 700, color: '#0F172A', cursor: 'pointer' }} onClick={() => window.location.hash = `#details?id=${s.id}`}>{s.id}</td>
+                            <td style={td}>{s.customerName}<div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{s.customerEmail}</div></td>
+                            <td style={td}>{s.originCode} ➔ {s.destCode}</td>
+                            <td style={td}>
+                              <span style={{ background: '#EEF2F7', border: '1px solid #DDE3EC', color: '#334155', borderRadius: '999px', padding: '4px 12px', fontSize: '0.8rem', fontWeight: 700 }}>{s.status}</span>
+                            </td>
+                            <td style={{ ...td, fontWeight: 600 }}>{formatMoney(s.amount)}</td>
+                            <td style={td}>
+                              <button
+                                onClick={() => handleTogglePaid(s)}
+                                title={paid ? 'Click to mark as Unpaid' : 'Click to confirm payment received'}
+                                style={{ cursor: 'pointer', borderRadius: '999px', padding: '4px 14px', fontSize: '0.8rem', fontWeight: 700,
+                                  background: paid ? '#DCFCE7' : '#FEE2E2', border: `1px solid ${paid ? '#86EFAC' : '#FECACA'}`, color: paid ? '#15803D' : '#B91C1C' }}
+                              >
+                                {paid ? 'Paid' : 'Unpaid'}
+                              </button>
+                            </td>
+                            <td style={td}>{s.eta}</td>
+                            <td style={{ ...td, textAlign: 'right' }}>
+                              <button
+                                onClick={() => openEditShipment(s)}
+                                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#EEF2FF', color: '#2563EB', border: 'none', borderRadius: '8px', padding: '9px 16px', fontSize: '0.9rem', cursor: 'pointer' }}
+                              >
+                                <Pencil style={{ width: '14px', height: '14px' }} /> Edit
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {rows.length === 0 && (
+                        <tr><td colSpan="8" style={{ ...td, textAlign: 'center', padding: '30px' }}>No shipments found.</td></tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            );
+          })()}
+
           {activeTab === 'tracking' && user && user.role === 'customer' && (
             <section className="tracking-list-view">
               <div className="table-search-header">
@@ -3782,6 +3950,7 @@ export default function App() {
                       <th>ORIGIN</th>
                       <th>DESTINATION</th>
                       <th>STATUS</th>
+                      <th>PAYMENT</th>
                       <th>EST. DELIVERY</th>
                       <th>ACTION</th>
                     </tr>
@@ -3841,6 +4010,14 @@ export default function App() {
                             </span>
                           </td>
                           <td>
+                            <span style={{ display: 'inline-block', borderRadius: '999px', padding: '4px 12px', fontSize: '0.8rem', fontWeight: 700,
+                              background: shipment.paymentStatus === 'Paid' ? '#DCFCE7' : '#FEE2E2',
+                              border: `1px solid ${shipment.paymentStatus === 'Paid' ? '#86EFAC' : '#FECACA'}`,
+                              color: shipment.paymentStatus === 'Paid' ? '#15803D' : '#B91C1C' }}>
+                              {shipment.paymentStatus === 'Paid' ? 'Paid' : `Unpaid${shipment.amount > 0 ? ` · ${formatMoney(shipment.amount)}` : ''}`}
+                            </span>
+                          </td>
+                          <td>
                             <div className="delivery-cell">
                               <span className="delivery-date">
                                 {shipment.id === 'APX-8271-4492' ? 'Oct 24, 2023' : 
@@ -3869,7 +4046,7 @@ export default function App() {
                     })}
                     {displayedShipments.length === 0 && (
                       <tr>
-                        <td colSpan="6" style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-secondary)' }}>
+                        <td colSpan="7" style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-secondary)' }}>
                           No shipments registered under this customer account.
                         </td>
                       </tr>
@@ -4426,8 +4603,17 @@ export default function App() {
                                     <Activity style={{ width: '13px', height: '13px' }} />
                                     <span style={{ marginLeft: '4px' }}>Simulate</span>
                                   </button>
-                                  <button 
-                                    className="btn-tracker-filter" 
+                                  <button
+                                    className="btn-tracker-filter"
+                                    style={{ padding: '6px 10px', height: 'auto', fontSize: '0.8rem', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.3)', color: '#2563eb' }}
+                                    onClick={() => openEditShipment(s)}
+                                    title="Edit Shipment Details"
+                                  >
+                                    <Pencil style={{ width: '13px', height: '13px' }} />
+                                    <span style={{ marginLeft: '4px' }}>Edit</span>
+                                  </button>
+                                  <button
+                                    className="btn-tracker-filter"
                                     style={{ padding: '6px 10px', height: 'auto', fontSize: '0.8rem', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#ef4444' }}
                                     onClick={() => handleDeleteShipment(s.id)}
                                     title="Permanently Delete Tracking"
@@ -4821,6 +5007,18 @@ export default function App() {
                               />
                             </div>
                             
+                            <div className="input-field">
+                              <label>AMOUNT TO PAY ($)</label>
+                              <input
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00"
+                                value={formAmount}
+                                onChange={(e) => setFormAmount(e.target.value)}
+                              />
+                            </div>
+
                             <div className="input-field">
                               <label>EST. DELIVERY</label>
                               <input 
@@ -5497,6 +5695,112 @@ export default function App() {
 
         </main>
       </div>
+      {editForm && user && user.role === 'admin' && (() => {
+        const inputStyle = { width: '100%', padding: '9px 10px', border: '1px solid #CBD5E1', borderRadius: '6px', fontSize: '0.9rem', boxSizing: 'border-box', background: '#fff', color: '#0F172A' };
+        const labelStyle = { display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.78rem', fontWeight: 600, color: '#475569' };
+        const grid = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '12px', marginBottom: '12px' };
+        const f = editForm;
+        return (
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, backdropFilter: 'blur(4px)', padding: '16px' }}>
+            <form onSubmit={handleSaveEdit} style={{ background: '#fff', borderRadius: '12px', padding: '24px', width: '100%', maxWidth: '720px', maxHeight: '90vh', overflowY: 'auto', boxSizing: 'border-box', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', color: '#0F172A' }}>
+              <h3 style={{ margin: '0 0 4px' }}>Edit Shipment #{f.id}</h3>
+              <p style={{ margin: '0 0 16px', fontSize: '0.82rem', color: '#64748B' }}>Changes are saved immediately and show on the customer's tracking page.</p>
+
+              <div style={grid}>
+                <label style={labelStyle}>Customer Name
+                  <input style={inputStyle} value={f.customerName} onChange={e => setEditField('customerName', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Customer Email
+                  <input style={inputStyle} type="email" value={f.customerEmail} onChange={e => setEditField('customerEmail', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Customer Phone
+                  <input style={inputStyle} value={f.customerPhone} onChange={e => setEditField('customerPhone', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Delivery Address
+                  <input style={inputStyle} value={f.address} onChange={e => setEditField('address', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Weight (kg)
+                  <input style={inputStyle} type="number" step="any" value={f.weight} onChange={e => setEditField('weight', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Transport Type
+                  <select style={inputStyle} value={f.vessel} onChange={e => setEditField('vessel', e.target.value)}>
+                    <option value="Truck">Truck</option>
+                    <option value="Plane">Plane</option>
+                    <option value="Ship">Ship</option>
+                  </select>
+                </label>
+              </div>
+
+              <label style={{ ...labelStyle, marginBottom: '12px' }}>Cargo Description
+                <textarea style={{ ...inputStyle, minHeight: '60px', resize: 'vertical' }} value={f.desc} onChange={e => setEditField('desc', e.target.value)} />
+              </label>
+
+              <div style={grid}>
+                <div style={labelStyle}>Origin City / Hub
+                  <CitySearchInput
+                    value={f.origin}
+                    selectedCode={f.originCode}
+                    placeholder="Search origin city / hub..."
+                    onChange={(cityName, code) => setEditForm(prev => ({
+                      ...prev,
+                      origin: cityName,
+                      ...(code ? { originCode: code, route: code !== prev.destCode ? calculateOptimalRoute(code, prev.destCode).join('-') : prev.route } : {})
+                    }))}
+                  />
+                </div>
+                <div style={labelStyle}>Destination City / Hub
+                  <CitySearchInput
+                    value={f.destination}
+                    selectedCode={f.destCode}
+                    placeholder="Search destination city / hub..."
+                    onChange={(cityName, code) => setEditForm(prev => ({
+                      ...prev,
+                      destination: cityName,
+                      ...(code ? { destCode: code, route: code !== prev.originCode ? calculateOptimalRoute(prev.originCode, code).join('-') : prev.route } : {})
+                    }))}
+                  />
+                </div>
+                <label style={labelStyle}>Route Waypoints
+                  <input style={inputStyle} placeholder="e.g. LHR-EMA-MAN-EDI" value={f.route} onChange={e => setEditField('route', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Estimated Delivery (ETA)
+                  <input style={inputStyle} value={f.eta} onChange={e => setEditField('eta', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Amount to Pay ($)
+                  <input style={inputStyle} type="number" min="0" step="0.01" value={f.amount} onChange={e => setEditField('amount', e.target.value)} />
+                </label>
+                <label style={labelStyle}>Payment Status
+                  <select style={inputStyle} value={f.paymentStatus} onChange={e => setEditField('paymentStatus', e.target.value)}>
+                    <option value="Unpaid">Unpaid</option>
+                    <option value="Paid">Paid</option>
+                  </select>
+                </label>
+                <label style={labelStyle}>Status
+                  <select style={inputStyle} value={f.status} onChange={e => setEditField('status', e.target.value)}>
+                    {[...new Set(['Registered', 'Manifest Prepared', 'Warehouse', 'In Transit', 'Delayed', 'Delivered', f.status])].map(st => (
+                      <option key={st} value={st}>{st}</option>
+                    ))}
+                  </select>
+                </label>
+                <label style={labelStyle}>Current Location
+                  <input style={inputStyle} value={f.currentLocationName} onChange={e => setEditField('currentLocationName', e.target.value)} />
+                </label>
+              </div>
+
+              <label style={{ ...labelStyle, marginBottom: '12px' }}>Internal Notes
+                <textarea style={{ ...inputStyle, minHeight: '60px', resize: 'vertical' }} value={f.internalNotes} onChange={e => setEditField('internalNotes', e.target.value)} />
+              </label>
+
+              {editError && <div style={{ color: '#dc2626', fontSize: '0.85rem', marginBottom: '12px' }}>{editError}</div>}
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button type="button" onClick={() => setEditForm(null)} disabled={editSaving} style={{ padding: '9px 18px', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#F1F5F9', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
+                <button type="submit" disabled={editSaving} style={{ padding: '9px 18px', borderRadius: '6px', border: 'none', background: '#FF6B00', color: '#fff', cursor: 'pointer', fontWeight: 700 }}>{editSaving ? 'Saving...' : 'Save Changes'}</button>
+              </div>
+            </form>
+          </div>
+        );
+      })()}
       {credentialsModal && (
         <div className="credentials-overlay" style={{
           position: 'fixed',
