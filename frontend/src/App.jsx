@@ -6,6 +6,7 @@ import {
   MapPin, LogOut, ArrowRight, Eye, EyeOff, Shield, Users, Package, RefreshCw, Mail, Lock,
   SlidersHorizontal, Download, Printer, Search, Trash, MessageSquare, Compass, Send, Pencil
 } from 'lucide-react';
+import LandingPage, { Brand } from './landing.jsx';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 
   ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
@@ -606,7 +607,7 @@ const LeafletMap = ({ shipment }) => {
     // Draw routing line
     if (latlngs.length > 0) {
       routeLineRef.current = L.polyline(latlngs, {
-        color: '#FFB500',
+        color: '#ff2a00',
         weight: 3,
         opacity: 0.8,
         dashArray: '5, 10'
@@ -683,8 +684,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
     width: '100%',
     padding: '10px 14px',
     borderRadius: '6px',
-    background: '#1b1613',
-    border: '1px solid var(--border-color, #3a322c)',
+    background: '#0b0f17',
+    border: '1px solid var(--border-color, #222a38)',
     color: '#ffffff',
     fontSize: '0.9rem',
     outline: 'none',
@@ -774,8 +775,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
     <section className="email-center-view">
       <div className="email-center-header">
         <div>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Mail style={{ color: '#ffb900' }} /> Admin Email Dispatch Center
+          <h2 style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--mx-ink)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Mail style={{ color: '#ff2a00' }} /> Admin Email Dispatch Center
           </h2>
           <p style={{ color: 'var(--text-secondary)', margin: '6px 0 0 0', fontSize: '0.9rem' }}>
             Send transactional emails & updates directly to customers via Resend API
@@ -804,8 +805,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
       <div className="email-center-grid">
         
         {/* Left Column: Form Controls */}
-        <div className="email-compose-card" style={{ background: 'var(--card-bg, #2a2521)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '24px' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#ffb900', marginTop: 0, marginBottom: '16px' }}>
+        <div className="email-compose-card" style={{ background: 'var(--card-bg, #121722)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '24px' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#ff2a00', marginTop: 0, marginBottom: '16px' }}>
             1. Compose Email
           </h3>
 
@@ -820,9 +821,9 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
                 onChange={(e) => handleSelectShipment(e.target.value)}
                 style={inputStyle}
               >
-                <option value="" style={{ background: '#1b1613', color: '#ffffff' }}>-- None (Manual Recipient) --</option>
+                <option value="" style={{ background: '#0b0f17', color: '#ffffff' }}>-- None (Manual Recipient) --</option>
                 {shipments.map(s => (
-                  <option key={s.id} value={s.id} style={{ background: '#1b1613', color: '#ffffff' }}>
+                  <option key={s.id} value={s.id} style={{ background: '#0b0f17', color: '#ffffff' }}>
                     {s.id} - {s.customerName || 'No Name'} ({s.customerEmail || 'No Email'}){s.senderName ? ` [Sender: ${s.senderName}]` : ''}
                   </option>
                 ))}
@@ -877,9 +878,9 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
                       borderRadius: '6px',
                       fontSize: '0.82rem',
                       fontWeight: '600',
-                      border: templateType === t.id ? '1px solid #ffb900' : '1px solid var(--border-color)',
-                      background: templateType === t.id ? 'rgba(255, 185, 0, 0.15)' : '#1b1613',
-                      color: templateType === t.id ? '#ffb900' : '#ffffff',
+                      border: templateType === t.id ? '1px solid #ff2a00' : '1px solid var(--border-color)',
+                      background: templateType === t.id ? 'rgba(255, 42, 0, 0.15)' : '#0b0f17',
+                      color: templateType === t.id ? '#ff2a00' : '#ffffff',
                       cursor: 'pointer',
                       textAlign: 'center'
                     }}
@@ -925,8 +926,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
                 marginTop: '10px',
                 padding: '12px 20px',
                 borderRadius: '8px',
-                background: sending ? '#64748b' : 'linear-gradient(135deg, #ffb900 0%, #d89600 100%)',
-                color: '#351C15',
+                background: sending ? '#64748b' : 'linear-gradient(135deg, #ff2a00 0%, #d91f00 100%)',
+                color: '#ffffff',
                 border: 'none',
                 fontWeight: '800',
                 fontSize: '0.95rem',
@@ -948,8 +949,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
         </div>
 
         {/* Right Column: Live Preview (Dukascopy Bank Style) */}
-        <div style={{ background: 'var(--card-bg, #2a2521)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '24px' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#ffb900', marginTop: 0, marginBottom: '16px' }}>
+        <div style={{ background: 'var(--card-bg, #121722)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '24px' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#ff2a00', marginTop: 0, marginBottom: '16px' }}>
             2. Live Email Preview
           </h3>
 
@@ -957,8 +958,8 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
             
             {/* Top Logo */}
             <div style={{ textAlign: 'center', marginBottom: '18px' }}>
-              <span style={{ fontSize: '24px', fontWeight: '900', color: '#0284c7', letterSpacing: '1px' }}>APEX</span>
-              <span style={{ fontSize: '20px', fontWeight: '700', color: '#d89600', marginLeft: '6px', textTransform: 'uppercase' }}>LOGISTICS</span>
+              <span style={{ fontSize: '24px', fontWeight: '900', color: '#ff2a00', letterSpacing: '1px' }}>APEX</span>
+              <span style={{ fontSize: '20px', fontWeight: '700', color: '#d91f00', marginLeft: '6px', textTransform: 'uppercase' }}>LOGISTICS</span>
             </div>
 
             {/* Main White Card 1 */}
@@ -973,14 +974,14 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
 
               {selectedShipment && (
                 <div style={{ background: '#f7fafc', border: '1px solid #edf2f7', borderRadius: '2px', padding: '12px', marginBottom: '16px', fontSize: '12px' }}>
-                  <div style={{ marginBottom: '4px' }}><strong>Tracking ID:</strong> <span style={{ fontFamily: 'monospace', fontWeight: 'bold', color: '#351C15' }}>{selectedShipment.id}</span></div>
+                  <div style={{ marginBottom: '4px' }}><strong>Tracking ID:</strong> <span style={{ fontFamily: 'monospace', fontWeight: 'bold', color: '#0b0f17' }}>{selectedShipment.id}</span></div>
                   <div style={{ marginBottom: '4px' }}><strong>Status:</strong> {selectedShipment.status}</div>
                   <div><strong>Route:</strong> {selectedShipment.origin || 'N/A'} to {selectedShipment.destination || 'N/A'}</div>
                 </div>
               )}
 
               <div style={{ marginTop: '16px' }}>
-                <span style={{ color: '#351C15', fontWeight: 'bold', fontSize: '13px', textDecoration: 'underline' }}>
+                <span style={{ color: '#0b0f17', fontWeight: 'bold', fontSize: '13px', textDecoration: 'underline' }}>
                   Track Package Online &rarr;
                 </span>
               </div>
@@ -1184,7 +1185,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
                       cursor: 'pointer',
                       backgroundColor: isSelected ? '#edf2f7' : (conv.unreadCount > 0 ? '#fffaf0' : '#ffffff'),
                       transition: 'background 0.15s ease',
-                      borderLeft: isSelected ? '4px solid #351C15' : '4px solid transparent'
+                      borderLeft: isSelected ? '4px solid #0b0f17' : '4px solid transparent'
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
@@ -1219,7 +1220,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
           ) : (
             <>
               {/* Thread Header */}
-              <div style={{ padding: '16px 20px', borderBottom: '1px solid #edf2f7', background: '#351C15', color: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ padding: '16px 20px', borderBottom: '1px solid #edf2f7', background: '#0b0f17', color: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '700' }}>{activeConv.name}</h3>
                   <span style={{ fontSize: '12px', opacity: 0.85, fontFamily: 'monospace' }}>{activeConv.email}</span>
@@ -1245,7 +1246,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
                       }}
                     >
                       <div style={{ fontSize: '11px', color: '#718096', marginBottom: '4px', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <span style={{ fontWeight: '700', color: isAdmin ? '#d89600' : '#2b6cb0' }}>
+                        <span style={{ fontWeight: '700', color: isAdmin ? '#d91f00' : '#3a4152' }}>
                           {isAdmin ? 'Apex Support Admin' : m.customerName}
                         </span>
                         <span>•</span>
@@ -1253,11 +1254,11 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
                       </div>
                       <div
                         style={{
-                          background: isAdmin ? '#351C15' : '#ffffff',
+                          background: isAdmin ? '#0b0f17' : '#ffffff',
                           color: isAdmin ? '#ffffff' : '#2d3748',
                           padding: '14px 16px',
                           borderRadius: isAdmin ? '12px 12px 0 12px' : '12px 12px 12px 0',
-                          border: isAdmin ? '1px solid #d89600' : '1px solid #e2e8f0',
+                          border: isAdmin ? '1px solid #d91f00' : '1px solid #e2e8f0',
                           boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                           fontSize: '14px',
                           lineHeight: '1.5',
@@ -1312,7 +1313,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
                       type="submit"
                       disabled={sending || !replyBody.trim()}
                       style={{
-                        backgroundColor: '#351C15',
+                        backgroundColor: '#0b0f17',
                         color: '#ffffff',
                         fontWeight: '700',
                         fontSize: '14px',
@@ -1426,8 +1427,8 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
     <section className="customer-support-view" style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px 16px 40px' }}>
       {/* Header Banner */}
       <div style={{
-        background: 'linear-gradient(135deg, #2a201a 0%, #16120f 100%)',
-        border: '1px solid rgba(255, 185, 0, 0.3)',
+        background: 'linear-gradient(135deg, #121722 0%, #16120f 100%)',
+        border: '1px solid rgba(255, 42, 0, 0.3)',
         borderRadius: '14px',
         padding: '24px 28px',
         marginBottom: '24px',
@@ -1443,11 +1444,11 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
             width: '48px',
             height: '48px',
             borderRadius: '12px',
-            background: 'rgba(255, 185, 0, 0.15)',
+            background: 'rgba(255, 42, 0, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#ffb900',
+            color: '#ff2a00',
             flexShrink: 0
           }}>
             <MessageSquare style={{ width: '26px', height: '26px' }} />
@@ -1608,12 +1609,12 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
                   </div>
 
                   <div style={{
-                    background: isCust ? '#351C15' : '#ffffff',
+                    background: isCust ? '#0b0f17' : '#ffffff',
                     color: isCust ? '#ffffff' : '#1e293b',
                     padding: '14px 18px',
                     borderRadius: isCust ? '14px 14px 2px 14px' : '14px 14px 14px 2px',
                     border: isCust ? '1px solid #b45309' : '1px solid #e2e8f0',
-                    boxShadow: isCust ? '0 2px 8px rgba(53, 28, 21, 0.2)' : '0 2px 10px rgba(0,0,0,0.05)',
+                    boxShadow: isCust ? '0 2px 8px rgba(11, 15, 23, 0.2)' : '0 2px 10px rgba(0,0,0,0.05)',
                     fontSize: '0.92rem',
                     lineHeight: '1.55',
                     whiteSpace: 'pre-wrap',
@@ -1626,7 +1627,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
                         marginBottom: '6px',
                         paddingBottom: '5px',
                         borderBottom: isCust ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid #f1f5f9',
-                        color: isCust ? '#ffb900' : '#0f172a'
+                        color: isCust ? '#ff2a00' : '#0f172a'
                       }}>
                         {m.subject}
                       </div>
@@ -1660,7 +1661,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
               type="button"
               onClick={() => setSubject(top)}
               style={{
-                background: subject === top ? '#351C15' : '#ffffff',
+                background: subject === top ? '#0b0f17' : '#ffffff',
                 color: subject === top ? '#ffffff' : '#334155',
                 border: '1px solid #cbd5e1',
                 padding: '4px 10px',
@@ -1734,19 +1735,19 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
                 type="submit"
                 disabled={sending || !body.trim()}
                 style={{
-                  background: 'linear-gradient(135deg, #351C15 0%, #1f100c 100%)',
+                  background: 'linear-gradient(135deg, #0b0f17 0%, #1f100c 100%)',
                   color: '#ffffff',
                   fontWeight: 700,
                   fontSize: '0.92rem',
                   padding: '11px 24px',
                   borderRadius: '8px',
-                  border: '1px solid #ffb900',
+                  border: '1px solid #ff2a00',
                   cursor: (sending || !body.trim()) ? 'not-allowed' : 'pointer',
                   opacity: (sending || !body.trim()) ? 0.6 : 1,
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  boxShadow: '0 2px 10px rgba(53, 28, 21, 0.25)',
+                  boxShadow: '0 2px 10px rgba(11, 15, 23, 0.25)',
                   transition: 'all 0.2s ease'
                 }}
               >
@@ -2808,8 +2809,8 @@ export default function App() {
     <div>
       {isFlashing && <div className="screen-flash-overlay" />}
       {/* 🚀 Dynamic Header - Hidden on the Login Page */}
-      {activeTab !== 'login' && (
-        (user && activeTab !== 'home') ? (
+      {activeTab !== 'login' && activeTab !== 'home' && (
+        user ? (
           <header className="main-header select-none">
             <button 
               className="btn-mobile-menu"
@@ -2825,10 +2826,8 @@ export default function App() {
               </svg>
             </button>
             <div className="header-branding" onClick={() => window.location.hash = '#home'}>
-              <img src="/favicon.svg" alt="Apex Logo" style={{ width: '32px', height: '32px', borderRadius: '7px', display: 'block', objectFit: 'contain' }} />
-              <div className="logo-apex">APEX</div>
-              <span className="portal-title">Logistics</span>
-            </div>
+              <Brand onLight />
+                                        </div>
 
             <div className="header-search-container">
               <form className="header-search-form" onSubmit={handleQuickTrackSubmit}>
@@ -2892,10 +2891,8 @@ export default function App() {
         ) : (
           <header className="main-header">
             <div className="header-branding" onClick={() => window.location.hash = '#home'}>
-              <img src="/favicon.svg" alt="Apex Logo" style={{ width: '32px', height: '32px', borderRadius: '7px', display: 'block', objectFit: 'contain' }} />
-              <div className="logo-apex">APEX</div>
-              <span className="portal-title">Logistics</span>
-            </div>
+              <Brand onLight />
+                                        </div>
 
             <div className="header-ctrls-right">
               <a href="#login" className="header-login-link">Track Shipment</a>
@@ -3009,568 +3006,74 @@ export default function App() {
           
           {/* LANDING PAGE VIEW */}
           {activeTab === 'home' && (
-            <section className="landing-view">
-              {/* 1. Hero Layout */}
-              <div className="landing-hero-container">
-                <div className="hero-row">
-                  <div className="hero-text-block">
-                    <div className="hero-sticker">
-                      <span className="sticker-bullet">✓</span>
-                      <span>Apex Global Express &bull; Real-Time Satellite Telemetry</span>
-                    </div>
-                    <h1>
-                      Track Your Shipment <br />
-                      <span className="highlight">In Real-Time</span> Worldwide
-                    </h1>
-                    <p>
-                      Precision logistics, automated dispatch hubs, and live satellite tracking across 220+ countries and territories. Enter your tracking number below for instant delivery status and route telemetry.
-                    </p>
-                    
-                    {/* Embedded Instant Hero Tracking Form */}
-                    <form className="hero-track-bar" onSubmit={handleHeroTrackSubmit}>
-                      <div className="hero-track-input-wrap">
-                        <Search className="hero-track-icon" />
-                        <input 
-                          type="text" 
-                          placeholder="Enter 8-digit tracking number (e.g. APX-31518784)..."
-                          value={heroTrackCode}
-                          onChange={(e) => setHeroTrackCode(e.target.value)}
-                          className="hero-track-input"
-                        />
-                        {heroTrackCode && (
-                          <button 
-                            type="button" 
-                            className="hero-track-clear"
-                            onClick={() => setHeroTrackCode('')}
-                            title="Clear tracking input"
-                          >
-                            ✕
-                          </button>
-                        )}
-                      </div>
-                      <button 
-                        type="submit" 
-                        className="btn-hero-primary hero-track-submit-btn" 
-                        disabled={heroTrackLoading}
-                      >
-                        {heroTrackLoading ? (
-                          <>
-                            <span className="btn-spinner"></span>
-                            <span>Locating…</span>
-                          </>
-                        ) : (
-                          <>
-                            <Search style={{ width: '16px', height: '16px' }} />
-                            <span>Track Shipment</span>
-                          </>
-                        )}
-                      </button>
-                    </form>
-
-                    {/* Quick Suggestions & Trust Points */}
-                    <div className="hero-quick-hints">
-                      <span className="hint-label">Sample tracking code:</span>
-                      <button 
-                        type="button" 
-                        className="hero-sample-chip"
-                        onClick={() => setHeroTrackCode('APX-31518784')}
-                      >
-                        APX-31518784
-                      </button>
-                      <span className="hint-divider">&bull;</span>
-                      <a href="#login" className="hero-portal-shortcut" onClick={(e) => { e.preventDefault(); triggerNavigationWithFlash('#login'); }}>
-                        Dedicated Portal <ArrowRight style={{ width: '13px', height: '13px', display: 'inline', verticalAlign: 'middle' }} />
-                      </a>
-                    </div>
-
-                    <div className="hero-social-trust">
-                      <div className="avatar-stack">
-                        <img className="profile-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80" alt="avatar" />
-                        <img className="profile-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&fit=crop&q=80" alt="avatar" />
-                        <img className="profile-avatar" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=80&fit=crop&q=80" alt="avatar" />
-                      </div>
-                      <div className="hero-trust-text">
-                        <div className="trust-stars">★★★★★ <span className="trust-score">4.9 / 5.0</span></div>
-                        <span className="trust-caption">12,000+ Enterprises & Shippers Worldwide</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="hero-visual-col">
-                    <div className="hero-main-img-card">
-                      <img className="hero-main-img" src="/hero-bg-2.jpg" alt="Warehouse logistics hub" />
-                      <div className="hero-card-glow"></div>
-                      
-                      {/* Top live radar badge */}
-                      <div className="hero-live-hud-top">
-                        <div className="hud-pulse-tag">
-                          <span className="hud-radar-dot"></span>
-                          <span>LIVE SATELLITE DISPATCH</span>
-                        </div>
-                        <span className="hud-flight-tag">AIR CARGO 777F</span>
-                      </div>
-
-                      {/* Floating Telemetry HUD Card */}
-                      <div className="hero-telemetry-hud-card">
-                        <div className="hud-route-header">
-                          <div className="hud-route-point">
-                            <span className="hud-city">Frankfurt (FRA)</span>
-                            <span className="hud-country">Germany Hub</span>
-                          </div>
-                          <div className="hud-arrow-indicator">
-                            <Plane className="hud-plane-icon" />
-                            <div className="hud-arrow-line"></div>
-                          </div>
-                          <div className="hud-route-point right">
-                            <span className="hud-city">New York (JFK)</span>
-                            <span className="hud-country">United States</span>
-                          </div>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="hud-progress-wrap">
-                          <div className="hud-progress-bar">
-                            <div className="hud-progress-fill" style={{ width: '74%' }}></div>
-                          </div>
-                          <div className="hud-progress-labels">
-                            <span>Status: <strong>In Transit (74%)</strong></span>
-                            <span>ETA: <strong>Today, 16:30 EST</strong></span>
-                          </div>
-                        </div>
-
-                        {/* Telemetry Micro-Pills */}
-                        <div className="hud-telemetry-pills">
-                          <span className="hud-pill"><Shield style={{ width: '12px', height: '12px' }} /> GPS Encrypted</span>
-                          <span className="hud-pill"><Activity style={{ width: '12px', height: '12px' }} /> 540 mph &bull; 34k ft</span>
-                          <span className="hud-pill live"><span className="hud-green-dot"></span> On Schedule</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 1.5 Global Metrics Bar */}
-              <div className="landing-metrics-bar">
-                <div className="metrics-grid">
-                  <div className="metric-item">
-                    <div className="metric-num">15.2M+</div>
-                    <div className="metric-label">Daily Packages Delivered</div>
-                  </div>
-                  <div className="metric-item">
-                    <div className="metric-num">220+</div>
-                    <div className="metric-label">Countries & Territories</div>
-                  </div>
-                  <div className="metric-item">
-                    <div className="metric-num">99.8%</div>
-                    <div className="metric-label">On-Time Delivery Rate</div>
-                  </div>
-                  <div className="metric-item">
-                    <div className="metric-num">12,000+</div>
-                    <div className="metric-label">Smart Fleet Vehicles</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 2. Solutions grid */}
-              <div className="landing-solutions-section">
-                <div className="sec-header-center">
-                  <h2>Comprehensive Logistics Solutions</h2>
-                  <p>Precision-engineered tools to streamline your supply chain, from local deliveries to international freight forwarding.</p>
-                </div>
-
-                <div className="solutions-cards-grid">
-                  <div className="solution-card-mock">
-                    <div className="solution-badge-icon">
-                      <svg className="sol-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    </div>
-                    <h3>Shipment Tracking</h3>
-                    <p>Get instantaneous updates on your package location with centimeter-level precision.</p>
-                    <a href="#login">Learn More →</a>
-                  </div>
-
-                  <div className="solution-card-mock">
-                    <div className="solution-badge-icon">
-                      <svg className="sol-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                    </div>
-                    <h3>Live Monitoring</h3>
-                    <p>24/7 telemetry and environmental monitoring for sensitive or high-value cargo.</p>
-                    <a href="#login">View Dashboard →</a>
-                  </div>
-
-                  <div className="solution-card-mock">
-                    <div className="solution-badge-icon">
-                      <svg className="sol-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                    </div>
-                    <h3>Fast & Secure</h3>
-                    <p>Redundant security protocols and expedited handling for priority shipments.</p>
-                    <a href="#login">Security Protocol →</a>
-                  </div>
-
-                  <div className="solution-card-mock">
-                    <div className="solution-badge-icon">
-                      <svg className="sol-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" /></svg>
-                    </div>
-                    <h3>Logistics Solutions</h3>
-                    <p>Custom enterprise workflows and API integrations for seamless operations.</p>
-                    <a href="#login">Enterprise API →</a>
-                  </div>
-                </div>
-              </div>
-
-              {/* 3. Streamlined Journey Timeline */}
-              <div className="journey-ticks-section">
-                <div className="ticks-header-flex">
-                  <div className="title-block">
-                    <h2>A Streamlined Journey</h2>
-                    <p>From the moment your package enters our system to the final doorstep delivery, we provide transparency at every milestone.</p>
-                  </div>
-                  <a href="#login" className="ticks-nav-manual">
-                    <svg style={{width:'16px', height:'16px'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Detailed Process Guide
-                  </a>
-                </div>
-
-                <div className="journey-sequence-row">
-                  <div className="seq-node-card">
-                    <div className="seq-circle-wrapper">
-                      <div className="seq-circle-base">
-                        <svg className="seq-icon-inner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                      </div>
-                      <div className="seq-index-badge">1</div>
-                    </div>
-                    <h4>Shipment Registered</h4>
-                    <p>Your order is logged into our global dispatch network instantly.</p>
-                  </div>
-
-                  <div className="seq-node-card">
-                    <div className="seq-circle-wrapper">
-                      <div className="seq-circle-base">
-                        <svg className="seq-icon-inner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L22 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                      </div>
-                      <div className="seq-index-badge">2</div>
-                    </div>
-                    <h4>Tracking Code Issued</h4>
-                    <p>Instant 8-digit tracking number is dispatched to your receipt and email.</p>
-                  </div>
-
-                  <div className="seq-node-card">
-                    <div className="seq-circle-wrapper">
-                      <div className="seq-circle-base">
-                        <svg className="seq-icon-inner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
-                      </div>
-                      <div className="seq-index-badge">3</div>
-                    </div>
-                    <h4>Live Satellite Tracking</h4>
-                    <p>Monitor package transit live on map with GPS coordinates and route telemetry.</p>
-                  </div>
-
-                  <div className="seq-node-card">
-                    <div className="seq-circle-wrapper">
-                      <div className="seq-circle-base">
-                        <svg className="seq-icon-inner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                      </div>
-                      <div className="seq-index-badge">4</div>
-                    </div>
-                    <h4>Live Tracking</h4>
-                    <p>Watch your package move across the map in high-resolution.</p>
-                  </div>
-
-                  <div className="seq-node-card">
-                    <div className="seq-circle-wrapper">
-                      <div className="seq-circle-base">
-                        <svg className="seq-icon-inner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      </div>
-                      <div className="seq-index-badge">5</div>
-                    </div>
-                    <h4>Delivered</h4>
-                    <p>Package arrived confirmation with digital signature capture.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 3.5 Featured Video Showcase Box */}
-              <div className="landing-video-showcase-section">
-                <div className="sec-header-center" style={{ textAlign: 'center', marginBottom: '32px' }}>
-                  <div className="hero-sticker" style={{ margin: '0 auto 16px auto', display: 'inline-flex' }}>
-                    <span className="sticker-bullet">▶</span>
-                    <span>Official Video Overview</span>
-                  </div>
-                  <h2 style={{ fontSize: '2rem', fontWeight: '800', margin: '0 0 10px 0' }}>Inside the Apex Smart Logistics Network</h2>
-                  <p style={{ color: '#cbd5e1', maxWidth: '650px', margin: '0 auto', fontSize: '0.95rem' }}>
-                    Watch how our automated sorting hubs, live GPS telemetry, and AI dispatch manage over 15 million packages daily with zero delivery friction.
-                  </p>
-                </div>
-
-                <div className="video-card-wrapper">
-                  <div 
-                    className="video-thumbnail-container"
-                    onClick={() => alert("Apex Smart Logistics Showcase Video:\n\n'Inside the Global Parcel & Fleet Telemetry System'\n\n(Video player feature preview is ready - click OK to close)")}
-                  >
-                    <img className="video-thumb-img" src="/hero-bg-2.jpg" alt="Inside Apex Global Logistics Operations" />
-                    <div className="video-overlay-gradient"></div>
-                    
-                    {/* Play Button Overlay */}
-                    <div className="video-play-btn-circle">
-                      <svg className="play-icon-svg" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                    </div>
-
-                    {/* Duration Badge */}
-                    <div className="video-duration-badge">
-                      <span>HD VIDEO &bull; 3:45 MINS</span>
-                    </div>
-
-                    {/* Bottom Caption Overlay */}
-                    <div className="video-caption-block">
-                      <div className="video-channel-tag">APEX GLOBAL LOGISTICS DISPATCH</div>
-                      <h3 className="video-title">Next-Generation Automated Sorting & Fleet Telemetry</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 4. Customer Reviews & Ratings Section */}
-              <div className="landing-reviews-section">
-                <div className="sec-header-center" style={{ textAlign: 'center', marginBottom: '40px' }}>
-                  <div className="hero-sticker" style={{ margin: '0 auto 16px auto', display: 'inline-flex' }}>
-                    <span className="sticker-bullet">★</span>
-                    <span>4.9 / 5.0 Rating Across 12,000+ Shippers</span>
-                  </div>
-                  <h2 style={{ fontSize: '2rem', fontWeight: '800', margin: '0 0 10px 0' }}>What Our Customers Say</h2>
-                  <p style={{ color: '#cbd5e1', maxWidth: '600px', margin: '0 auto', fontSize: '0.95rem' }}>
-                    Read real experiences from business owners and individuals who rely on Apex Global Logistics every day.
-                  </p>
-                </div>
-
-                <div className="reviews-cards-grid">
-                  
-                  {/* Review 1 */}
-                  <div className="review-card">
-                    <div className="review-card-header">
-                      <img className="reviewer-avatar" src="/review-1.jpg" alt="Marcus Vance" />
-                      <div className="reviewer-meta">
-                        <h4 className="reviewer-name">Marcus Vance</h4>
-                        <span className="reviewer-role">Verified Shipper &bull; Chicago, IL</span>
-                      </div>
-                    </div>
-                    <div className="review-stars-row">
-                      ★★★★★ <span className="review-rating-score">5.0 / 5.0</span>
-                    </div>
-                    <p className="review-comment-text">
-                      "Honestly impressed. Had to ship three crates of auto parts across states last week and was super nervous about delays. Got the email with my login details right after registering, logged in, and watched the truck move on the live map the whole way. Package arrived a day early. Def using them again."
-                    </p>
-                    <div className="review-date-badge">Verified Customer Review &bull; July 2026</div>
-                  </div>
-
-                  {/* Review 2 */}
-                  <div className="review-card">
-                    <div className="review-card-header">
-                      <img className="reviewer-avatar" src="/review-2.jpg" alt="David Miller" />
-                      <div className="reviewer-meta">
-                        <h4 className="reviewer-name">Dave Miller</h4>
-                        <span className="reviewer-role">Verified Recipient &bull; Denver, CO</span>
-                      </div>
-                    </div>
-                    <div className="review-stars-row">
-                      ★★★★★ <span className="review-rating-score">5.0 / 5.0</span>
-                    </div>
-                    <p className="review-comment-text">
-                      "My package was coming in from Denver and I kept checking the live tracking link on my phone every couple hours haha. The email update came in as soon as it hit the local warehouse. Driver was super friendly too. 5 stars all day."
-                    </p>
-                    <div className="review-date-badge">Verified Customer Review &bull; July 2026</div>
-                  </div>
-
-                  {/* Review 3 */}
-                  <div className="review-card">
-                    <div className="review-card-header">
-                      <img className="reviewer-avatar" src="/review-3.jpg" alt="Chloe Sterling" />
-                      <div className="reviewer-meta">
-                        <h4 className="reviewer-name">Chloe Sterling</h4>
-                        <span className="reviewer-role">Online Store Manager &bull; Seattle, WA</span>
-                      </div>
-                    </div>
-                    <div className="review-stars-row">
-                      ★★★★★ <span className="review-rating-score">5.0 / 5.0</span>
-                    </div>
-                    <p className="review-comment-text">
-                      "We switch shipping companies all the time for our online store, but Apex has been by far the most reliable. No missing tracking numbers, no weird email bugs. Our customers get their login links immediately and stop emailing support asking 'where is my package'. Worth every penny."
-                    </p>
-                    <div className="review-date-badge">Verified Customer Review &bull; July 2026</div>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* 4.5 Frequently Asked Questions (FAQ) */}
-              <div className="landing-faq-section">
-                <div className="sec-header-center" style={{ textAlign: 'center', marginBottom: '40px' }}>
-                  <h2 style={{ fontSize: '2rem', fontWeight: '800', margin: '0 0 10px 0' }}>Frequently Asked Questions</h2>
-                  <p style={{ color: '#cbd5e1', maxWidth: '600px', margin: '0 auto', fontSize: '0.95rem' }}>
-                    Everything you need to know about tracking packages, receiving login credentials, and fleet services.
-                  </p>
-                </div>
-
-                <div className="faq-grid">
-                  <div className="faq-card">
-                    <h4 className="faq-question">How do I track my Apex package live?</h4>
-                    <p className="faq-answer">Enter your Tracking ID into the top search bar, or log in to your Customer Portal to watch your parcel's exact GPS location and route waypoints in real-time on our interactive map.</p>
-                  </div>
-                  <div className="faq-card">
-                    <h4 className="faq-question">Where do I get my Customer Portal login credentials?</h4>
-                    <p className="faq-answer">When our logistics team creates a shipping appointment for you, an automated welcome email containing your username and password is sent to your inbox immediately.</p>
-                  </div>
-                  <div className="faq-card">
-                    <h4 className="faq-question">How fast are shipping appointments registered?</h4>
-                    <p className="faq-answer">Shipping appointments are processed instantaneously in our cloud database and assigned an automated tracking code immediately.</p>
-                  </div>
-                  <div className="faq-card">
-                    <h4 className="faq-question">What happens if my shipment experiences a delay?</h4>
-                    <p className="faq-answer">Our telemetry system detects exceptions in real-time and automatically dispatches email notifications with updated estimated delivery times.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 5. Orange CTA Banner */}
-              <div className="cta-banner-wrapper">
-                <div className="cta-banner-card">
-                  <h2>Ready to Optimize Your Logistics?</h2>
-                  <p>Join thousands of enterprises using Apex Global Logistics Portal to scale their delivery operations efficiently.</p>
-                  <div className="cta-action-row">
-                    <button className="btn-cta-black" onClick={() => window.location.hash = '#login'}>Create Business Account</button>
-                    <button className="btn-cta-outline" onClick={() => window.location.hash = '#login'}>Contact Sales Expert</button>
-                  </div>
-                </div>
-              </div>
-
-              {/* 5. Fine Footer */}
-              <footer className="global-footer">
-                <div className="footer-columns-grid">
-                  <div className="footer-info-brand">
-                    <h3>Global Logistics</h3>
-                    <p>Connecting businesses and communities worldwide through innovative logistics and shipping solutions since 1907.</p>
-                  </div>
-
-                  <div className="footer-col-links">
-                    <h4>Services</h4>
-                    <ul>
-                      <li><a href="#home">E-commerce</a></li>
-                      <li><a href="#home">Healthcare</a></li>
-                      <li><a href="#home">Manufacturing</a></li>
-                      <li><a href="#home">Custom Solutions</a></li>
-                    </ul>
-                  </div>
-
-                  <div className="footer-col-links">
-                    <h4>Support</h4>
-                    <ul>
-                      <li><a href="#home">Help Center</a></li>
-                      <li><a href="#home">Tracking FAQ</a></li>
-                      <li><a href="#home">Shipping Tools</a></li>
-                      <li><a href="#home">Claims</a></li>
-                    </ul>
-                  </div>
-
-                  <div className="footer-col-links">
-                    <h4>Company</h4>
-                    <ul>
-                      <li><a href="#home">About Us</a></li>
-                      <li><a href="#home">Sustainability</a></li>
-                      <li><a href="#home">Investors</a></li>
-                      <li><a href="#home">Press Room</a></li>
-                    </ul>
-                  </div>
-
-                  <div className="footer-col-links">
-                    <h4>Social</h4>
-                    <div className="footer-social-circles">
-                      <button className="social-circle-btn"><Plane style={{width:'14px', height:'14px'}} /></button>
-                      <button className="social-circle-btn"><Ship style={{width:'14px', height:'14px'}} /></button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="footer-divider-line"></div>
-
-                <div className="footer-bottom-row">
-                  <span>© 2026 Apex Global Logistics Portal. All rights reserved.</span>
-                  <div className="footer-bottom-links">
-                    <a href="#home">Privacy Notice</a>
-                    <a href="#home">Service Terms</a>
-                    <a href="#home">Cookie Settings</a>
-                  </div>
-                </div>
-              </footer>
-            </section>
+            <LandingPage
+              heroTrackCode={heroTrackCode}
+              setHeroTrackCode={setHeroTrackCode}
+              heroTrackLoading={heroTrackLoading}
+              handleHeroTrackSubmit={handleHeroTrackSubmit}
+              goTo={triggerNavigationWithFlash}
+              portalHash={user ? (user.role === 'admin' ? '#admin' : '#dashboard') : '#login'}
+              portalLabel={user ? 'My Portal' : 'Track Shipment'}
+            />
           )}
 
           {/* LOGIN VIEW */}
           {activeTab === 'login' && (
-            <section className="login-view-container">
-              {/* Subtle watermarks behind */}
-              <div className="login-watermark-bg">
-                <Truck className="login-watermark-icon one" />
-                <Plane className="login-watermark-icon two" />
-                <Ship className="login-watermark-icon three" />
-                <Package className="login-watermark-icon four" />
+            <section className="mx-login">
+              <div className="mx-login-bg" aria-hidden="true">
+                <div className="mx-hero-poster" />
+                <div className="mx-hero-shade" />
+                <div className="mx-hero-grid" />
               </div>
 
-              <div className="login-wrapper-outer">
-                {/* Shield badge */}
-                <div className="login-shield-badge">APEX</div>
+              <a href="#home" className="mx-login-back">&larr; Back to site</a>
 
-                <h2 className="login-brand-title">Track Shipment</h2>
-                <p className="login-brand-tagline">Enter your tracking number to access real-time status and live GPS telemetry</p>
+              <div className="mx-login-card">
+                <Brand onClick={() => { window.location.hash = '#home'; }} />
 
-                <div className="login-card-custom">
-                  {loginError && <div className="error-banner" style={{marginBottom:'20px'}}>{loginError}</div>}
-                  
-                  <form onSubmit={handleLogin}>
-                    <div className="login-form-label-row">
-                      <label>ENTER TRACKING NUMBER</label>
-                    </div>
-                    <div className="login-input-wrapper">
-                      <Package className="login-input-icon-left" />
-                      <input 
-                        type="text" 
-                        placeholder="e.g. APX-31518784 or Access Key"
-                        value={loginTrackingCode || loginEmail}
-                        onChange={(e) => {
-                          setLoginTrackingCode(e.target.value);
-                          setLoginEmail(e.target.value);
-                        }}
-                        style={{ fontFamily: 'monospace', letterSpacing: '1px', textTransform: 'uppercase' }}
-                        autoFocus
-                        required
-                      />
-                    </div>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary, #64748B)', marginTop: '8px', marginBottom: '20px', lineHeight: '1.4' }}>
-                      Enter your 8-digit tracking number to view package status and live GPS telemetry.
-                    </p>
+                <span className="mx-tag dark">Secure Shipment Portal</span>
+                <h2 className="mx-login-title">Track Shipment</h2>
+                <p className="mx-login-tagline">Enter your tracking number to access real-time status and live GPS telemetry</p>
 
-                    <button type="submit" className="btn-login-submit-gold" disabled={loggingIn}>
-                      {loggingIn ? (
-                        <>
-                          <span className="btn-spinner" aria-label="Verifying"></span>
-                          <span>Verifying Tracking Number…</span>
-                        </>
-                      ) : (
-                        <>Track Shipment <ArrowRight className="btn-arrow" /></>
-                      )}
-                    </button>
-                  </form>
-                </div>
+                {loginError && <div className="mx-login-error" role="alert">{loginError}</div>}
 
-                <div className="login-page-subfooter">
-                  <a href="#home" className="login-page-sublink">
-                    <svg style={{width:'14px', height:'14px'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Support
-                  </a>
-                  <a href="#home" className="login-page-sublink">
-                    <Shield style={{width:'14px', height:'14px'}} />
-                    Privacy Policy
-                  </a>
+                <form onSubmit={handleLogin}>
+                  <label className="mx-mono mx-login-label" htmlFor="tracking-code-input">ENTER TRACKING NUMBER</label>
+                  <div className="mx-login-field">
+                    <Package size={18} />
+                    <input
+                      id="tracking-code-input"
+                      type="text"
+                      placeholder="e.g. APX-31518784 or Access Key"
+                      value={loginTrackingCode || loginEmail}
+                      onChange={(e) => {
+                        setLoginTrackingCode(e.target.value);
+                        setLoginEmail(e.target.value);
+                      }}
+                      autoFocus
+                      autoComplete="off"
+                      required
+                    />
+                  </div>
+                  <p className="mx-login-hint">
+                    Enter your 8-digit tracking number to view package status and live GPS telemetry.
+                  </p>
+
+                  <button type="submit" className="mx-btn mx-btn-red mx-login-submit" disabled={loggingIn}>
+                    {loggingIn ? (
+                      <>
+                        <span className="btn-spinner" aria-label="Verifying"></span>
+                        <span>Verifying Tracking Number…</span>
+                      </>
+                    ) : (
+                      <>Track Shipment <ArrowRight size={16} /></>
+                    )}
+                  </button>
+                </form>
+
+                <div className="mx-login-foot mx-mono">
+                  <a href="#home">Support</a>
+                  <a href="#home">Privacy Policy</a>
                 </div>
               </div>
             </section>
@@ -3630,8 +3133,8 @@ export default function App() {
               <div className="customer-support-banner" style={{
                 marginTop: '22px',
                 marginBottom: '26px',
-                background: 'linear-gradient(135deg, #2a201a 0%, #171310 100%)',
-                border: '1px solid rgba(255, 185, 0, 0.35)',
+                background: 'linear-gradient(135deg, #121722 0%, #171310 100%)',
+                border: '1px solid rgba(255, 42, 0, 0.35)',
                 borderRadius: '12px',
                 padding: '18px 24px',
                 display: 'flex',
@@ -3646,11 +3149,11 @@ export default function App() {
                     width: '44px',
                     height: '44px',
                     borderRadius: '10px',
-                    background: 'rgba(255, 185, 0, 0.15)',
+                    background: 'rgba(255, 42, 0, 0.15)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#ffb900',
+                    color: '#ff2a00',
                     flexShrink: 0
                   }}>
                     <MessageSquare style={{ width: '22px', height: '22px' }} />
@@ -3694,7 +3197,7 @@ export default function App() {
                   <button 
                     onClick={() => window.location.hash = '#messages'}
                     style={{
-                      background: '#ffb900',
+                      background: '#ff2a00',
                       color: '#1a130f',
                       border: 'none',
                       padding: '10px 18px',
@@ -3705,7 +3208,7 @@ export default function App() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '7px',
-                      boxShadow: '0 2px 10px rgba(255, 185, 0, 0.25)',
+                      boxShadow: '0 2px 10px rgba(255, 42, 0, 0.25)',
                       transition: 'all 0.2s ease'
                     }}
                   >
@@ -3871,7 +3374,7 @@ export default function App() {
                             <td style={{ ...td, textAlign: 'right' }}>
                               <button
                                 onClick={() => openEditShipment(s)}
-                                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#EEF2FF', color: '#2563EB', border: 'none', borderRadius: '8px', padding: '9px 16px', fontSize: '0.9rem', cursor: 'pointer' }}
+                                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#EEF0F5', color: '#0b0f17', border: 'none', borderRadius: '8px', padding: '9px 16px', fontSize: '0.9rem', cursor: 'pointer' }}
                               >
                                 <Pencil style={{ width: '14px', height: '14px' }} /> Edit
                               </button>
@@ -3987,7 +3490,7 @@ export default function App() {
                         <tr key={shipment.id}>
                           <td className="tracking-num-cell">
                             <div className="table-package-icon">
-                              <Package style={{ width: '15px', height: '15px', color: '#7B5804' }} />
+                              <Package style={{ width: '15px', height: '15px', color: '#c21d00' }} />
                             </div>
                             <span className="bold-num">{shipment.id}</span>
                           </td>
@@ -4115,8 +3618,8 @@ export default function App() {
                       ← BACK TO LANDING PAGE
                     </button>
                   </div>
-                  <div style={{ background: 'var(--card-bg, #2a2521)', border: '1px solid var(--border-color, #3a322c)', borderRadius: '12px', padding: '40px', maxWidth: '600px', margin: '0 auto', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}>
-                    <Package style={{ width: '48px', height: '48px', color: '#ffb900', marginBottom: '16px' }} />
+                  <div style={{ background: 'var(--card-bg, #121722)', border: '1px solid var(--border-color, #222a38)', borderRadius: '12px', padding: '40px', maxWidth: '600px', margin: '0 auto', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}>
+                    <Package style={{ width: '48px', height: '48px', color: '#ff2a00', marginBottom: '16px' }} />
                     <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '10px', color: '#fff' }}>
                       Loading Telemetry for Shipment #{selectedShipmentId || 'Unknown'}...
                     </h2>
@@ -4201,8 +3704,8 @@ export default function App() {
                 {/* GUEST ACCESS LOGIN BANNER */}
                 {!user && (
                   <div style={{
-                    background: 'linear-gradient(to right, rgba(255, 185, 0, 0.15), rgba(53, 28, 21, 0.6))',
-                    border: '1px solid #ffb900',
+                    background: 'linear-gradient(to right, rgba(255, 42, 0, 0.15), rgba(11, 15, 23, 0.6))',
+                    border: '1px solid #ff2a00',
                     borderRadius: '8px',
                     padding: '16px 24px',
                     marginBottom: '20px',
@@ -4213,7 +3716,7 @@ export default function App() {
                     gap: '15px'
                   }}>
                     <div>
-                      <h4 style={{ margin: '0 0 4px 0', color: '#ffb900', fontSize: '1rem', fontWeight: '700' }}>
+                      <h4 style={{ margin: '0 0 4px 0', color: '#ff2a00', fontSize: '1rem', fontWeight: '700' }}>
                         Live Email Tracking Telemetry
                       </h4>
                       <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.85rem' }}>
@@ -4575,7 +4078,7 @@ export default function App() {
                                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                                     <span className="route-codes">{s.originCode} ➔ {s.destCode}</span>
                                     {s.senderName && (
-                                      <span style={{ fontSize: '0.75rem', color: '#ffb900' }}>
+                                      <span style={{ fontSize: '0.75rem', color: '#ff2a00' }}>
                                         From: {s.senderName}
                                       </span>
                                     )}
@@ -4593,7 +4096,7 @@ export default function App() {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                   <button 
                                     className="btn-tracker-filter" 
-                                    style={{ padding: '6px 10px', height: 'auto', fontSize: '0.8rem', background: 'rgba(255, 185, 0, 0.08)', border: '1px solid rgba(255, 185, 0, 0.3)', color: '#ffb900' }}
+                                    style={{ padding: '6px 10px', height: 'auto', fontSize: '0.8rem', background: 'rgba(255, 42, 0, 0.08)', border: '1px solid rgba(255, 42, 0, 0.3)', color: '#ff2a00' }}
                                     onClick={() => {
                                       setSimActiveShipmentId(s.id);
                                       window.location.hash = '#appointment';
@@ -4605,7 +4108,7 @@ export default function App() {
                                   </button>
                                   <button
                                     className="btn-tracker-filter"
-                                    style={{ padding: '6px 10px', height: 'auto', fontSize: '0.8rem', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.3)', color: '#2563eb' }}
+                                    style={{ padding: '6px 10px', height: 'auto', fontSize: '0.8rem', background: 'rgba(11, 15, 23, 0.08)', border: '1px solid rgba(11, 15, 23, 0.3)', color: '#0b0f17' }}
                                     onClick={() => openEditShipment(s)}
                                     title="Edit Shipment Details"
                                   >
@@ -4656,7 +4159,7 @@ export default function App() {
                   {shipments.length > 0 ? (
                     <LeafletMap shipment={shipments[0]} />
                   ) : (
-                    <div style={{ height: '350px', backgroundColor: 'var(--card-bg)', borderRadius: '12px' }}></div>
+                    <div style={{ height: '350px', backgroundColor: '#E9ECF2', borderRadius: '12px' }}></div>
                   )}
 
                   {/* Fleet velocity overlay card */}
@@ -5054,7 +4557,7 @@ export default function App() {
                             <div className="route-sequence-editor">
                               <div className="route-sequence-header">
                                 <div className="route-sequence-title">
-                                  <Compass style={{ width: '15px', height: '15px', color: '#0284c7' }} />
+                                  <Compass style={{ width: '15px', height: '15px', color: '#ff2a00' }} />
                                   Smart Checkpoint Sequence
                                 </div>
                                 <div className="route-auto-badge">
@@ -5251,7 +4754,7 @@ export default function App() {
                         {selectedShipmentForSim ? (
                           <LeafletMap shipment={selectedShipmentForSim} />
                         ) : (
-                          <div style={{ height: '400px', backgroundColor: 'var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', borderRadius: '8px' }}>
+                          <div style={{ height: '400px', backgroundColor: 'var(--mx-ink-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', borderRadius: '8px' }}>
                             No active shipment selected for simulation. Select a shipment from the sidebar on the right.
                           </div>
                         )}
@@ -5305,7 +4808,7 @@ export default function App() {
                           <div className="control-group mt-10">
                             <label>ORDER HUB</label>
                             <div className="mock-control-input-read">
-                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width: '14px', height: '14px', color: '#ffb900'}}><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width: '14px', height: '14px', color: '#ff2a00'}}><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
                               <span>{selectedShipmentForSim?.originCode || 'MEX'}</span>
                             </div>
                           </div>
@@ -5315,7 +4818,7 @@ export default function App() {
                             <div className="waypoints-flex-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '8px' }}>
                               {selectedShipmentForSim?.simulation?.waypoints?.map((wp, idx) => (
                                 <span key={idx} className="wp-badge" style={{
-                                  background: 'rgba(255, 185, 0, 0.1)',
+                                  background: 'rgba(255, 42, 0, 0.1)',
                                   border: '1px solid var(--primary-color)',
                                   color: 'var(--primary-color)',
                                   padding: '2.5px 7px',
@@ -5350,7 +4853,7 @@ export default function App() {
                               style={{
                                 width: '100%',
                                 background: 'var(--bg-secondary)',
-                                color: 'var(--text-primary)',
+                                color: 'var(--mx-ink)',
                                 border: '1px solid var(--border-color)',
                                 borderRadius: '6px',
                                 padding: '6px',
@@ -5482,7 +4985,7 @@ export default function App() {
                                 style={{
                                   flex: 1,
                                   background: 'var(--bg-secondary)',
-                                  color: 'var(--text-primary)',
+                                  color: 'var(--mx-ink)',
                                   border: '1px solid var(--border-color)',
                                   borderRadius: '6px',
                                   padding: '6px 10px',
@@ -5795,7 +5298,7 @@ export default function App() {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                 <button type="button" onClick={() => setEditForm(null)} disabled={editSaving} style={{ padding: '9px 18px', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#F1F5F9', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
-                <button type="submit" disabled={editSaving} style={{ padding: '9px 18px', borderRadius: '6px', border: 'none', background: '#FF6B00', color: '#fff', cursor: 'pointer', fontWeight: 700 }}>{editSaving ? 'Saving...' : 'Save Changes'}</button>
+                <button type="submit" disabled={editSaving} style={{ padding: '9px 18px', borderRadius: '6px', border: 'none', background: '#ff2a00', color: '#fff', cursor: 'pointer', fontWeight: 700 }}>{editSaving ? 'Saving...' : 'Save Changes'}</button>
               </div>
             </form>
           </div>
@@ -5816,8 +5319,8 @@ export default function App() {
           backdropFilter: 'blur(4px)'
         }}>
           <div className="credentials-modal" style={{
-            background: 'var(--card-bg, #2a2521)',
-            border: '1px solid var(--primary-color, #ffb900)',
+            background: 'var(--card-bg, #121722)',
+            border: '1px solid var(--primary-color, #ff2a00)',
             borderRadius: '12px',
             padding: '24px',
             width: '100%',
@@ -5829,16 +5332,16 @@ export default function App() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
               <div style={{
-                background: 'rgba(255, 185, 0, 0.1)',
+                background: 'rgba(255, 42, 0, 0.1)',
                 padding: '8px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <i className="fas fa-key" style={{ color: '#ffb900', fontSize: '18px' }}></i>
+                <i className="fas fa-key" style={{ color: '#ff2a00', fontSize: '18px' }}></i>
               </div>
-              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#ffb900' }}>Shipment Tracking Created</h3>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#ff2a00' }}>Shipment Tracking Created</h3>
             </div>
             
             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary, #cccccc)', marginBottom: '16px', lineHeight: '1.4' }}>
@@ -5864,7 +5367,7 @@ export default function App() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
               <div>
                 <label style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Customer Login Tracking ID</label>
-                <div style={{ display: 'flex', background: 'var(--bg-secondary, #1b1613)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '8px 12px', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', background: 'var(--bg-secondary, #0b0f17)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '8px 12px', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>{credentialsModal.trackingId}</span>
                   <button 
                     type="button" 
@@ -5872,7 +5375,7 @@ export default function App() {
                       navigator.clipboard.writeText(credentialsModal.trackingId);
                       alert("Tracking ID copied!");
                     }} 
-                    style={{ background: 'none', border: 'none', color: '#ffb900', cursor: 'pointer', fontSize: '0.85rem' }}
+                    style={{ background: 'none', border: 'none', color: '#ff2a00', cursor: 'pointer', fontSize: '0.85rem' }}
                   >
                     Copy
                   </button>
@@ -5881,7 +5384,7 @@ export default function App() {
               
               <div>
                 <label style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Username / Email</label>
-                <div style={{ display: 'flex', background: 'var(--bg-secondary, #1b1613)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '8px 12px', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', background: 'var(--bg-secondary, #0b0f17)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '8px 12px', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'monospace' }}>{credentialsModal.email}</span>
                   <button 
                     type="button" 
@@ -5889,7 +5392,7 @@ export default function App() {
                       navigator.clipboard.writeText(credentialsModal.email);
                       alert("Email copied!");
                     }} 
-                    style={{ background: 'none', border: 'none', color: '#ffb900', cursor: 'pointer', fontSize: '0.85rem' }}
+                    style={{ background: 'none', border: 'none', color: '#ff2a00', cursor: 'pointer', fontSize: '0.85rem' }}
                   >
                     Copy
                   </button>
@@ -5905,8 +5408,8 @@ export default function App() {
                 type="button" 
                 onClick={() => setCredentialsModal(null)} 
                 style={{
-                  background: 'linear-gradient(135deg, #ffb900 0%, #d89600 100%)',
-                  color: '#1b1613',
+                  background: 'linear-gradient(135deg, #ff2a00 0%, #d91f00 100%)',
+                  color: '#ffffff',
                   border: 'none',
                   borderRadius: '6px',
                   padding: '10px 20px',
@@ -5951,8 +5454,8 @@ export default function App() {
               setTrackPromptError('Tracking ID not found in your account.');
             }
           }} style={{
-            background: 'var(--card-bg, #2a2521)',
-            border: '1px solid var(--primary-color, #ffb900)',
+            background: 'var(--card-bg, #121722)',
+            border: '1px solid var(--primary-color, #ff2a00)',
             borderRadius: '12px',
             padding: '24px',
             width: '100%',
@@ -5964,16 +5467,16 @@ export default function App() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
               <div style={{
-                background: 'rgba(255, 185, 0, 0.1)',
+                background: 'rgba(255, 42, 0, 0.1)',
                 padding: '8px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="#ffb900" strokeWidth="2.5" style={{width: '20px', height: '20px'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ff2a00" strokeWidth="2.5" style={{width: '20px', height: '20px'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               </div>
-              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#ffb900' }}>Track Your Shipment</h3>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#ff2a00' }}>Track Your Shipment</h3>
             </div>
             
             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary, #cccccc)', marginBottom: '20px', lineHeight: '1.4' }}>
@@ -5992,7 +5495,7 @@ export default function App() {
                 placeholder="e.g. APX-31518784"
                 style={{
                   width: '100%',
-                  background: 'var(--bg-secondary, #1b1613)',
+                  background: 'var(--bg-secondary, #0b0f17)',
                   border: '1px solid var(--border-color, #444)',
                   borderRadius: '6px',
                   padding: '10px 12px',
@@ -6029,8 +5532,8 @@ export default function App() {
               <button 
                 type="submit" 
                 style={{
-                  background: 'linear-gradient(135deg, #ffb900 0%, #d89600 100%)',
-                  color: '#1b1613',
+                  background: 'linear-gradient(135deg, #ff2a00 0%, #d91f00 100%)',
+                  color: '#ffffff',
                   border: 'none',
                   borderRadius: '6px',
                   padding: '10px 20px',
