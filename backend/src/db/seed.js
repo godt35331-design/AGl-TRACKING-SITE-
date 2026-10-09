@@ -9,7 +9,7 @@ const SEED_CUSTOMERS = [
 
 const SEED_SHIPMENTS = [
   {
-    id: "APX-78361092",
+    id: "AGL-78361092",
     customerName: "John Doe",
     customerEmail: "customer@aglgloballogistics.com",
     customerPhone: "+1 555 0199",
@@ -34,7 +34,7 @@ const SEED_SHIPMENTS = [
     }
   },
   {
-    id: "APX-10492837",
+    id: "AGL-10492837",
     customerName: "John Doe",
     customerEmail: "customer@aglgloballogistics.com",
     customerPhone: "+1 555 0199",
@@ -59,7 +59,7 @@ const SEED_SHIPMENTS = [
     }
   },
   {
-    id: "APX-99238472",
+    id: "AGL-99238472",
     customerName: "Jane Smith",
     customerEmail: "jane.smith@corporation.com",
     customerPhone: "+1 555 0341",

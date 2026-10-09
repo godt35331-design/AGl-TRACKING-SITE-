@@ -18,6 +18,37 @@ const WS_BASE = import.meta.env.VITE_WS_BASE ||
     ? 'ws://127.0.0.1:5000' 
     : `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`);
 
+// Every call to our own API carries the signed session token. If the server rejects it
+// (expired or tampered session) we drop the session and send the visitor to sign in again.
+const SESSION_KEY = 'apex_user';
+const readSessionToken = () => {
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null')?.token || ''; } catch { return ''; }
+};
+if (typeof window !== 'undefined' && !window.__aglFetchPatched) {
+  window.__aglFetchPatched = true;
+  const nativeFetch = window.fetch.bind(window);
+  window.fetch = async (input, init = {}) => {
+    const url = typeof input === 'string' ? input : (input && input.url) || '';
+    if (!url.startsWith(API_BASE)) return nativeFetch(input, init);
+    const token = readSessionToken();
+    let nextInit = init;
+    if (token) {
+      const headers = new Headers(init.headers || {});
+      headers.set('Authorization', `Bearer ${token}`);
+      nextInit = { ...init, headers };
+    }
+    const res = await nativeFetch(input, nextInit);
+    if (res.status === 401 && token && !url.includes('/auth/login')) {
+      try { localStorage.removeItem(SESSION_KEY); } catch { /* storage unavailable */ }
+      if (window.location.hash !== '#login') {
+        window.location.hash = '#login';
+        window.location.reload();
+      }
+    }
+    return res;
+  };
+}
+
 // 🌍 Comprehensive Shipping Cities & Logistics Hubs (USA, UK, Europe, & Gateways)
 export const CITIES_DATA = [
   // --- UNITED KINGDOM ---
@@ -710,17 +741,17 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
     const senderNote = activeShipment?.senderName ? ` from ${activeShipment.senderName}` : '';
 
     if (type === 'SHIPMENT_UPDATE') {
-      setSubject(`Shipment Update: Apex Package #${code}${senderNote}`);
+      setSubject(`Shipment Update: AGL Package #${code}${senderNote}`);
       setMessageBody(`Your package #${code}${senderNote} has been updated to "${activeShipment?.status || 'In Transit'}". Current location: ${activeShipment?.currentLocationName || activeShipment?.origin || 'Hub'}.`);
     } else if (type === 'OUT_FOR_DELIVERY') {
-      setSubject(`Out for Delivery: Apex Package #${code}${senderNote}`);
-      setMessageBody(`Great news! Your Apex package #${code}${senderNote} is out for final delivery today. Please ensure someone is available to receive the package.`);
+      setSubject(`Out for Delivery: AGL Package #${code}${senderNote}`);
+      setMessageBody(`Great news! Your AGL package #${code}${senderNote} is out for final delivery today. Please ensure someone is available to receive the package.`);
     } else if (type === 'DELAY_NOTICE') {
-      setSubject(`Important Notice: Update on Apex Package #${code}`);
+      setSubject(`Important Notice: Update on AGL Package #${code}`);
       setMessageBody(`We wanted to notify you that shipment #${code}${senderNote} is experiencing a slight delay due to logistics processing. Our team is actively resolving this to deliver your package as soon as possible.`);
     } else {
-      setSubject(`Notice regarding your Apex Shipment #${code}`);
-      setMessageBody(`Hello,\n\nWe are writing to provide an update regarding your parcel with Apex Logistics${senderNote}.\n\nThank you for choosing Apex Logistics.`);
+      setSubject(`Notice regarding your AGL Shipment #${code}`);
+      setMessageBody(`Hello,\n\nWe are writing to provide an update regarding your parcel with AGL Logistics${senderNote}.\n\nThank you for choosing AGL Logistics.`);
     }
   };
 
@@ -958,7 +989,7 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
             
             {/* Top Logo */}
             <div style={{ textAlign: 'center', marginBottom: '18px' }}>
-              <span style={{ fontSize: '24px', fontWeight: '900', color: '#ff2a00', letterSpacing: '1px' }}>APEX</span>
+              <span style={{ fontSize: '24px', fontWeight: '900', color: '#ff2a00', letterSpacing: '1px' }}>AGL</span>
               <span style={{ fontSize: '20px', fontWeight: '700', color: '#d91f00', marginLeft: '6px', textTransform: 'uppercase' }}>LOGISTICS</span>
             </div>
 
@@ -989,7 +1020,7 @@ const EmailCenterView = ({ shipments, API_BASE }) => {
 
             {/* Footer White Card 2 */}
             <div style={{ background: '#ffffff', borderRadius: '4px', padding: '16px', border: '1px solid #e2e8f0', fontSize: '12px', color: '#4a5568' }}>
-              <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: '#2d3748' }}>Apex Global Logistics Services</p>
+              <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: '#2d3748' }}>AGL Global Logistics Services</p>
               <p style={{ margin: '0 0 4px 0' }}>Website: aglgloballogistics.com</p>
               <p style={{ margin: '0', color: '#718096' }}>Email: support@aglgloballogistics.com</p>
             </div>
@@ -1118,7 +1149,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           from: `${activeConv?.name || 'Customer'} <${targetEmail}>`,
-          subject: `Re: Inquiry regarding Apex Package`,
+          subject: `Re: Inquiry regarding AGL Package`,
           text: sampleText
         })
       });
@@ -1247,7 +1278,7 @@ const MessagesView = ({ messages, API_BASE, onMarkRead }) => {
                     >
                       <div style={{ fontSize: '11px', color: '#718096', marginBottom: '4px', display: 'flex', gap: '8px', alignItems: 'center' }}>
                         <span style={{ fontWeight: '700', color: isAdmin ? '#d91f00' : '#3a4152' }}>
-                          {isAdmin ? 'Apex Support Admin' : m.customerName}
+                          {isAdmin ? 'AGL Support Admin' : m.customerName}
                         </span>
                         <span>•</span>
                         <span>{new Date(m.createdAt || Date.now()).toLocaleString()}</span>
@@ -1400,7 +1431,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
         setSubject('');
         setFeedback({ 
           type: 'success', 
-          text: 'Inquiry delivered directly to Apex Global Dispatch Operations!' 
+          text: 'Inquiry delivered directly to AGL Global Dispatch Operations!' 
         });
         if (onMessageSent && data.message) {
           onMessageSent(data.message);
@@ -1475,7 +1506,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
               </span>
             </div>
             <p style={{ margin: '6px 0 0 0', fontSize: '0.88rem', color: '#cbd5e1' }}>
-              Direct threaded communication with Apex logistics dispatchers, cargo handlers, and fleet managers.
+              Direct threaded communication with AGL logistics dispatchers, cargo handlers, and fleet managers.
             </p>
           </div>
         </div>
@@ -1522,7 +1553,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
         }}>
           <div>
             <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b' }}>
-              Conversation with Apex Global Dispatch
+              Conversation with AGL Global Dispatch
             </div>
             <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
               Connected as: <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#334155' }}>{customerEmail}</span>
@@ -1602,7 +1633,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
                     gap: '6px'
                   }}>
                     <span style={{ fontWeight: 700, color: isCust ? '#b45309' : '#047857' }}>
-                      {isCust ? 'You (Customer)' : 'Apex Dispatch Support'}
+                      {isCust ? 'You (Customer)' : 'AGL Dispatch Support'}
                     </span>
                     <span>•</span>
                     <span>{formattedDate}</span>
@@ -1700,7 +1731,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              placeholder="Subject / Shipment ID (optional, e.g. APX-8271-4492 delivery query)..."
+              placeholder="Subject / Shipment ID (optional, e.g. AGL-8271-4492 delivery query)..."
               style={{
                 padding: '10px 14px',
                 borderRadius: '8px',
@@ -1715,7 +1746,7 @@ const CustomerSupportView = ({ user, messages, API_BASE, onMarkRead, onMessageSe
               rows="3"
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="Type your message for Apex Dispatch Operations..."
+              placeholder="Type your message for AGL Dispatch Operations..."
               style={{
                 padding: '12px 14px',
                 borderRadius: '8px',
@@ -1771,7 +1802,7 @@ const getValidSession = () => {
     if (!savedStr) return null;
     const saved = JSON.parse(savedStr);
 
-    if (!saved || !saved.role) {
+    if (!saved || !saved.role || !saved.token) {
       localStorage.removeItem('apex_user');
       return null;
     }
@@ -1887,7 +1918,7 @@ export default function App() {
   const [formEta, setFormEta] = useState('2026-07-25');
   const [formRouteConfig, setFormRouteConfig] = useState('MEX-QRO-SLP-MTY');
   const [formMsg, setFormMsg] = useState({ type: '', text: '' });
-  const [formTrackingId, setFormTrackingId] = useState(`APX-${Math.floor(10000000 + Math.random() * 90000000)}`);
+  const [formTrackingId, setFormTrackingId] = useState(`AGL-${Math.floor(10000000 + Math.random() * 90000000)}`);
   const [formShipmentType, setFormShipmentType] = useState('Standard');
   const [formInitialStatus, setFormInitialStatus] = useState('Manifest Prepared');
   const [formInternalNotes, setFormInternalNotes] = useState('');
@@ -2055,7 +2086,7 @@ export default function App() {
     let reconnectTimeout = null;
 
     const connectWS = () => {
-      ws = new WebSocket(WS_BASE);
+      ws = new WebSocket(`${WS_BASE}?token=${encodeURIComponent(readSessionToken())}`);
 
       ws.onopen = () => {
         console.log('Connected to real-time telemetry Socket channel.');
@@ -2108,7 +2139,7 @@ export default function App() {
       if (ws) ws.close();
       if (reconnectTimeout) clearTimeout(reconnectTimeout);
     };
-  }, [selectedShipmentId]);
+  }, [selectedShipmentId, user]);
 
   // 1. User login trigger
   const handleLogin = async (e) => {
@@ -2174,40 +2205,6 @@ export default function App() {
     window.location.hash = '#home';
   };
 
-  // 2. Direct Role switch bypass (for testing/proto verification)
-  const handleRoleBypass = async (role) => {
-    localStorage.removeItem('apex_user');
-    setUser(null);
-    userRef.current = null;
-    
-    if (role === 'visitor') {
-      window.location.hash = '#home';
-      return;
-    }
-
-    const testEmail = role === 'admin' ? 'admin@aglgloballogistics.com' : 'customer@aglgloballogistics.com';
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: testEmail })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        const sessionData = {
-          ...data,
-          loginTimestamp: Date.now()
-        };
-        localStorage.setItem('apex_user', JSON.stringify(sessionData));
-        setUser(sessionData);
-        userRef.current = sessionData;
-        window.location.hash = role === 'admin' ? '#admin' : '#dashboard';
-      }
-    } catch (e) {
-      alert('Bypass connection error. Is backend server running on port 5000?');
-    }
-  };
-
   // 3. Admin shipping appointment creation
   const handleCreateShipment = async (e) => {
     e.preventDefault();
@@ -2271,7 +2268,7 @@ export default function App() {
         setFormUploadedImage(null);
         setFormWeight('');
         setFormDesc('');
-        setFormTrackingId(`APX-${Math.floor(10000000 + Math.random() * 90000000)}`);
+        setFormTrackingId(`AGL-${Math.floor(10000000 + Math.random() * 90000000)}`);
         setFormInternalNotes('');
         setFormAmount('');
         fetchShipments();
@@ -2852,7 +2849,7 @@ export default function App() {
                       Administrator
                     </span>
                     <span className="profile-role">
-                      Fleet Manager ID: #APX-8821
+                      Fleet Manager ID: #AGL-8821
                     </span>
                   </div>
                   <img 
@@ -3044,7 +3041,7 @@ export default function App() {
                     <input
                       id="tracking-code-input"
                       type="text"
-                      placeholder="e.g. APX-31518784 or Access Key"
+                      placeholder="e.g. AGL-31518784 or Access Key"
                       value={loginTrackingCode || loginEmail}
                       onChange={(e) => {
                         setLoginTrackingCode(e.target.value);
@@ -3301,7 +3298,7 @@ export default function App() {
 
               {/* Footer attribution */}
               <footer className="portal-footer-note select-none">
-                <p>© 2026 Apex Global Logistics Ltd. All rights reserved. Apex is an independent international freight and express courier provider.</p>
+                <p>© 2026 AGL Global Logistics Ltd. All rights reserved. AGL is an independent international freight and express courier provider.</p>
                 <div className="portal-footer-links">
                   <a href="#dashboard" onClick={(e) => { e.preventDefault(); alert("Privacy Notice details logged under enterprise guidelines."); }}>Privacy Policy</a>
                   <a href="#dashboard" onClick={(e) => { e.preventDefault(); alert("Service terms terms & conditions registered."); }}>Terms of Use</a>
@@ -3463,16 +3460,16 @@ export default function App() {
                       let originSub = '';
                       let destSub = '';
                       
-                      if (shipment.id === 'APX-8271-4492') {
+                      if (shipment.id === 'AGL-8271-4492') {
                         originSub = 'Changi Logistics Hub';
                         destSub = 'Brandenburg Facility';
-                      } else if (shipment.id === 'APX-9302-1184') {
+                      } else if (shipment.id === 'AGL-9302-1184') {
                         originSub = 'Terminal 4 Cargo';
                         destSub = 'Heathrow Distribution';
-                      } else if (shipment.id === 'APX-7721-0032') {
+                      } else if (shipment.id === 'AGL-7721-0032') {
                         originSub = 'Haneda Port Services';
                         destSub = "Ontario Int'l Depot";
-                      } else if (shipment.id === 'APX-1104-9923') {
+                      } else if (shipment.id === 'AGL-1104-9923') {
                         originSub = "Al Maktoum Int'l";
                         destSub = 'Navi Mumbai Port';
                       } else {
@@ -3523,16 +3520,16 @@ export default function App() {
                           <td>
                             <div className="delivery-cell">
                               <span className="delivery-date">
-                                {shipment.id === 'APX-8271-4492' ? 'Oct 24, 2023' : 
-                                 shipment.id === 'APX-9302-1184' ? 'Oct 26, 2023' :
-                                 shipment.id === 'APX-7721-0032' ? 'Oct 22, 2023' :
-                                 shipment.id === 'APX-1104-9923' ? 'Today' : shipment.eta}
+                                {shipment.id === 'AGL-8271-4492' ? 'Oct 24, 2023' : 
+                                 shipment.id === 'AGL-9302-1184' ? 'Oct 26, 2023' :
+                                 shipment.id === 'AGL-7721-0032' ? 'Oct 22, 2023' :
+                                 shipment.id === 'AGL-1104-9923' ? 'Today' : shipment.eta}
                               </span>
                               <span className={`delivery-time-info ${shipment.status === 'Delayed' ? 'text-red' : ''}`}>
-                                {shipment.id === 'APX-8271-4492' && 'by 18:00 PM'}
-                                {shipment.id === 'APX-9302-1184' && 'Scheduled'}
-                                {shipment.id === 'APX-7721-0032' && 'Overdue'}
-                                {shipment.id === 'APX-1104-9923' && 'Expected 2h'}
+                                {shipment.id === 'AGL-8271-4492' && 'by 18:00 PM'}
+                                {shipment.id === 'AGL-9302-1184' && 'Scheduled'}
+                                {shipment.id === 'AGL-7721-0032' && 'Overdue'}
+                                {shipment.id === 'AGL-1104-9923' && 'Expected 2h'}
                               </span>
                             </div>
                           </td>
@@ -3624,7 +3621,7 @@ export default function App() {
                       Loading Telemetry for Shipment #{selectedShipmentId || 'Unknown'}...
                     </h2>
                     <p style={{ color: '#cbd5e1', fontSize: '0.95rem', marginBottom: '24px' }}>
-                      Connecting to Apex Global Tracking database to load parcel telemetry.
+                      Connecting to AGL Global Tracking database to load parcel telemetry.
                     </p>
                     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                       <button 
@@ -3678,9 +3675,9 @@ export default function App() {
               }
             })();
 
-            const displayWeight = activeShipment.id === 'APX-8271-4492' ? '1,240.50 kg' : `${(activeShipment.weight || 0).toLocaleString()} lbs`;
+            const displayWeight = activeShipment.id === 'AGL-8271-4492' ? '1,240.50 kg' : `${(activeShipment.weight || 0).toLocaleString()} lbs`;
             const transportDesc = activeShipment.vessel === 'Plane' ? 'Express Air Freight' : activeShipment.vessel === 'Ship' ? 'Ocean Cargo Freight' : 'Expedited Ground Freight';
-            const packageDesc = activeShipment.id === 'APX-8271-4492' ? '3x Euro Pallet' : activeShipment.desc || 'Standard Freight';
+            const packageDesc = activeShipment.id === 'AGL-8271-4492' ? '3x Euro Pallet' : activeShipment.desc || 'Standard Freight';
             const serviceLevel = activeShipment.vessel === 'Plane' ? 'Priority Global' : activeShipment.vessel === 'Ship' ? 'Standard Economy' : 'Next-Day Ground';
 
             // Next update countdown dynamically relative to progress
@@ -3837,7 +3834,7 @@ export default function App() {
                           <div className="matrix-item">
                             <span className="matrix-label">SENDER / SHIPPER</span>
                             <div className="matrix-val">
-                              <strong className="main-val-text">{activeShipment.senderName || 'Apex Logistics Partner'}</strong>
+                              <strong className="main-val-text">{activeShipment.senderName || 'AGL Logistics Partner'}</strong>
                               {activeShipment.senderPhone && <span className="sub-val-text">{activeShipment.senderPhone}</span>}
                             </div>
                           </div>
@@ -4722,7 +4719,7 @@ export default function App() {
                           />
                           <div className="notes-privacy-banner">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="lock-icon" style={{width: '12px', height: '12px'}}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            <span>These notes are only visible to Apex staff.</span>
+                            <span>These notes are only visible to AGL staff.</span>
                           </div>
                         </div>
                       </div>
@@ -5492,7 +5489,7 @@ export default function App() {
                   setCustomerTrackInput(e.target.value);
                   setTrackPromptError('');
                 }}
-                placeholder="e.g. APX-31518784"
+                placeholder="e.g. AGL-31518784"
                 style={{
                   width: '100%',
                   background: 'var(--bg-secondary, #0b0f17)',

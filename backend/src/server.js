@@ -6,11 +6,17 @@ import dotenv from 'dotenv';
 import { connectDatabase } from './db/connection.js';
 import apiRouter, { setWssInstance, updateShipmentAutoProgress, broadcastShipmentUpdate } from './routes/api.js';
 import { Shipment } from './db/models.js';
+import { verifyToken, warnIfAdminMisconfigured } from './services/auth.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Render sits behind a proxy: trust it so rate limits see the real visitor address
+app.set('trust proxy', 1);
+app.disable('x-powered-by');
+warnIfAdminMisconfigured();
 
 // Enable CORS for frontend client port (React default 5173 or preview 4173)
 app.use(cors({
@@ -27,7 +33,7 @@ app.use('/api', apiRouter);
 
 // Basic health check
 app.get('/', (req, res) => {
-  res.json({ message: 'Apex Global Logistics Server running successfully.' });
+  res.json({ message: 'AGL Global Logistics server running successfully.' });
 });
 
 // Construct HTTP Server
@@ -39,8 +45,14 @@ const wss = new WebSocketServer({ server });
 // Bind WebSocket to API router broadcast functions
 setWssInstance(wss);
 
-wss.on('connection', (ws) => {
-  console.log('New WebSocket Client connected.');
+wss.on('connection', (ws, req) => {
+  // A socket only receives live updates when it presents a valid session token.
+  try {
+    const url = new URL(req.url || '/', 'http://localhost');
+    ws.user = verifyToken(url.searchParams.get('token') || '');
+  } catch {
+    ws.user = null;
+  }
 
   // Handle incoming checks
   ws.on('message', (message) => {
@@ -74,7 +86,7 @@ async function initializeServer() {
 
   server.listen(PORT, () => {
     console.log(`===============================================`);
-    console.log(`Apex Global Logistics Backend running at port ${PORT}`);
+    console.log(`AGL Global Logistics backend running at port ${PORT}`);
     console.log(`WebSocket server connected at ws://localhost:${PORT}`);
     console.log(`REST APIs available at http://localhost:${PORT}/api`);
     console.log(`===============================================`);

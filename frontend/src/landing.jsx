@@ -194,9 +194,9 @@ function TelemetryCard({ modeIndex, onOpen }) {
 
 export function Brand({ onClick, onLight = false }) {
   return (
-    <button type="button" className={`mx-brand ${onLight ? 'on-light' : ''}`} onClick={onClick} aria-label="Apex Global Logistics home">
+    <button type="button" className={`mx-brand ${onLight ? 'on-light' : ''}`} onClick={onClick} aria-label="AGL Global Logistics home">
       <img src="/favicon.svg" alt="" width="30" height="30" />
-      <span className="mx-brand-word">APEX<sup>™</sup></span>
+      <span className="mx-brand-word">AGL<sup>™</sup></span>
     </button>
   );
 }
@@ -334,12 +334,12 @@ const REVIEWS = [
   },
   {
     img: '/review-3.jpg', name: 'Chloe Sterling', role: 'Store Manager • Seattle, WA',
-    text: "We switch shipping companies all the time for our online store, but Apex has been by far the most reliable. Our customers stop emailing support asking 'where is my package'."
+    text: "We switch shipping companies all the time for our online store, but AGL has been by far the most reliable. Our customers stop emailing support asking 'where is my package'."
   }
 ];
 
 const FAQS = [
-  { q: 'How do I track my Apex package live?', a: "Enter your Tracking ID into the top search bar, or log in to your Customer Portal to watch your parcel's exact GPS location and route waypoints in real-time on our interactive map." },
+  { q: 'How do I track my AGL package live?', a: "Enter your Tracking ID into the top search bar, or log in to your Customer Portal to watch your parcel's exact GPS location and route waypoints in real-time on our interactive map." },
   { q: 'Where do I get my Customer Portal login credentials?', a: 'When our logistics team creates a shipping appointment for you, an automated welcome email containing your username and password is sent to your inbox immediately.' },
   { q: 'How fast are shipping appointments registered?', a: 'Shipping appointments are processed instantaneously in our cloud database and assigned an automated tracking code immediately.' },
   { q: 'What happens if my shipment experiences a delay?', a: 'Our telemetry system detects exceptions in real-time and automatically dispatches email notifications with updated estimated delivery times.' }
@@ -373,7 +373,7 @@ export default function LandingPage({
             <Search className="mx-track-icon" size={18} />
             <input
               type="text"
-              placeholder="Enter 8-digit tracking number (e.g. APX-31518784)..."
+              placeholder="Enter 8-digit tracking number (e.g. AGL-31518784)..."
               value={heroTrackCode}
               onChange={(e) => setHeroTrackCode(e.target.value)}
               aria-label="Tracking number"
@@ -518,7 +518,7 @@ export default function LandingPage({
             </div>
           </div>
           <div className="mx-footer-bottom mx-mono">
-            <span>© 2026 Apex Global Logistics Portal. All rights reserved.</span>
+            <span>© 2026 AGL Global Logistics Portal. All rights reserved.</span>
           </div>
         </div>
       </footer>

@@ -33,7 +33,7 @@ export async function connectDatabase() {
       connectTimeoutMS: 10000,
       socketTimeoutMS: 45000
     });
-    console.log('Successfully connected to MongoDB Cluster (Database: apex_portal).');
+    console.log('Successfully connected to MongoDB Cluster (AGL portal database).');
   } catch (error) {
     console.error('Database connection failed:', error.message);
   }

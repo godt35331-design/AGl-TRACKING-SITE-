@@ -2,7 +2,7 @@
   "name": "apex-logistics-backend",
   "version": "1.0.0",
   "type": "module",
-  "description": "Backend API server for Apex Global Logistics Portal",
+  "description": "Backend API server for AGL Global Logistics Portal",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

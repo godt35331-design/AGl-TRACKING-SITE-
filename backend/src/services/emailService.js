@@ -24,7 +24,7 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
       
       <!-- Top Brand Logo -->
       <div style="text-align: center; margin-bottom: 24px;">
-        <span style="font-size: 28px; font-weight: 900; color: #0284c7; letter-spacing: 1px;">APEX</span>
+        <span style="font-size: 28px; font-weight: 900; color: #ff2a00; letter-spacing: 1px;">AGL</span>
         <span style="font-size: 24px; font-weight: 700; color: #d89600; margin-left: 8px; text-transform: uppercase;">LOGISTICS</span>
       </div>
 
@@ -41,7 +41,7 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
 
         ${senderName ? `
         <!-- Sender Information Card -->
-        <div style="background-color: #f0f9ff; border-left: 4px solid #0284c7; border-radius: 4px; padding: 14px 18px; margin-bottom: 22px; font-size: 14px;">
+        <div style="background-color: #f0f9ff; border-left: 4px solid #ff2a00; border-radius: 4px; padding: 14px 18px; margin-bottom: 22px; font-size: 14px;">
           <div style="font-weight: 700; color: #0369a1; margin-bottom: 8px; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Shipper / Sender Information</div>
           <div style="margin-bottom: 4px; color: #1e293b;"><strong>Sender Name:</strong> ${senderName}</div>
           ${senderPhone ? `<div style="margin-bottom: 4px; color: #334155;"><strong>Contact Phone:</strong> ${senderPhone}</div>` : ''}
@@ -52,9 +52,9 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
 
         ${credentials ? `
         <!-- Tracking & Portal Access Card -->
-        <div style="background-color: #f7fafc; border-left: 4px solid #351C15; border-radius: 4px; padding: 18px 20px; margin-bottom: 24px; font-size: 14px;">
-          <div style="font-weight: 700; color: #351C15; margin-bottom: 10px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Live Shipment Tracking Access</div>
-          <div style="margin-bottom: 8px; color: #2d3748;"><strong>Tracking ID:</strong> <span style="font-family: monospace; font-weight: 700; background: #fff3c4; padding: 3px 8px; border-radius: 3px; color: #351C15; font-size: 15px;">${credentials.trackingId || trackingNumber || 'N/A'}</span></div>
+        <div style="background-color: #f7fafc; border-left: 4px solid #0b0f17; border-radius: 4px; padding: 18px 20px; margin-bottom: 24px; font-size: 14px;">
+          <div style="font-weight: 700; color: #0b0f17; margin-bottom: 10px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Live Shipment Tracking Access</div>
+          <div style="margin-bottom: 8px; color: #2d3748;"><strong>Tracking ID:</strong> <span style="font-family: monospace; font-weight: 700; background: #ffe4dc; padding: 3px 8px; border-radius: 3px; color: #0b0f17; font-size: 15px;">${credentials.trackingId || trackingNumber || 'N/A'}</span></div>
           <div style="margin-bottom: 8px; color: #2d3748;"><strong>Registered Email:</strong> <span style="font-family: monospace;">${credentials.email}</span></div>
           <div style="font-size: 12px; color: #64748b; margin-top: 8px; line-height: 1.5;">* No password required. Enter your Tracking ID directly on the portal to view live status and GPS telemetry.</div>
         </div>
@@ -63,7 +63,7 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
         ${trackingNumber ? `
         <!-- Tracking Summary -->
         <div style="background-color: #f7fafc; border: 1px solid #edf2f7; border-radius: 2px; padding: 16px; margin-bottom: 24px; font-size: 14px;">
-          <div style="margin-bottom: 6px; color: #2d3748;"><strong>Tracking ID:</strong> <span style="font-family: monospace; font-weight: 700; color: #351C15;">${trackingNumber}</span></div>
+          <div style="margin-bottom: 6px; color: #2d3748;"><strong>Tracking ID:</strong> <span style="font-family: monospace; font-weight: 700; color: #0b0f17;">${trackingNumber}</span></div>
           ${senderName ? `<div style="margin-bottom: 6px; color: #2d3748;"><strong>Sender:</strong> ${senderName}</div>` : ''}
           <div style="margin-bottom: 6px; color: #2d3748;"><strong>Recipient:</strong> ${recipientName || 'Valued Customer'}</div>
           ${status ? `<div style="margin-bottom: 6px; color: #2d3748;"><strong>Status:</strong> ${status}</div>` : ''}
@@ -73,7 +73,7 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
 
         <!-- Track Shipment Button -->
         <div style="margin-top: 24px; text-align: center;">
-          <a href="https://aglgloballogistics.com/#login" style="display: inline-block; background-color: #351C15; color: #ffffff; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 4px; text-decoration: none; letter-spacing: 0.5px;">
+          <a href="https://aglgloballogistics.com/#login" style="display: inline-block; background-color: #0b0f17; color: #ffffff; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 4px; text-decoration: none; letter-spacing: 0.5px;">
             Track Shipment &rarr;
           </a>
         </div>
@@ -82,9 +82,9 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
 
       <!-- Contact Footer Card 2 -->
       <div style="background-color: #ffffff; border-radius: 4px; padding: 24px; border: 1px solid #e2e8f0; font-size: 13px; color: #4a5568; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <p style="margin: 0 0 6px 0; font-weight: 700; color: #2d3748; font-size: 14px;">Apex Global Logistics Services</p>
+        <p style="margin: 0 0 6px 0; font-weight: 700; color: #2d3748; font-size: 14px;">AGL Global Logistics Services</p>
         <p style="margin: 0 0 4px 0;">Official Transactional Notification</p>
-        <p style="margin: 0 0 4px 0;">Website: <a href="https://aglgloballogistics.com/#login" style="color: #3182ce; text-decoration: underline;">aglgloballogistics.com</a></p>
+        <p style="margin: 0 0 4px 0;">Website: <a href="https://aglgloballogistics.com/#login" style="color: #ff2a00; text-decoration: underline;">aglgloballogistics.com</a></p>
         <p style="margin: 0; color: #718096;">Email: support@aglgloballogistics.com</p>
       </div>
 
@@ -99,27 +99,27 @@ function buildHtmlEmail({ recipientName, senderName, senderPhone, senderEmail, s
  */
 export async function sendEmail({ to, recipientName, senderName, senderPhone, senderEmail, senderAddress, subject, messageBody, templateType, shipment, credentials, inReplyTo }) {
   const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.FROM_EMAIL || 'Apex Support <support@aglgloballogistics.com>';
+  const fromEmail = process.env.FROM_EMAIL || 'AGL Support <support@aglgloballogistics.com>';
 
   const finalSenderName = senderName || shipment?.senderName || '';
   const finalSenderPhone = senderPhone || shipment?.senderPhone || '';
   const finalSenderEmail = senderEmail || shipment?.senderEmail || '';
   const finalSenderAddress = senderAddress || shipment?.senderAddress || '';
 
-  let emailSubject = subject || 'Update regarding your Apex Shipment';
+  let emailSubject = subject || 'Update regarding your AGL Shipment';
   let trackingCode = shipment?.id || '';
   let status = shipment?.status || '';
   let origin = shipment?.origin || '';
   let destination = shipment?.destination || '';
 
   if (templateType === 'OUT_FOR_DELIVERY') {
-    emailSubject = subject || `Out for Delivery: Apex Package #${trackingCode}${finalSenderName ? ` from ${finalSenderName}` : ''}`;
+    emailSubject = subject || `Out for Delivery: AGL Package #${trackingCode}${finalSenderName ? ` from ${finalSenderName}` : ''}`;
   } else if (templateType === 'SHIPMENT_UPDATE') {
-    emailSubject = subject || `Shipment Update: Apex Package #${trackingCode}${finalSenderName ? ` from ${finalSenderName}` : ''}`;
+    emailSubject = subject || `Shipment Update: AGL Package #${trackingCode}${finalSenderName ? ` from ${finalSenderName}` : ''}`;
   } else if (templateType === 'DELAY_NOTICE') {
-    emailSubject = subject || `Important Notice: Update on Apex Package #${trackingCode}`;
+    emailSubject = subject || `Important Notice: Update on AGL Package #${trackingCode}`;
   } else if (templateType === 'NEW_REGISTRATION') {
-    emailSubject = subject || `Apex Shipment Confirmation - #${trackingCode}${finalSenderName ? ` (From: ${finalSenderName})` : ''}`;
+    emailSubject = subject || `AGL Shipment Confirmation - #${trackingCode}${finalSenderName ? ` (From: ${finalSenderName})` : ''}`;
   }
 
   const html = buildHtmlEmail({
@@ -137,12 +137,12 @@ export async function sendEmail({ to, recipientName, senderName, senderPhone, se
     credentials: credentials
   });
 
-  const textContent = `Dear ${recipientName || 'Valued Customer'},\n\n${messageBody}\n\n${finalSenderName ? `SENDER INFORMATION:\nName: ${finalSenderName}${finalSenderPhone ? `\nPhone: ${finalSenderPhone}` : ''}${finalSenderEmail ? `\nEmail: ${finalSenderEmail}` : ''}${finalSenderAddress ? `\nAddress: ${finalSenderAddress}` : ''}\n\n` : ''}SHIPMENT TRACKING DETAILS:\nTracking ID: ${trackingCode}\nRecipient: ${recipientName || 'Customer'}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n\nTrack Shipment (No password required):\nhttps://aglgloballogistics.com/#login\n\nApex Global Logistics Services\nWebsite: https://aglgloballogistics.com/#login\nEmail: support@aglgloballogistics.com`;
+  const textContent = `Dear ${recipientName || 'Valued Customer'},\n\n${messageBody}\n\n${finalSenderName ? `SENDER INFORMATION:\nName: ${finalSenderName}${finalSenderPhone ? `\nPhone: ${finalSenderPhone}` : ''}${finalSenderEmail ? `\nEmail: ${finalSenderEmail}` : ''}${finalSenderAddress ? `\nAddress: ${finalSenderAddress}` : ''}\n\n` : ''}SHIPMENT TRACKING DETAILS:\nTracking ID: ${trackingCode}\nRecipient: ${recipientName || 'Customer'}\nStatus: ${status || 'IN TRANSIT'}\nRoute: ${origin || 'N/A'} -> ${destination || 'N/A'}\n\nTrack Shipment (No password required):\nhttps://aglgloballogistics.com/#login\n\nAGL Global Logistics Services\nWebsite: https://aglgloballogistics.com/#login\nEmail: support@aglgloballogistics.com`;
 
   try {
     const resend = new Resend(apiKey);
     const emailHeaders = {
-      'X-Entity-Ref-ID': `APX-MSG-${Date.now()}`
+      'X-Entity-Ref-ID': `AGL-MSG-${Date.now()}`
     };
     if (inReplyTo) {
       emailHeaders['In-Reply-To'] = inReplyTo;

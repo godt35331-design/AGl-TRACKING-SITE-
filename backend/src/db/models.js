@@ -87,7 +87,7 @@ function loadDb() {
         ],
         shipments: [
           {
-            id: "APX-78361092",
+            id: "AGL-78361092",
             customerName: "John Doe",
             customerEmail: "customer@aglgloballogistics.com",
             customerPhone: "+1 555 0199",
@@ -112,7 +112,7 @@ function loadDb() {
             createdAt: new Date().toISOString()
           },
           {
-            id: "APX-10492837",
+            id: "AGL-10492837",
             customerName: "John Doe",
             customerEmail: "customer@aglgloballogistics.com",
             customerPhone: "+1 555 0199",
@@ -137,7 +137,7 @@ function loadDb() {
             createdAt: new Date().toISOString()
           },
           {
-            id: "APX-99238472",
+            id: "AGL-99238472",
             customerName: "Jane Smith",
             customerEmail: "jane.smith@corporation.com",
             customerPhone: "+1 555 0341",
@@ -167,8 +167,8 @@ function loadDb() {
             _id: "msg_seed_1",
             customerEmail: "customer@aglgloballogistics.com",
             customerName: "John Doe",
-            subject: "Inquiry regarding Package #APX-78361092",
-            body: "Hello Support Team,\n\nCan you confirm when package #APX-78361092 will arrive in Seattle?\n\nThank you,\nJohn Doe",
+            subject: "Inquiry regarding Package #AGL-78361092",
+            body: "Hello Support Team,\n\nCan you confirm when package #AGL-78361092 will arrive in Seattle?\n\nThank you,\nJohn Doe",
             sender: "customer",
             read: false,
             messageId: "<msg-customer-01@aglgloballogistics.com>",
@@ -230,7 +230,7 @@ class MockCustomer {
     if (!this.name || !this.email) throw new Error('Customer validation failed: name and email required.');
     this.email = this.email.trim().toLowerCase();
     this.volume = this.volume || 0;
-    this.password = this.password || 'apex123';
+    this.password = this.password || '';
     this.createdAt = this.createdAt || new Date().toISOString();
     this.updatedAt = new Date().toISOString();
 
