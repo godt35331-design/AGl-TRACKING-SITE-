@@ -319,6 +319,9 @@ const SOLUTIONS = [
   { Icon: ArrowUpRight, title: 'Logistics Solutions', text: 'Custom enterprise workflows and API integrations for seamless operations.' }
 ];
 
+const CONTACT_EMAIL = 'support@aglgloballogistics.com';
+const CONTACT_SITE = 'aglgloballogistics.com';
+
 const JOURNEY = ['Shipment Registered', 'Tracking Code Issued', 'Live Satellite Tracking', 'Live Tracking', 'Delivered'];
 
 const METRICS = [
@@ -479,8 +482,8 @@ export default function LandingPage({
             <span className="mx-stripes" aria-hidden="true"><i /><i /><i /></span>
             <h2>Ready to Optimize Your Logistics?</h2>
             <div className="mx-cta-row">
-              <button type="button" className="mx-btn mx-btn-white" onClick={openPortal}>Create Business Account <ArrowRight size={15} /></button>
-              <button type="button" className="mx-btn mx-btn-outline" onClick={openPortal}>Contact Sales Expert</button>
+              <a className="mx-btn mx-btn-white" href={`mailto:${CONTACT_EMAIL}?subject=Business%20account%20request`}>Create Business Account <ArrowRight size={15} /></a>
+              <a className="mx-btn mx-btn-outline" href={`mailto:${CONTACT_EMAIL}?subject=Sales%20enquiry`}>Contact Sales Expert</a>
             </div>
           </div>
         </div>
@@ -489,15 +492,38 @@ export default function LandingPage({
       {/* FOOTER */}
       <footer className="mx-footer">
         <div className="mx-wrap">
-          <div className="mx-footer-top">
-            <Brand onClick={() => scrollToId('home-top')} />
-            <nav className="mx-footer-links" aria-label="Footer">
-              <a href="#home">Services</a>
-              <a href="#home">Support</a>
-              <a href="#home">Company</a>
-              <a href="#home">Privacy Notice</a>
-              <a href="#home">Service Terms</a>
-            </nav>
+          <div className="mx-footer-grid">
+            <div className="mx-footer-brand">
+              <Brand onClick={() => scrollToId('home-top')} />
+              <p>Connecting businesses and communities worldwide through innovative logistics and shipping solutions since 1907.</p>
+              <a className="mx-footer-mail" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            </div>
+            <div>
+              <h4 className="mx-mono">Services</h4>
+              <ul>
+                <li><button type="button" onClick={() => scrollToId('solutions')}>Shipment Tracking</button></li>
+                <li><button type="button" onClick={() => scrollToId('solutions')}>Live Monitoring</button></li>
+                <li><button type="button" onClick={() => scrollToId('solutions')}>Fast &amp; Secure</button></li>
+                <li><button type="button" onClick={() => scrollToId('solutions')}>Logistics Solutions</button></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="mx-mono">Support</h4>
+              <ul>
+                <li><button type="button" onClick={() => scrollToId('home-top')}>Track a Shipment</button></li>
+                <li><button type="button" onClick={() => scrollToId('faq')}>Tracking FAQ</button></li>
+                <li><button type="button" onClick={() => scrollToId('journey')}>How It Works</button></li>
+                <li><a href={`mailto:${CONTACT_EMAIL}?subject=Claim%20request`}>Claims</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="mx-mono">Contact</h4>
+              <ul>
+                <li><a href={`mailto:${CONTACT_EMAIL}`}>Email Support</a></li>
+                <li><a href={`https://${CONTACT_SITE}`} target="_blank" rel="noopener noreferrer">{CONTACT_SITE}</a></li>
+                <li><span>24/7 live telemetry</span></li>
+              </ul>
+            </div>
           </div>
           <div className="mx-footer-bottom mx-mono">
             <span>© 2026 Apex Global Logistics Portal. All rights reserved.</span>

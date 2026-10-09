@@ -853,3 +853,15 @@ button { font-family: inherit; }
 
 .mx-reviews { padding-top: clamp(64px, 9vw, 120px); }
 .mx-faq { padding-top: 0; }
+
+/* footer with real columns */
+.mx-footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+.mx-footer-brand p { max-width: 320px; margin: 18px 0 14px; color: rgba(255, 255, 255, 0.6); line-height: 1.65; font-size: 0.94rem; }
+.mx-footer-mail { color: #fff !important; border-bottom: 1px solid rgba(255, 255, 255, 0.35); padding-bottom: 2px; }
+.mx-footer h4 { margin: 0 0 18px; color: rgba(255, 255, 255, 0.45); }
+.mx-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.mx-footer li button, .mx-footer li a, .mx-footer li span { padding: 0; border: 0; background: none; color: rgba(255, 255, 255, 0.78); font: inherit; font-size: 0.94rem; text-align: left; text-decoration: none; cursor: pointer; transition: color 0.2s; }
+.mx-footer li span { cursor: default; color: rgba(255, 255, 255, 0.55); }
+.mx-footer li button:hover, .mx-footer li a:hover, .mx-footer-mail:hover { color: var(--mx-red) !important; }
+.mx-footer-bottom { margin-top: 44px; }
+@media (max-width: 960px) { .mx-footer-grid { grid-template-columns: 1fr 1fr; } .mx-footer-brand { grid-column: 1 / -1; } }
