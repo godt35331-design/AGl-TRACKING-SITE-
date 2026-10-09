@@ -774,3 +774,82 @@ button { font-family: inherit; }
 .admin-table-wrapper, .table-container-custom { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .admin-dashboard-table, .portal-table-custom { min-width: 640px; }
 .admin-monitoring-section .leaflet-container { min-height: 320px; }
+
+/* ===================================================================
+   Clean-up pass: fewer elements, lighter sections, scroll animation
+   =================================================================== */
+.mx-hero-grid { opacity: 0.2; }
+.mx-hero-content { gap: 28px; }
+.mx-hero-content > * { animation: mx-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.mx-hero-content > .mx-track { animation-delay: 0.25s; }
+.mx-hud { animation-delay: 0.45s; }
+.mx-hero-controls { animation: mx-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.6s both; }
+
+/* compact telemetry card */
+.mx-hud { width: 320px; gap: 12px; padding: 16px 18px; }
+.mx-hud-route { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mx-hud-route strong { font-size: 0.92rem; font-weight: 600; }
+.mx-hud-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: rgba(255, 255, 255, 0.7); font-size: 10px; }
+.mx-hud-bottom .mx-hud-go { margin-left: 0; }
+
+/* numbers */
+.mx-metrics { padding: clamp(56px, 7vw, 96px) 0; }
+.mx-metrics-grid { margin-top: 0; border-top: 0; }
+.mx-metrics-grid .mx-metric { border-left: 1px solid var(--mx-line-light); padding: 6px 24px; }
+.mx-metrics-grid .mx-metric:first-child { border-left: 0; padding-left: 0; }
+
+/* solutions */
+.mx-solutions { padding-top: 0; }
+.mx-solutions .mx-h2 { margin: 0 0 40px; }
+.mx-card { min-height: 280px; cursor: default; }
+.mx-card h3 { margin-top: auto; }
+.mx-card.mx-reveal.in { transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease, border-color 0.35s ease; }
+
+/* journey: titles only */
+.mx-journey .mx-h2 { margin: 0; }
+.mx-steps { margin-top: 48px; }
+.mx-step h4 { margin: 14px 0 0; font-size: 1.2rem; }
+
+/* reviews: light cards on the page background */
+.mx-reviews { padding-top: 0; }
+.mx-reviews .mx-h2 { margin: 0 0 40px; }
+.mx-reviews .mx-review { background: #fff; border: 1px solid var(--mx-line-light); }
+.mx-reviews .mx-review blockquote { color: #2A3142; font-size: 1.02rem; }
+.mx-reviews .mx-review figcaption .mx-mono { color: var(--mx-muted); }
+
+/* faq: title left, questions right */
+.mx-faq .mx-h2 { margin: 0; position: sticky; top: 110px; }
+.mx-faq-wrap { align-items: start; }
+
+/* cta: heading and two buttons */
+.mx-cta h2 { margin-bottom: 36px; }
+
+/* footer */
+.mx-footer { padding: clamp(40px, 5vw, 64px) 0 26px; }
+.mx-footer-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+.mx-footer-links { display: flex; flex-wrap: wrap; gap: 14px 30px; }
+.mx-footer-bottom { margin-top: 36px; }
+
+/* scroll reveal (class is only added by JS, so no-JS visitors see everything) */
+.mx-anim .mx-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms);
+}
+.mx-anim .mx-reveal.in { opacity: 1; transform: none; }
+
+@media (max-width: 960px) {
+  .mx-faq .mx-h2 { position: static; margin-bottom: 24px; }
+  .mx-hud { width: 100%; max-width: 380px; }
+}
+@media (max-width: 720px) {
+  .mx-metrics-grid .mx-metric { border-left: 0; padding: 6px 0; }
+  .mx-metrics-grid .mx-metric:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--mx-line-light); }
+  .mx-metrics-grid .mx-metric:nth-child(n + 3) { border-top: 1px solid var(--mx-line-light); margin-top: 20px; padding-top: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mx-hero-content > *, .mx-hero-controls, .mx-hud { animation: none !important; }
+}
+
+.mx-reviews { padding-top: clamp(64px, 9vw, 120px); }
+.mx-faq { padding-top: 0; }

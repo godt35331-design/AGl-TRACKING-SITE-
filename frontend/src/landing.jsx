@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
-  Truck, Plane, Ship, Package, MapPin, Activity, Shield, Search, ArrowRight,
-  ArrowUpRight, Pause, Play, X, Menu, Plus, Layers, Radar, Star
+  Truck, Plane, Ship, MapPin, Search, ArrowRight, ArrowUpRight, Pause, Play, X, Menu, Plus, Layers, Radar
 } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
@@ -179,28 +178,17 @@ function TelemetryCard({ modeIndex, onOpen }) {
   return (
     <div className="mx-hud" key={m.key}>
       <div className="mx-hud-top">
-        <span className="mx-mono mx-hud-live"><span className="mx-live-dot" /> LIVE SATELLITE DISPATCH</span>
-        <span className="mx-mono mx-hud-mode"><m.Icon size={12} /> {m.label.toUpperCase()}</span>
+        <span className="mx-mono mx-hud-live"><span className="mx-live-dot" /> Live</span>
+        <span className="mx-mono mx-hud-mode"><m.Icon size={12} /> {m.label}</span>
       </div>
       <div className="mx-hud-route">
-        <div>
-          <strong>{m.from.city}</strong>
-          <span className="mx-mono">{m.from.note}</span>
-        </div>
+        <strong>{m.from.city}</strong>
         <m.Icon className="mx-hud-icon" size={18} />
-        <div className="right">
-          <strong>{m.to.city}</strong>
-          <span className="mx-mono">{m.to.note}</span>
-        </div>
+        <strong>{m.to.city}</strong>
       </div>
       <div className="mx-hud-bar"><span style={{ width: `${m.progress}%` }} /></div>
-      <div className="mx-hud-meta mx-mono">
-        <span>STATUS: <b>{m.status}</b></span>
-        <span>ETA: <b>{m.eta}</b></span>
-      </div>
-      <div className="mx-hud-foot">
-        <span className="mx-mono"><Shield size={12} /> GPS ENCRYPTED</span>
-        <span className="mx-mono"><Activity size={12} /> {m.speed}</span>
+      <div className="mx-hud-bottom">
+        <span className="mx-mono">ETA {m.eta}</span>
         <button type="button" className="mx-hud-go" onClick={onOpen} aria-label="Open the tracking portal">
           <ArrowRight size={16} />
         </button>
@@ -208,7 +196,6 @@ function TelemetryCard({ modeIndex, onOpen }) {
     </div>
   );
 }
-
 /* ------------------------------------------------------------------ */
 /*  Small building blocks                                              */
 /* ------------------------------------------------------------------ */
@@ -229,7 +216,7 @@ const scrollToId = (id) => {
 
 const NAV_ITEMS = [
   { id: 'home-top', label: 'Home' },
-  { id: 'solutions', label: 'Solutions', count: '04' },
+  { id: 'solutions', label: 'Solutions' },
   { id: 'journey', label: 'Process' },
   { id: 'reviews', label: 'Reviews' },
   { id: 'faq', label: 'FAQ' }
@@ -292,10 +279,6 @@ function MovexNav({ onTrack, trackLabel }) {
   );
 }
 
-function SectionTag({ children, dark }) {
-  return <span className={`mx-tag ${dark ? 'dark' : ''}`}>{children}</span>;
-}
-
 function FaqItem({ q, a, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
@@ -309,47 +292,34 @@ function FaqItem({ q, a, defaultOpen = false }) {
   );
 }
 
-function VideoLightbox({ onClose }) {
+/* Fade/slide elements in as they scroll into view. */
+function useReveal(rootRef) {
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
-  }, [onClose]);
-
-  return (
-    <div className="mx-lightbox" role="dialog" aria-modal="true" aria-label="Apex logistics network video" onClick={onClose}>
-      <button type="button" className="mx-lightbox-close" onClick={onClose} aria-label="Close video"><X size={20} /></button>
-      <video
-        className="mx-lightbox-video"
-        src="/videos/ship-720.mp4"
-        controls
-        autoPlay
-        playsInline
-        onClick={e => e.stopPropagation()}
-      />
-    </div>
-  );
+    const root = rootRef.current;
+    if (!root || prefersReducedMotion() || typeof IntersectionObserver === 'undefined') return undefined;
+    root.classList.add('mx-anim');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    root.querySelectorAll('.mx-reveal').forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, [rootRef]);
 }
+
+const delay = (i) => ({ '--d': `${i * 90}ms` });
 
 /* ------------------------------------------------------------------ */
 /*  Landing page                                                       */
 /* ------------------------------------------------------------------ */
 
 const SOLUTIONS = [
-  { Icon: MapPin, title: 'Shipment Tracking', text: 'Get instantaneous updates on your package location with centimeter-level precision.', cta: 'Learn More' },
-  { Icon: Radar, title: 'Live Monitoring', text: '24/7 telemetry and environmental monitoring for sensitive or high-value cargo.', cta: 'View Dashboard' },
-  { Icon: Shield, title: 'Fast & Secure', text: 'Redundant security protocols and expedited handling for priority shipments.', cta: 'Security Protocol' },
-  { Icon: Layers, title: 'Logistics Solutions', text: 'Custom enterprise workflows and API integrations for seamless operations.', cta: 'Enterprise API' }
+  { Icon: MapPin, title: 'Shipment Tracking', text: 'Get instantaneous updates on your package location with centimeter-level precision.' },
+  { Icon: Radar, title: 'Live Monitoring', text: '24/7 telemetry and environmental monitoring for sensitive or high-value cargo.' },
+  { Icon: Layers, title: 'Fast & Secure', text: 'Redundant security protocols and expedited handling for priority shipments.' },
+  { Icon: ArrowUpRight, title: 'Logistics Solutions', text: 'Custom enterprise workflows and API integrations for seamless operations.' }
 ];
 
-const JOURNEY = [
-  { title: 'Shipment Registered', text: 'Your order is logged into our global dispatch network instantly.' },
-  { title: 'Tracking Code Issued', text: 'Instant 8-digit tracking number is dispatched to your receipt and email.' },
-  { title: 'Live Satellite Tracking', text: 'Monitor package transit live on map with GPS coordinates and route telemetry.' },
-  { title: 'Live Tracking', text: 'Watch your package move across the map in high-resolution.' },
-  { title: 'Delivered', text: 'Package arrived confirmation with digital signature capture.' }
-];
+const JOURNEY = ['Shipment Registered', 'Tracking Code Issued', 'Live Satellite Tracking', 'Live Tracking', 'Delivered'];
 
 const METRICS = [
   { num: '15.2M+', label: 'Daily Packages Delivered' },
@@ -360,16 +330,16 @@ const METRICS = [
 
 const REVIEWS = [
   {
-    img: '/review-1.jpg', name: 'Marcus Vance', role: 'Verified Shipper • Chicago, IL',
-    text: "Honestly impressed. Had to ship three crates of auto parts across states last week and was super nervous about delays. Got the email with my login details right after registering, logged in, and watched the truck move on the live map the whole way. Package arrived a day early. Def using them again."
+    img: '/review-1.jpg', name: 'Marcus Vance', role: 'Shipper • Chicago, IL',
+    text: 'Honestly impressed. Had to ship three crates of auto parts across states last week and was super nervous about delays. I watched the truck move on the live map the whole way. Package arrived a day early.'
   },
   {
-    img: '/review-2.jpg', name: 'Dave Miller', role: 'Verified Recipient • Denver, CO',
-    text: "My package was coming in from Denver and I kept checking the live tracking link on my phone every couple hours haha. The email update came in as soon as it hit the local warehouse. Driver was super friendly too. 5 stars all day."
+    img: '/review-2.jpg', name: 'Dave Miller', role: 'Recipient • Denver, CO',
+    text: 'I kept checking the live tracking link on my phone every couple hours. The email update came in as soon as it hit the local warehouse. 5 stars all day.'
   },
   {
-    img: '/review-3.jpg', name: 'Chloe Sterling', role: 'Online Store Manager • Seattle, WA',
-    text: "We switch shipping companies all the time for our online store, but Apex has been by far the most reliable. No missing tracking numbers, no weird email bugs. Our customers get their login links immediately and stop emailing support asking 'where is my package'. Worth every penny."
+    img: '/review-3.jpg', name: 'Chloe Sterling', role: 'Store Manager • Seattle, WA',
+    text: "We switch shipping companies all the time for our online store, but Apex has been by far the most reliable. Our customers stop emailing support asking 'where is my package'."
   }
 ];
 
@@ -385,27 +355,24 @@ export default function LandingPage({
   portalHash = '#login', portalLabel = 'Track Shipment'
 }) {
   const [mode, setMode] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
+  const rootRef = useRef(null);
   const handleMode = useCallback((i) => setMode(i), []);
   const openPortal = () => goTo(portalHash);
+  useReveal(rootRef);
 
   return (
-    <section className="mx-landing">
+    <section className="mx-landing" ref={rootRef}>
       <MovexNav onTrack={openPortal} trackLabel={portalLabel} />
 
-      {/* 1. HERO */}
+      {/* HERO */}
       <div className="mx-hero" id="home-top">
         <HeroStage onModeChange={handleMode} />
 
         <div className="mx-hero-content">
-          <SectionTag dark>Apex Global Express • Real-Time Satellite Telemetry</SectionTag>
           <h1 className="mx-h1">
             <span className="dim">Track Your Shipment</span>
             <span>In Real-Time Worldwide</span>
           </h1>
-          <p className="mx-lead">
-            Precision logistics, automated dispatch hubs, and live satellite tracking across 220+ countries and territories. Enter your tracking number below for instant delivery status and route telemetry.
-          </p>
 
           <form className="mx-track" onSubmit={handleHeroTrackSubmit}>
             <Search className="mx-track-icon" size={18} />
@@ -426,124 +393,62 @@ export default function LandingPage({
               {heroTrackLoading ? (<><span className="btn-spinner" /> Locating…</>) : (<>Track Shipment <ArrowRight size={15} /></>)}
             </button>
           </form>
-
-          <div className="mx-hints mx-mono">
-            <span>Sample tracking code:</span>
-            <button type="button" className="mx-chip" onClick={() => setHeroTrackCode('APX-31518784')}>APX-31518784</button>
-            <span className="mx-dot">•</span>
-            <a href="#login" onClick={(e) => { e.preventDefault(); openPortal(); }}>Dedicated Portal <ArrowUpRight size={12} /></a>
-          </div>
-
-          <div className="mx-trust">
-            <div className="mx-avatars">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80" alt="" loading="lazy" />
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&fit=crop&q=80" alt="" loading="lazy" />
-              <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=80&fit=crop&q=80" alt="" loading="lazy" />
-            </div>
-            <div>
-              <div className="mx-stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /> <b>4.9 / 5.0</b></div>
-              <span className="mx-mono mx-trust-cap">12,000+ Enterprises & Shippers Worldwide</span>
-            </div>
-          </div>
         </div>
 
         <TelemetryCard modeIndex={mode} onOpen={openPortal} />
       </div>
 
-      {/* 2. METRICS */}
+      {/* NUMBERS */}
       <div className="mx-section mx-metrics">
+        <div className="mx-wrap mx-metrics-grid">
+          {METRICS.map((m, i) => (
+            <div className="mx-metric mx-reveal" style={delay(i)} key={m.label}>
+              <div className="mx-metric-num">{m.num}</div>
+              <div className="mx-mono mx-metric-label">{m.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* SOLUTIONS */}
+      <div className="mx-section mx-solutions" id="solutions">
         <div className="mx-wrap">
-          <SectionTag>Global Network</SectionTag>
-          <div className="mx-metrics-grid">
-            {METRICS.map(m => (
-              <div className="mx-metric" key={m.label}>
-                <div className="mx-metric-num">{m.num}</div>
-                <div className="mx-mono mx-metric-label">{m.label}</div>
+          <h2 className="mx-h2 mx-reveal">Comprehensive Logistics <span className="dim">Solutions</span></h2>
+          <div className="mx-cards">
+            {SOLUTIONS.map((s, i) => (
+              <div className="mx-card mx-reveal" style={delay(i)} key={s.title}>
+                <span className="mx-card-icon"><s.Icon size={22} /></span>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* 3. SOLUTIONS */}
-      <div className="mx-section mx-solutions" id="solutions">
-        <div className="mx-wrap">
-          <div className="mx-sec-head">
-            <SectionTag>Services (04)</SectionTag>
-            <h2 className="mx-h2">Comprehensive Logistics <span className="dim">Solutions</span></h2>
-            <p className="mx-sub">Precision-engineered tools to streamline your supply chain, from local deliveries to international freight forwarding.</p>
-          </div>
-          <div className="mx-cards">
-            {SOLUTIONS.map((s, i) => (
-              <a className="mx-card" href="#login" key={s.title} onClick={(e) => { e.preventDefault(); openPortal(); }}>
-                <span className="mx-mono mx-card-n">0{i + 1}</span>
-                <span className="mx-card-icon"><s.Icon size={22} /></span>
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
-                <span className="mx-card-cta">{s.cta} <ArrowUpRight size={15} /></span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 4. JOURNEY */}
+      {/* JOURNEY */}
       <div className="mx-section mx-dark mx-journey" id="journey">
         <div className="mx-wrap">
-          <div className="mx-sec-head row">
-            <div>
-              <SectionTag dark>Process</SectionTag>
-              <h2 className="mx-h2">A Streamlined <span className="dim">Journey</span></h2>
-              <p className="mx-sub">From the moment your package enters our system to the final doorstep delivery, we provide transparency at every milestone.</p>
-            </div>
-            <a href="#login" className="mx-btn mx-btn-ghost" onClick={(e) => { e.preventDefault(); openPortal(); }}>Detailed Process Guide <ArrowUpRight size={15} /></a>
-          </div>
+          <h2 className="mx-h2 mx-reveal">A Streamlined <span className="dim">Journey</span></h2>
           <ol className="mx-steps">
-            {JOURNEY.map((s, i) => (
-              <li key={s.title} className="mx-step">
+            {JOURNEY.map((title, i) => (
+              <li key={title} className="mx-step mx-reveal" style={delay(i)}>
                 <span className="mx-step-n mx-mono">{String(i + 1).padStart(2, '0')}</span>
-                <h4>{s.title}</h4>
-                <p>{s.text}</p>
+                <h4>{title}</h4>
               </li>
             ))}
           </ol>
         </div>
       </div>
 
-      {/* 5. VIDEO SHOWCASE */}
-      <div className="mx-section mx-showcase">
+      {/* REVIEWS */}
+      <div className="mx-section mx-reviews" id="reviews">
         <div className="mx-wrap">
-          <div className="mx-sec-head center">
-            <SectionTag>Official Video Overview</SectionTag>
-            <h2 className="mx-h2">Inside the Apex <span className="dim">Smart Logistics Network</span></h2>
-            <p className="mx-sub">Watch how our automated sorting hubs, live GPS telemetry, and AI dispatch manage over 15 million packages daily with zero delivery friction.</p>
-          </div>
-          <button type="button" className="mx-video-card" onClick={() => setShowVideo(true)} aria-label="Play the Apex network video">
-            <img src="/hero-bg-2.jpg" alt="Inside Apex Global Logistics Operations" loading="lazy" />
-            <span className="mx-video-shade" />
-            <span className="mx-play"><Play size={26} fill="currentColor" /></span>
-            <span className="mx-video-cap">
-              <span className="mx-mono">APEX GLOBAL LOGISTICS DISPATCH</span>
-              <strong>Next-Generation Automated Sorting & Fleet Telemetry</strong>
-            </span>
-            <span className="mx-mono mx-video-badge">HD VIDEO</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 6. REVIEWS */}
-      <div className="mx-section mx-dark mx-reviews" id="reviews">
-        <div className="mx-wrap">
-          <div className="mx-sec-head center">
-            <SectionTag dark>4.9 / 5.0 Rating Across 12,000+ Shippers</SectionTag>
-            <h2 className="mx-h2">What Our <span className="dim">Customers Say</span></h2>
-            <p className="mx-sub">Read real experiences from business owners and individuals who rely on Apex Global Logistics every day.</p>
-          </div>
+          <h2 className="mx-h2 mx-reveal">What Our <span className="dim">Customers Say</span></h2>
           <div className="mx-reviews-grid">
-            {REVIEWS.map(r => (
-              <figure className="mx-review" key={r.name}>
-                <div className="mx-stars"><Star size={14} fill="currentColor" /><Star size={14} fill="currentColor" /><Star size={14} fill="currentColor" /><Star size={14} fill="currentColor" /><Star size={14} fill="currentColor" /> <b>5.0 / 5.0</b></div>
-                <blockquote>"{r.text}"</blockquote>
+            {REVIEWS.map((r, i) => (
+              <figure className="mx-review mx-reveal" style={delay(i)} key={r.name}>
+                <blockquote>&ldquo;{r.text}&rdquo;</blockquote>
                 <figcaption>
                   <img src={r.img} alt={r.name} loading="lazy" width="44" height="44" />
                   <div>
@@ -551,34 +456,28 @@ export default function LandingPage({
                     <span className="mx-mono">{r.role}</span>
                   </div>
                 </figcaption>
-                <div className="mx-mono mx-review-date">Verified Customer Review • July 2026</div>
               </figure>
             ))}
           </div>
         </div>
       </div>
 
-      {/* 7. FAQ */}
+      {/* FAQ */}
       <div className="mx-section mx-faq" id="faq">
         <div className="mx-wrap mx-faq-wrap">
-          <div className="mx-sec-head">
-            <SectionTag>FAQ</SectionTag>
-            <h2 className="mx-h2">Frequently Asked <span className="dim">Questions</span></h2>
-            <p className="mx-sub">Everything you need to know about tracking packages, receiving login credentials, and fleet services.</p>
-          </div>
-          <div className="mx-faq-list">
+          <h2 className="mx-h2 mx-reveal">Frequently Asked <span className="dim">Questions</span></h2>
+          <div className="mx-faq-list mx-reveal">
             {FAQS.map((f, i) => <FaqItem key={f.q} q={f.q} a={f.a} defaultOpen={i === 0} />)}
           </div>
         </div>
       </div>
 
-      {/* 8. CTA */}
+      {/* CTA */}
       <div className="mx-section mx-cta-wrap">
         <div className="mx-wrap">
-          <div className="mx-cta">
+          <div className="mx-cta mx-reveal">
             <span className="mx-stripes" aria-hidden="true"><i /><i /><i /></span>
             <h2>Ready to Optimize Your Logistics?</h2>
-            <p>Join thousands of enterprises using Apex Global Logistics Portal to scale their delivery operations efficiently.</p>
             <div className="mx-cta-row">
               <button type="button" className="mx-btn mx-btn-white" onClick={openPortal}>Create Business Account <ArrowRight size={15} /></button>
               <button type="button" className="mx-btn mx-btn-outline" onClick={openPortal}>Contact Sales Expert</button>
@@ -587,62 +486,24 @@ export default function LandingPage({
         </div>
       </div>
 
-      {/* 9. FOOTER */}
+      {/* FOOTER */}
       <footer className="mx-footer">
         <div className="mx-wrap">
-          <div className="mx-footer-grid">
-            <div className="mx-footer-brand">
-              <Brand onClick={() => scrollToId('home-top')} />
-              <p>Connecting businesses and communities worldwide through innovative logistics and shipping solutions since 1907.</p>
-            </div>
-            <div>
-              <h4 className="mx-mono">Services</h4>
-              <ul>
-                <li><a href="#home">E-commerce</a></li>
-                <li><a href="#home">Healthcare</a></li>
-                <li><a href="#home">Manufacturing</a></li>
-                <li><a href="#home">Custom Solutions</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="mx-mono">Support</h4>
-              <ul>
-                <li><a href="#home">Help Center</a></li>
-                <li><a href="#home">Tracking FAQ</a></li>
-                <li><a href="#home">Shipping Tools</a></li>
-                <li><a href="#home">Claims</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="mx-mono">Company</h4>
-              <ul>
-                <li><a href="#home">About Us</a></li>
-                <li><a href="#home">Sustainability</a></li>
-                <li><a href="#home">Investors</a></li>
-                <li><a href="#home">Press Room</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="mx-mono">Social</h4>
-              <div className="mx-social">
-                <button type="button" aria-label="Air cargo"><Plane size={15} /></button>
-                <button type="button" aria-label="Ocean freight"><Ship size={15} /></button>
-                <button type="button" aria-label="Parcels"><Package size={15} /></button>
-              </div>
-            </div>
+          <div className="mx-footer-top">
+            <Brand onClick={() => scrollToId('home-top')} />
+            <nav className="mx-footer-links" aria-label="Footer">
+              <a href="#home">Services</a>
+              <a href="#home">Support</a>
+              <a href="#home">Company</a>
+              <a href="#home">Privacy Notice</a>
+              <a href="#home">Service Terms</a>
+            </nav>
           </div>
           <div className="mx-footer-bottom mx-mono">
             <span>© 2026 Apex Global Logistics Portal. All rights reserved.</span>
-            <div>
-              <a href="#home">Privacy Notice</a>
-              <a href="#home">Service Terms</a>
-              <a href="#home">Cookie Settings</a>
-            </div>
           </div>
         </div>
       </footer>
-
-      {showVideo && <VideoLightbox onClose={() => setShowVideo(false)} />}
     </section>
   );
 }
