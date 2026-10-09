@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
-  Truck, Plane, Ship, MapPin, Search, ArrowRight, ArrowUpRight, Pause, Play, X, Menu, Plus, Layers, Radar
+  Truck, Plane, Ship, MapPin, Search, ArrowRight, ArrowUpRight, X, Menu, Plus, Layers, Radar
 } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
@@ -160,14 +160,6 @@ function HeroStage({ onModeChange }) {
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          className="mx-pause-btn"
-          onClick={() => setPaused(p => !p)}
-          aria-label={paused ? 'Play background video' : 'Pause background video'}
-        >
-          {paused ? <Play size={14} /> : <Pause size={14} />}
-        </button>
       </div>
     </>
   );
