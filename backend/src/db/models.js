@@ -28,6 +28,9 @@ const shipmentSchema = new mongoose.Schema({
   destCode: { type: String, default: 'SEA' },
   eta: { type: String, required: true },
   internalNotes: { type: String, default: '' },
+  // Package photo (data URL). Not loaded unless asked for, so shipment lists stay small.
+  packageImage: { type: String, default: '', select: false },
+  imageVersion: { type: Number, default: 0 },
   amount: { type: Number, default: 0 },
   paymentStatus: { type: String, enum: ['Unpaid', 'Paid'], default: 'Unpaid' },
   status: { type: String, default: 'Registered' },

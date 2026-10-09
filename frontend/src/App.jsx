@@ -18,6 +18,46 @@ const WS_BASE = import.meta.env.VITE_WS_BASE ||
     ? 'ws://127.0.0.1:5000' 
     : `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`);
 
+// Photo addresses from the server are relative ("/shipments/ID/image?v=1"); make them full URLs.
+const imgSrc = (s) => {
+  const p = s && s.packageImage;
+  if (!p) return '';
+  return /^(data:|https?:)/.test(p) ? p : `${API_BASE}${p}`;
+};
+
+// Shrink a chosen photo in the browser (max 1000px, JPEG) so uploads stay small and quick.
+const compressImage = (file) => new Promise((resolve, reject) => {
+  if (!file || !/^image\//.test(file.type)) { reject(new Error('Please choose an image file (PNG, JPG or WEBP).')); return; }
+  const reader = new FileReader();
+  reader.onerror = () => reject(new Error('Could not read that file.'));
+  reader.onload = () => {
+    const img = new Image();
+    img.onerror = () => reject(new Error('That image could not be opened.'));
+    img.onload = () => {
+      const scale = Math.min(1, 1000 / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const out = canvas.toDataURL('image/jpeg', 0.82);
+      resolve({ name: file.name, size: `${((out.length * 0.75) / 1048576).toFixed(2)} MB`, base64: out });
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+// milliseconds -> value for <input type="datetime-local">
+const toLocalInput = (ms) => {
+  if (!ms) return '';
+  const d = new Date(ms);
+  const p2 = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`;
+};
+
 // Every call to our own API carries the signed session token. If the server rejects it
 // (expired or tampered session) we drop the session and send the visitor to sign in again.
 const SESSION_KEY = 'apex_user';
@@ -1923,6 +1963,9 @@ export default function App() {
   const [formInitialStatus, setFormInitialStatus] = useState('Manifest Prepared');
   const [formInternalNotes, setFormInternalNotes] = useState('');
   const [formAmount, setFormAmount] = useState('');
+  const [formStartAt, setFormStartAt] = useState('');
+  const [imageError, setImageError] = useState('');
+  const [isDraggingImage, setIsDraggingImage] = useState(false);
   const [adminSearch, setAdminSearch] = useState('');
   const [credentialsModal, setCredentialsModal] = useState(null);
   const [editForm, setEditForm] = useState(null);
@@ -2237,7 +2280,9 @@ export default function App() {
       eta: formEta,
       waypoints: waypointsArray,
       internalNotes: formInternalNotes || '',
-      amount: parseFloat(formAmount) || 0
+      amount: parseFloat(formAmount) || 0,
+      packageImage: formUploadedImage ? formUploadedImage.base64 : '',
+      startAt: formStartAt ? new Date(formStartAt).toISOString() : ''
     };
 
     try {
@@ -2271,6 +2316,8 @@ export default function App() {
         setFormTrackingId(`AGL-${Math.floor(10000000 + Math.random() * 90000000)}`);
         setFormInternalNotes('');
         setFormAmount('');
+        setFormStartAt('');
+        setImageError('');
         fetchShipments();
         fetchStats();
       } else {
@@ -2281,21 +2328,21 @@ export default function App() {
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+  const acceptImageFile = async (file) => {
     if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1);
-      setFormUploadedImage({
-        name: file.name,
-        size: `${sizeInMB} MB`,
-        base64: reader.result
-      });
-    };
-    reader.readAsDataURL(file);
+    try {
+      setImageError('');
+      setFormUploadedImage(await compressImage(file));
+    } catch (err) {
+      setImageError(err.message || 'That picture could not be used.');
+    }
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    await acceptImageFile(file);
+  };
   const handleUpdateSimShipmentVessel = async (newVessel) => {
     if (!simActiveShipmentId) return;
     const shipment = shipments.find(s => s.id === simActiveShipmentId);
@@ -2701,7 +2748,12 @@ export default function App() {
       internalNotes: s.internalNotes || '',
       amount: s.amount ?? 0,
       paymentStatus: s.paymentStatus || 'Unpaid',
-      route: ((s.simulation && s.simulation.waypoints) || []).join('-')
+      route: ((s.simulation && s.simulation.waypoints) || []).join('-'),
+      startAt: toLocalInput(s.simulation && s.simulation.startedAt > 0 ? s.simulation.startedAt : 0),
+      startAtOriginal: toLocalInput(s.simulation && s.simulation.startedAt > 0 ? s.simulation.startedAt : 0),
+      currentImage: imgSrc(s),
+      newImage: null,
+      removeImage: false
     });
   };
 
@@ -2714,14 +2766,18 @@ export default function App() {
       return;
     }
     const waypoints = editForm.route.split('-').map(w => w.trim()).filter(Boolean);
-    const { id, route, ...fields } = editForm;
+    const { id, route, startAt, startAtOriginal, currentImage, newImage, removeImage, ...fields } = editForm;
+    const body = { ...fields, waypoints };
+    if (newImage) body.packageImage = newImage;
+    else if (removeImage) body.packageImage = '';
+    if (startAt && startAt !== startAtOriginal) body.startAt = new Date(startAt).toISOString();
     setEditSaving(true);
     setEditError('');
     try {
       const res = await fetch(`${API_BASE}/shipments/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...fields, waypoints })
+        body: JSON.stringify(body)
       });
       const data = await res.json();
       if (res.ok) {
@@ -3258,6 +3314,8 @@ export default function App() {
                             </span>
                           </div>
 
+                          {imgSrc(s) && <img src={imgSrc(s)} alt={`Package ${s.id}`} className="cust-card-photo" loading="lazy" />}
+
                           <div className="cust-card-route">
                             <div className="route-node">
                               <span className="route-node-label">ORIGIN</span>
@@ -3350,7 +3408,7 @@ export default function App() {
                         const paid = s.paymentStatus === 'Paid';
                         return (
                           <tr key={s.id}>
-                            <td style={{ ...td, fontWeight: 700, color: '#0F172A', cursor: 'pointer' }} onClick={() => window.location.hash = `#details?id=${s.id}`}>{s.id}</td>
+                            <td style={{ ...td, fontWeight: 700, color: '#0F172A', cursor: 'pointer' }} onClick={() => window.location.hash = `#details?id=${s.id}`}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>{imgSrc(s) && <img src={imgSrc(s)} alt="" className="mx-thumb" loading="lazy" />}{s.id}</span></td>
                             <td style={td}>{s.customerName}<div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{s.customerEmail}</div></td>
                             <td style={td}>{s.originCode} ➔ {s.destCode}</td>
                             <td style={td}>
@@ -3486,9 +3544,13 @@ export default function App() {
                       return (
                         <tr key={shipment.id}>
                           <td className="tracking-num-cell">
-                            <div className="table-package-icon">
-                              <Package style={{ width: '15px', height: '15px', color: '#c21d00' }} />
-                            </div>
+                            {imgSrc(shipment) ? (
+                              <img src={imgSrc(shipment)} alt="" className="mx-thumb" loading="lazy" />
+                            ) : (
+                              <div className="table-package-icon">
+                                <Package style={{ width: '15px', height: '15px', color: '#c21d00' }} />
+                              </div>
+                            )}
                             <span className="bold-num">{shipment.id}</span>
                           </td>
                           <td>
@@ -3647,6 +3709,15 @@ export default function App() {
             const etaDetails = (() => {
               const eta = activeShipment.eta || '';
               if (!eta) return { date: 'Pending', time: 'Scheduled' };
+              if (!/\b(by|Expected|Scheduled|Overdue)\b/.test(eta)) {
+                // A plain date such as 2026-10-19 or "Oct 19, 2026"
+                const when = /^\d{4}-\d{2}-\d{2}$/.test(eta) ? Date.parse(`${eta}T23:59:59`) : Date.parse(eta);
+                if (Number.isFinite(when)) {
+                  const pretty = new Date(when).toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' });
+                  if (activeShipment.status === 'Delivered') return { date: pretty, time: 'Delivered' };
+                  return { date: pretty, time: when < Date.now() ? 'Overdue' : 'Scheduled' };
+                }
+              }
               const splitter = eta.includes('by') ? 'by' : eta.includes('Expected') ? 'Expected' : eta.includes('Scheduled') ? 'Scheduled' : 'Overdue';
               const parts = eta.split(splitter);
               const date = parts[0]?.trim() || 'Oct 24, 2023';
@@ -3717,7 +3788,7 @@ export default function App() {
                         Live Email Tracking Telemetry
                       </h4>
                       <p style={{ margin: 0, color: '#e2e8f0', fontSize: '0.85rem' }}>
-                        Viewing shipment #{activeShipment.id}. Log in to your Customer Portal using the credentials sent to your email to access full account management.
+                        Viewing shipment #{activeShipment.id}. Enter your tracking number on the Track Shipment page to open your Customer Portal.
                       </p>
                     </div>
                     <button 
@@ -3851,6 +3922,33 @@ export default function App() {
                               <strong className="main-val-text" style={{ fontSize: '0.88rem', wordBreak: 'break-word' }}>{activeShipment.address}</strong>
                             </div>
                           </div>
+                        </div>
+                      </>
+                    )}
+
+                    {((activeShipment.simulation && activeShipment.simulation.startedAt > 0) || imgSrc(activeShipment)) && (
+                      <>
+                        <div className="matrix-separator"></div>
+                        <div className="matrix-row">
+                          {activeShipment.simulation && activeShipment.simulation.startedAt > 0 && (
+                            <div className="matrix-item">
+                              <span className="matrix-label">SHIPMENT START</span>
+                              <div className="matrix-val">
+                                <strong className="main-val-text">{new Date(activeShipment.simulation.startedAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</strong>
+                                <span className="sub-val-text">{activeShipment.simulation.startedAt > Date.now() ? 'Scheduled - not yet departed' : 'Departed'}</span>
+                              </div>
+                            </div>
+                          )}
+                          {imgSrc(activeShipment) && (
+                            <div className="matrix-item" style={{ gridColumn: 'span 3' }}>
+                              <span className="matrix-label">PACKAGE PHOTO</span>
+                              <div className="matrix-val">
+                                <a href={imgSrc(activeShipment)} target="_blank" rel="noopener noreferrer">
+                                  <img src={imgSrc(activeShipment)} alt={`Package ${activeShipment.id}`} className="mx-package-photo" />
+                                </a>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </>
                     )}
@@ -4066,7 +4164,7 @@ export default function App() {
                           return (
                             <tr key={s.id}>
                               <td className="shipment-id-cell" onClick={() => window.location.hash = `#details?id=${s.id}`}>
-                                <Package className="table-row-pkg-icon" />
+                                {imgSrc(s) ? <img src={imgSrc(s)} alt="" className="mx-thumb" loading="lazy" /> : <Package className="table-row-pkg-icon" />}
                                 <span className="bold-id-text">{s.id}</span>
                               </td>
                               <td>
@@ -4540,6 +4638,18 @@ export default function App() {
                           </div>
 
                           <div className="input-field mt-15">
+                            <label>SHIPMENT START DATE &amp; TIME (OPTIONAL)</label>
+                            <input
+                              type="datetime-local"
+                              value={formStartAt}
+                              onChange={(e) => setFormStartAt(e.target.value)}
+                            />
+                            <span style={{ display: 'block', marginTop: '6px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                              The shipment starts moving automatically at this time and reaches its destination on the estimated delivery date. Leave empty to start it yourself later.
+                            </span>
+                          </div>
+
+                          <div className="input-field mt-15">
                             <label>CONTENT DESCRIPTION</label>
                             <textarea 
                               rows="3" 
@@ -4659,11 +4769,14 @@ export default function App() {
                           <div 
                             className="upload-dropzone" 
                             onClick={() => document.getElementById('package-image-upload').click()}
-                            style={{ cursor: 'pointer' }}
+                            onDragOver={(e) => { e.preventDefault(); setIsDraggingImage(true); }}
+                            onDragLeave={() => setIsDraggingImage(false)}
+                            onDrop={(e) => { e.preventDefault(); setIsDraggingImage(false); acceptImageFile(e.dataTransfer.files && e.dataTransfer.files[0]); }}
+                            style={{ cursor: 'pointer', borderColor: isDraggingImage ? '#ff2a00' : undefined, background: isDraggingImage ? 'rgba(255,42,0,0.06)' : undefined }}
                           >
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="upload-cloud-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                             <span className="dropzone-text">Click to upload or drag & drop</span>
-                            <span className="dropzone-sub">PNG, JPG up to 10MB</span>
+                            <span className="dropzone-sub">PNG, JPG or WEBP - resized automatically</span>
                             <input 
                               type="file" 
                               id="package-image-upload" 
@@ -4680,7 +4793,7 @@ export default function App() {
                                   className="file-preview-img-icon" 
                                   src={formUploadedImage.base64} 
                                   alt="shipment box" 
-                                  style={{width: '32px', height: '32px', borderRadius: '4px', objectFit: 'cover'}} 
+                                  style={{width: '64px', height: '64px', borderRadius: '10px', objectFit: 'cover'}} 
                                 />
                                 <div className="file-item-meta">
                                   <span className="file-item-name">{formUploadedImage.name}</span>
@@ -4700,6 +4813,7 @@ export default function App() {
                               No package photo uploaded yet.
                             </div>
                           )}
+                          {imageError && <div style={{ color: '#dc2626', fontSize: '0.85rem', marginTop: '8px' }}>{imageError}</div>}
                         </div>
                       </div>
 
@@ -5285,6 +5399,45 @@ export default function App() {
                 <label style={labelStyle}>Current Location
                   <input style={inputStyle} value={f.currentLocationName} onChange={e => setEditField('currentLocationName', e.target.value)} />
                 </label>
+                <label style={labelStyle}>Shipment Start (date &amp; time)
+                  <input style={inputStyle} type="datetime-local" value={f.startAt} onChange={e => setEditField('startAt', e.target.value)} />
+                </label>
+              </div>
+
+              <div style={{ ...labelStyle, marginBottom: '12px' }}>
+                Package Photo
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                  {(f.newImage || (f.currentImage && !f.removeImage)) ? (
+                    <img src={f.newImage || f.currentImage} alt="Package" style={{ width: '96px', height: '96px', objectFit: 'cover', borderRadius: '12px', border: '1px solid #CBD5E1' }} />
+                  ) : (
+                    <div style={{ width: '96px', height: '96px', borderRadius: '12px', border: '1px dashed #CBD5E1', display: 'grid', placeItems: 'center', color: '#94A3B8', fontSize: '0.72rem' }}>No photo</div>
+                  )}
+                  <label style={{ padding: '9px 16px', borderRadius: '999px', border: '1px solid #CBD5E1', background: '#F1F5F9', cursor: 'pointer', fontWeight: 600, fontSize: '0.82rem', color: '#0B0F17' }}>
+                    {(f.newImage || f.currentImage) && !f.removeImage ? 'Replace photo' : 'Upload photo'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      onChange={async (e) => {
+                        const file = e.target.files && e.target.files[0];
+                        e.target.value = '';
+                        if (!file) return;
+                        try {
+                          const r = await compressImage(file);
+                          setEditForm(prev => ({ ...prev, newImage: r.base64, removeImage: false }));
+                          setEditError('');
+                        } catch (err) {
+                          setEditError(err.message || 'That picture could not be used.');
+                        }
+                      }}
+                    />
+                  </label>
+                  {(f.newImage || (f.currentImage && !f.removeImage)) && (
+                    <button type="button" onClick={() => setEditForm(prev => ({ ...prev, newImage: null, removeImage: true }))} style={{ padding: '9px 16px', borderRadius: '999px', border: '1px solid #FBC9C0', background: '#FEECEA', color: '#C21D00', cursor: 'pointer', fontWeight: 600, fontSize: '0.82rem' }}>
+                      Remove
+                    </button>
+                  )}
+                </div>
               </div>
 
               <label style={{ ...labelStyle, marginBottom: '12px' }}>Internal Notes
@@ -5342,7 +5495,7 @@ export default function App() {
             </div>
             
             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary, #cccccc)', marginBottom: '16px', lineHeight: '1.4' }}>
-              A customer portal account has been created. The customer can log in using these credentials to track their shipment and view live simulation telemetry.
+              Share the tracking number below with your customer. They enter it on the Track Shipment page to see live status, the route map and the package photo.
             </p>
 
             <div style={{
@@ -5358,7 +5511,7 @@ export default function App() {
               alignItems: 'center',
               gap: '8px'
             }}>
-              <span>✓ Automated confirmation email with tracking key sent to <strong>{credentialsModal.email}</strong>.</span>
+              <span>ℹ️ No email was sent. Share the tracking number yourself, or use the Email Center to message <strong>{credentialsModal.email}</strong>.</span>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>

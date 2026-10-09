@@ -340,9 +340,9 @@ const REVIEWS = [
 
 const FAQS = [
   { q: 'How do I track my AGL package live?', a: "Enter your Tracking ID into the top search bar, or log in to your Customer Portal to watch your parcel's exact GPS location and route waypoints in real-time on our interactive map." },
-  { q: 'Where do I get my Customer Portal login credentials?', a: 'When our logistics team creates a shipping appointment for you, an automated welcome email containing your username and password is sent to your inbox immediately.' },
+  { q: 'Where do I find my tracking number?', a: 'Our logistics team gives you your tracking number when your shipment is registered. Enter it on the Track Shipment screen to open your live shipment page. No password is needed.' },
   { q: 'How fast are shipping appointments registered?', a: 'Shipping appointments are processed instantaneously in our cloud database and assigned an automated tracking code immediately.' },
-  { q: 'What happens if my shipment experiences a delay?', a: 'Our telemetry system detects exceptions in real-time and automatically dispatches email notifications with updated estimated delivery times.' }
+  { q: 'What happens if my shipment experiences a delay?', a: 'Our telemetry system detects exceptions in real time and shows the updated estimated delivery time on your tracking page.' }
 ];
 
 export default function LandingPage({

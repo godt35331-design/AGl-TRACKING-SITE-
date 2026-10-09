@@ -15,7 +15,43 @@ export function setWssInstance(wss) {
 export function sanitizeShipment(shipment, isAdmin) {
   const obj = typeof shipment.toObject === 'function' ? shipment.toObject() : { ...shipment };
   if (!isAdmin) delete obj.internalNotes;
+  // The photo itself is served by GET /shipments/:id/image; lists only carry its address.
+  delete obj.packageImage;
+  obj.packageImage = obj.imageVersion > 0 ? `/shipments/${obj.id}/image?v=${obj.imageVersion}` : '';
   return obj;
+}
+
+/** Accepts '' (remove) or a small PNG/JPEG/WEBP/GIF data URL. Returns null when invalid. */
+function cleanImage(value) {
+  if (value === '' || value === null) return '';
+  if (typeof value !== 'string' || value.length > 4_000_000) return null;
+  return /^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(value) ? value : null;
+}
+
+/**
+ * Schedule when a shipment starts moving. Progress stays at 0 until that moment, then runs
+ * automatically until the estimated delivery date.
+ */
+function scheduleStart(shipment, startAt) {
+  const startMs = new Date(startAt).getTime();
+  if (!Number.isFinite(startMs)) return false;
+  const sim = shipment.simulation || {};
+  const eta = String(shipment.eta || '');
+  const endMs = /^\d{4}-\d{2}-\d{2}$/.test(eta) ? Date.parse(`${eta}T17:00:00Z`) : Date.parse(eta);
+  let hours = Number.isFinite(endMs) ? (endMs - startMs) / 3600000 : NaN;
+  if (!Number.isFinite(hours) || hours < 1) hours = sim.durationHours || 72;
+  sim.active = true;
+  sim.startedAt = startMs;
+  sim.startProgress = 0;
+  sim.currentProgress = 0;
+  sim.durationHours = Math.round(hours * 10) / 10;
+  sim.logs = `Shipment scheduled to start on ${new Date(startMs).toUTCString()}.`;
+  shipment.simulation = sim;
+  if (startMs > Date.now()) {
+    shipment.status = 'Registered';
+    shipment.currentLocationName = `Scheduled for departure at ${shipment.origin}`;
+  }
+  return true;
 }
 
 /**
@@ -209,6 +245,22 @@ router.get('/shipments/:id', attachUser, lookupLimiter, async (req, res) => {
   }
 });
 
+// 3b. Package photo, streamed as an image so <img> tags can load it (and browsers can cache it)
+router.get('/shipments/:id/image', async (req, res) => {
+  try {
+    const shipment = await Shipment.findOne({ id: String(req.params.id).toUpperCase() }).select('+packageImage');
+    const data = shipment && shipment.packageImage;
+    const m = data && data.match(/^data:(image\/[a-z+.-]+);base64,(.+)$/);
+    if (!m) return res.status(404).send('No package photo for this shipment.');
+    res.setHeader('Content-Type', m[1]);
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.send(Buffer.from(m[2], 'base64'));
+  } catch (error) {
+    console.error('Error serving package photo:', error);
+    res.status(500).send('Could not load the package photo.');
+  }
+});
+
 // 4. Admin Dispatch Appointment (Insert Cargo Row)
 router.post('/shipments', requireAdmin, async (req, res) => {
   const sData = req.body;
@@ -243,6 +295,8 @@ router.post('/shipments', requireAdmin, async (req, res) => {
       destCode: sData.destCode || 'SEA',
       eta: sData.eta,
       internalNotes: sData.internalNotes || '',
+      packageImage: cleanImage(sData.packageImage) || '',
+      imageVersion: cleanImage(sData.packageImage) ? Date.now() : 0,
       amount: Number(sData.amount) > 0 ? Number(sData.amount) : 0,
       paymentStatus: 'Unpaid',
       status: 'Registered',
@@ -255,6 +309,11 @@ router.post('/shipments', requireAdmin, async (req, res) => {
         logs: 'Shipping appointment created in database.'
       }
     });
+
+    if (sData.packageImage && cleanImage(sData.packageImage) === null) {
+      return res.status(400).json({ error: 'That picture could not be used. Please upload a PNG, JPG or WEBP image.' });
+    }
+    if (sData.startAt) scheduleStart(newShipment, sData.startAt);
 
     await newShipment.save();
 
@@ -270,40 +329,14 @@ router.post('/shipments', requireAdmin, async (req, res) => {
       { upsert: true, new: true }
     );
 
-    // Format response payload (no password included)
-    const responsePayload = typeof newShipment.toObject === 'function' ? newShipment.toObject() : JSON.parse(JSON.stringify(newShipment));
+    // Response: shipment (photo as a small URL) + the tracking details for the admin to share.
+    // No email is sent automatically; use the Email Center to message the customer yourself.
+    const responsePayload = sanitizeShipment(newShipment, true);
     responsePayload.credentials = {
       email: custEmail,
       trackingId: newShipment.id
     };
-
-    // Automatically send registration & credentials email to customer
-    try {
-      const senderNotice = sData.senderName ? ` sent by ${sData.senderName}` : '';
-      const welcomeMessage = `Your shipment${senderNotice} has been successfully registered with AGL Global Logistics.\n\nBelow are your shipment details. You can track your package and view live GPS telemetry anytime by entering your Tracking ID directly on the portal.`;
-
-      sendEmail({
-        to: custEmail,
-        recipientName: sData.customerName,
-        senderName: sData.senderName || '',
-        senderPhone: sData.senderPhone || '',
-        senderEmail: sData.senderEmail || '',
-        senderAddress: sData.senderAddress || '',
-        subject: `AGL Shipment Confirmation - #${newShipment.id}${sData.senderName ? ` (From: ${sData.senderName})` : ''}`,
-        messageBody: welcomeMessage,
-        templateType: 'NEW_REGISTRATION',
-        shipment: newShipment,
-        credentials: {
-          email: custEmail,
-          password: password
-        }
-      }).catch(emailErr => {
-        console.error('[AUTO EMAIL ERROR] Registration email failed to dispatch:', emailErr);
-      });
-    } catch (e) {
-      console.error('Error triggering automated registration email:', e);
-    }
-
+    broadcastShipmentUpdate(newShipment);
     res.status(201).json(responsePayload);
   } catch (error) {
     console.error('Error registering cargo shipment:', error);
@@ -336,7 +369,7 @@ router.put('/shipments/:id', requireAdmin, async (req, res) => {
     }
 
     const textFields = ['customerName', 'customerPhone', 'address', 'desc', 'vessel', 'origin', 'destination',
-      'originCode', 'destCode', 'eta', 'internalNotes', 'status', 'currentLocationName', 'packageImage'];
+      'originCode', 'destCode', 'eta', 'internalNotes', 'status', 'currentLocationName'];
     for (const f of textFields) {
       if (u[f] !== undefined) shipment[f] = u[f];
     }
@@ -352,6 +385,16 @@ router.put('/shipments/:id', requireAdmin, async (req, res) => {
     }
     shipment.customerEmail = newEmail;
 
+    if (u.packageImage !== undefined) {
+      const img = cleanImage(u.packageImage);
+      if (img === null) return res.status(400).json({ error: 'That picture could not be used. Please upload a PNG, JPG or WEBP image.' });
+      shipment.packageImage = img;
+      shipment.imageVersion = img ? Date.now() : 0;
+    }
+    if (u.startAt) {
+      if (!scheduleStart(shipment, u.startAt)) return res.status(400).json({ error: 'Start time is not a valid date.' });
+    }
+
     if (Array.isArray(u.waypoints) && u.waypoints.length >= 2) {
       shipment.simulation.waypoints = u.waypoints;
     }
@@ -365,10 +408,9 @@ router.put('/shipments/:id', requireAdmin, async (req, res) => {
       if (oldCust && oldCust.volume <= 0) await Customer.deleteOne({ email: oldEmail });
 
       const newCust = await Customer.findOne({ email: newEmail });
-      const password = (newCust && newCust.password) || Math.random().toString(36).substring(2, 10).toUpperCase();
       await Customer.findOneAndUpdate(
         { email: newEmail },
-        { $inc: { volume: 1 }, name: shipment.customerName, password },
+        { $inc: { volume: 1 }, name: shipment.customerName },
         { upsert: true, new: true }
       );
     } else if (u.customerName !== undefined) {
@@ -376,7 +418,7 @@ router.put('/shipments/:id', requireAdmin, async (req, res) => {
     }
 
     broadcastShipmentUpdate(shipment);
-    res.json(shipment);
+    res.json(sanitizeShipment(shipment, true));
   } catch (error) {
     console.error('Error editing shipment:', error);
     res.status(500).json({ error: 'Shipment update failed.' });
@@ -454,7 +496,7 @@ router.put('/shipments/:id/simulation', requireAdmin, async (req, res) => {
     // Broadcast live update to Socket channels!
     broadcastShipmentUpdate(shipment);
 
-    res.json(shipment);
+    res.json(sanitizeShipment(shipment, true));
   } catch (error) {
     console.error('Simulation write error:', error);
     res.status(500).json({ error: 'Simulation save failed.' });
@@ -480,7 +522,7 @@ router.get('/stats', requireAdmin, async (req, res) => {
         transit: inTransit,
         delivered: delivered
       },
-      recentShipments,
+      recentShipments: recentShipments.map(s => sanitizeShipment(s, true)),
       customers
     });
   } catch (error) {

@@ -865,3 +865,9 @@ button { font-family: inherit; }
 .mx-footer li button:hover, .mx-footer li a:hover, .mx-footer-mail:hover { color: var(--mx-red) !important; }
 .mx-footer-bottom { margin-top: 44px; }
 @media (max-width: 960px) { .mx-footer-grid { grid-template-columns: 1fr 1fr; } .mx-footer-brand { grid-column: 1 / -1; } }
+
+/* package photos */
+.mx-thumb { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; border: 1px solid var(--mx-line-light); flex-shrink: 0; margin-right: 10px; background: #fff; }
+.shipment-id-cell, .tracking-num-cell { display: flex; align-items: center; }
+.cust-card-photo { display: block; width: 100%; height: 140px; object-fit: cover; border-radius: 14px; margin: 4px 0 14px; border: 1px solid var(--mx-line-light); }
+.mx-package-photo { display: block; max-width: min(100%, 420px); max-height: 300px; border-radius: 16px; object-fit: cover; border: 1px solid var(--mx-line-light); }
