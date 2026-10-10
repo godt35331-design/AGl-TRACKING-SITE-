@@ -3,6 +3,13 @@ services:
     name: Tracking-website
     buildCommand: node build.js
     staticPublishPath: ./dist
+    envVars:
+      # Tawk.to live chat. Public IDs from the Tawk.to widget embed code
+      # (https://embed.tawk.to/<PROPERTY_ID>/<WIDGET_ID>). Chat stays hidden until set.
+      - key: VITE_TAWK_PROPERTY_ID
+        sync: false
+      - key: VITE_TAWK_WIDGET_ID
+        sync: false
   - type: web
     name: Tracking-website-service
     env: node

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { setTawkVisible } from './tawk.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
@@ -1880,6 +1881,11 @@ export default function App() {
   const userRef = useRef(user);
   useEffect(() => {
     userRef.current = user;
+  }, [user]);
+
+  // Live chat is only for signed-in customers, not visitors or admins.
+  useEffect(() => {
+    setTawkVisible(user?.role === 'customer');
   }, [user]);
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
