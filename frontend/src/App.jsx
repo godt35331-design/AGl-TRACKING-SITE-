@@ -2985,6 +2985,13 @@ export default function App() {
                     href="#tracking" 
                     onClick={(e) => {
                       e.preventDefault();
+                      // Customers are already signed in, so open their shipment directly.
+                      const target = customerShipments.find(s => s.id === selectedShipmentId) || customerShipments[0];
+                      if (target) {
+                        setSelectedShipmentId(target.id);
+                        window.location.hash = `#details?id=${target.id}`;
+                        return;
+                      }
                       setCustomerTrackInput('');
                       setTrackPromptError('');
                       setShowCustomerTrackPrompt(true);
